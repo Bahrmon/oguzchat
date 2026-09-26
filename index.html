@@ -812,12 +812,31 @@ function setEdit(id, m) {
   replyTo = null; attach = null; editing = id; setBar(ICONS.edit, "Редактирование сообщения", { text: m.text });
   $("text").value = m.text; autoGrow(); $("text").focus();
 }
+function flyBubble(txt) {
+  const ta = $("text"), msgsEl = $("msgs");
+  const tr = ta.getBoundingClientRect(), mr = msgsEl.getBoundingClientRect();
+  const g = document.createElement("div");
+  g.className = "bubble";
+  g.style.cssText = `position:fixed;left:${tr.left}px;top:${tr.top}px;max-width:${tr.width * 0.75}px;background:var(--mine);color:var(--mine-text);pointer-events:none;z-index:9999;margin:0;opacity:1;will-change:transform,opacity;transition:none;font-size:15px;line-height:1.42;white-space:pre-wrap;word-break:break-word`;
+  g.textContent = txt.length > 80 ? txt.slice(0, 80) + "\u2026" : txt;
+  document.body.appendChild(g);
+  const gr = g.getBoundingClientRect();
+  const dx = mr.right - gr.right - 12;
+  const dy = mr.bottom - gr.bottom - 12;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    g.style.transition = "transform .44s cubic-bezier(.34,1.56,.64,1),opacity .3s ease .18s";
+    g.style.transform = `translate(${dx}px,${dy}px) scale(.88)`;
+    g.style.opacity = "0";
+    setTimeout(() => g.remove(), 520);
+  }));
+}
 let sending = false;
 $("form").onsubmit = async e => {
   e.preventDefault();
   if (sending || !current || current === "profile" || current.startsWith("user:")) return;
   const text = $("text").value.trim();
   if (!text && !attach) return;
+  if (text) flyBubble(text);
   const sb = $("send"); sb.classList.add("fly"); setTimeout(() => sb.classList.remove("fly"), 250);
   sending = true;
   const target = current, rep = replyTo, att = attach, ed = editing;
