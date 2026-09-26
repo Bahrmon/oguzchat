@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#06306A">
 <title>OguzChat</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2306306A'/%3E%3Cpath d='M16 6H48A8 8 0 0156 14V40A8 8 0 0148 48H26L8 60L18 48H16A8 8 0 018 40V14A8 8 0 0116 6Z' fill='white'/%3E%3Ctext x='32' y='31' font-size='20' font-family='Arial' font-weight='800' fill='%23164194' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2306306A'/%3E%3Ccircle cx='32' cy='26' r='16' fill='none' stroke='white' stroke-width='6'/%3E%3Cpolygon points='20,38 10,56 28,42' fill='white'/%3E%3Ccircle cx='22' cy='26' r='2.5' fill='white'/%3E%3Ccircle cx='32' cy='26' r='2.5' fill='white'/%3E%3Ccircle cx='42' cy='26' r='2.5' fill='white'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -236,6 +236,8 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 .ann-del{border:none;background:none;color:var(--muted);font-size:13px;padding:4px 8px;border-radius:6px;margin-left:6px}
 .ann-del:hover{background:#E5393518;color:#E53935}
 .ann-intro{max-width:760px;margin:0 auto 4px;color:var(--muted);font-size:13px;text-align:center}
+.load-more-btn{display:block;width:100%;padding:8px;border:none;background:var(--band);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;border-radius:10px;margin-bottom:8px;transition:background .15s,color .15s}
+.load-more-btn:hover{background:var(--hover);color:var(--title)}
 .prof{max-width:560px;margin:0 auto 20px;background:var(--card);border-radius:18px;box-shadow:0 4px 20px #06306a14;overflow:hidden;animation:fadeUp .4s var(--ease) both}
 .prof-top{background:linear-gradient(135deg,#06306A,#164194);padding:28px 24px 22px;color:#fff;display:flex;gap:16px;align-items:center}
 .prof-top .av{width:72px;height:72px;font-size:26px;border:3px solid #ffffff40}
@@ -288,6 +290,20 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
   #typingLine{padding:0 12px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+/* Tour */
+#tourOverlay{position:fixed;inset:0;z-index:9000;pointer-events:none}
+.tour-backdrop{position:fixed;inset:0;background:#06306a88;backdrop-filter:blur(1px);z-index:9001;pointer-events:auto}
+.tour-box{position:fixed;z-index:9002;background:var(--card);border-radius:16px;box-shadow:0 20px 60px #06306a44;padding:20px 22px 18px;max-width:300px;pointer-events:auto;animation:popIn .35s var(--spring) both}
+.tour-box h4{margin:0 0 8px;font-family:Montserrat,sans-serif;font-weight:700;font-size:16px;color:var(--title)}
+.tour-box p{margin:0 0 14px;font-size:14px;line-height:1.5;color:var(--text)}
+.tour-hl{position:fixed;z-index:9002;border-radius:12px;box-shadow:0 0 0 4px #164194,0 0 0 9999px #06306a88;pointer-events:none;transition:all .35s var(--ease)}
+.tour-arrow{position:absolute;width:12px;height:12px;background:var(--card);transform:rotate(45deg)}
+.tour-footer{display:flex;align-items:center;gap:8px}
+.tour-dots{flex:1;display:flex;gap:5px}
+.tour-dot{width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .2s}
+.tour-dot.on{background:var(--blue)}
+.tour-btn{padding:7px 16px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:13px;cursor:pointer}
+.tour-btn.skip{background:var(--band);color:var(--muted);margin-right:auto}
 </style>
 </head>
 <body>
@@ -312,7 +328,7 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 
 <div id="app" class="hidden">
   <div id="side">
-    <div class="logo"><span class="mark"><svg viewBox="0 0 16 16" width="18" height="18" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M2 0H14A2 2 0 0116 2V10A2 2 0 0114 12H8L4 16V12H2A2 2 0 010 10V2A2 2 0 012 0Z"/><text x="8" y="8.5" font-size="6" font-family="Arial" font-weight="800" fill="#164194" text-anchor="middle" dominant-baseline="middle">O</text></svg></span><span class="grow">OguzChat</span><button class="iconbtn" id="themeBtn" title="Тема"></button></div>
+    <div class="logo"><span class="mark"><svg viewBox="0 0 34 34" width="34" height="34" xmlns="http://www.w3.org/2000/svg"><circle cx="17" cy="13" r="9" fill="none" stroke="white" stroke-width="3.5"/><polygon points="10,20 5,31 16,22" fill="white"/><circle cx="11" cy="13" r="1.5" fill="white"/><circle cx="17" cy="13" r="1.5" fill="white"/><circle cx="23" cy="13" r="1.5" fill="white"/></svg></span><span class="grow">OguzChat</span><button class="iconbtn" id="themeBtn" title="Тема"></button></div>
     <div class="scroll">
       <div id="annBox"></div>
       <h3>Каналы <button id="newChan" title="Новый канал"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></h3>
@@ -353,7 +369,7 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, sendPasswordResetEmail }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, limit, onSnapshot, serverTimestamp, arrayUnion, arrayRemove, FieldPath, deleteField }
+import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, limit, limitToLast, onSnapshot, serverTimestamp, arrayUnion, arrayRemove, FieldPath, deleteField }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -414,6 +430,7 @@ if (pinIco) pinIco.innerHTML = ICONS.pin;
 
 let me = null, started = false, current = null;
 let usersMap = {}, channelsList = [], unsubMsgs = null, unsubConv = null, lastSnap = null, seen = null;
+let msgLimit = 80;
 let replyTo = null, editing = null, attach = null, searchQ = "", convData = {};
 const unread = {}, titles = {}, watched = {};
 const QUICK = ["👍", "❤️", "😂", "😮", "😢", "🙏", "🔥", "✅"];
@@ -531,6 +548,7 @@ function start(user) {
   setInterval(() => { renderSidebar(); if (current && current !== "profile" && !current.startsWith("user:")) headerInfo(); }, 30000);
   setInterval(showTyping, 2000);
   bellState();
+  maybeShowTour();
 }
 function heartbeat() { if (me && !document.hidden) setDoc(doc(db, "users", me.uid), { lastSeen: serverTimestamp() }, { merge: true }).catch(() => {}); }
 function renderMe() {
@@ -602,7 +620,7 @@ function msgsRef(id) {
 }
 function convRef(id) { return isDM(id) ? doc(db, "dms", id) : isChan(id) ? doc(db, "channels", id) : null; }
 function dmPeer(id) { return id.slice(3).split("_").find(x => x !== me.uid) || me.uid; }
-function stopConv() { $("msgs").classList.remove("loading"); if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } if (unsubConv) { unsubConv(); unsubConv = null; } lastSnap = null; convData = {}; const tb = $("toBottom"); if (tb) tb.remove(); }
+function stopConv() { $("msgs").classList.remove("loading"); if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } if (unsubConv) { unsubConv(); unsubConv = null; } lastSnap = null; convData = {}; msgLimit = 80; const tb = $("toBottom"); if (tb) tb.remove(); }
 function titleAnim() { const e = $("title"); e.classList.remove("switch"); void e.offsetWidth; e.classList.add("switch"); }
 function msgsAnim() { const e = $("msgs"); e.classList.remove("loading", "switch"); void e.offsetWidth; e.classList.add("switch"); }
 function switchAnim() { for (const e of [$("title"), $("msgs")]) { e.classList.remove("switch"); void e.offsetWidth; e.classList.add("switch"); } }
@@ -625,9 +643,16 @@ function open(id) {
   $("text").placeholder = id === "ann" ? "Объявление для всех сотрудников…" : "Сообщение";
   $("pinBar").classList.add("hidden"); $("typingLine").innerHTML = "";
   $("msgs").classList.add("loading");
-  unsubMsgs = onSnapshot(query(msgsRef(id), orderBy("time", id === "ann" ? "desc" : "asc"), limit(80)), snap => {
-    lastSnap = snap; rerender(); markRead(id);
-  }, e => { $("msgs").classList.remove("loading"); $("msgs").innerHTML = ""; $("msgs").append(el("div", "empty", "Ошибка доступа: " + e.code)); });
+  const subMsgs = () => {
+    if (unsubMsgs) unsubMsgs();
+    const isAnn = id === "ann";
+    const q = isAnn ? query(msgsRef(id), orderBy("time", "desc"), limit(msgLimit))
+                    : query(msgsRef(id), orderBy("time", "asc"), limitToLast(msgLimit));
+    unsubMsgs = onSnapshot(q, snap => {
+      lastSnap = snap; rerender(); markRead(id);
+    }, e => { $("msgs").classList.remove("loading"); $("msgs").innerHTML = ""; $("msgs").append(el("div", "empty", "Ошибка доступа: " + e.code)); });
+  };
+  subMsgs(); open._subMsgs = subMsgs;
   const cr = convRef(id);
   if (cr) unsubConv = onSnapshot(cr, d => { convData = d.data() || {}; renderPin(); showTyping(); }, () => {});
   if (window.innerWidth > 760) setTimeout(() => $("text").focus(), 50);
@@ -802,6 +827,15 @@ function rerender() {
     nodes.push(node);
   }
   if (!items.length) nodes.push(take("empty", q, () => el("div", "empty", q ? "Ничего не найдено" : "Сообщений пока нет — напишите первым 👋")));
+  // "Load earlier" button at the top when history is truncated
+  if (!q && items.length >= msgLimit && current !== "ann") {
+    const btn = take("loadmore", msgLimit, () => {
+      const b = el("button", "load-more-btn", "⬆ Загрузить более ранние");
+      b.onclick = () => { msgLimit += 80; if (open._subMsgs) open._subMsgs(); };
+      return b;
+    });
+    nodes.unshift(btn);
+  }
   rowCache = cache;
   reconcile(box, nodes);
   flights.forEach((f, id) => {
@@ -1442,6 +1476,54 @@ function showProfile(uid) {
   const nb = el("button", "btn ghost", perm === "none" ? "Не поддерживаются этим браузером" : perm === "granted" ? "Включены" : perm === "denied" ? "Запрещены в настройках браузера" : "Включить уведомления");
   nb.style.marginTop = "0"; nb.onclick = () => enableNotif().then(() => { if (current === "profile") showProfile(me.uid); }); body.append(nb);
 }
+
+/* ---------- тур знакомства ---------- */
+function showTour() {
+  const STEPS = [
+    { sel: "#annBox", title: "📢 Объявления", text: "Важные новости от руководства. Здесь появляются официальные сообщения для всей компании.", pos: "right" },
+    { sel: "#channels", title: "💬 Каналы", text: "Тематические чаты отделов и проектов. Напишите в нужный канал, чтобы вся команда увидела.", pos: "right" },
+    { sel: "#users", title: "👥 Сотрудники", text: "Список всех коллег. Нажмите на имя — откроется личный диалог (DM). Зелёная точка = в сети прямо сейчас.", pos: "right" },
+    { sel: "#findUser", title: "🔍 Поиск коллег", text: "Начните вводить имя — список мгновенно фильтруется.", pos: "right" },
+    { sel: "#searchBtn", title: "🔎 Поиск в чате", text: "Ищите конкретное сообщение в открытом канале или диалоге.", pos: "bottom" },
+    { sel: "#themeBtn", title: "🌙 Тема", text: "Переключайтесь между светлой и тёмной темой в любой момент.", pos: "bottom" },
+    { sel: "#form", title: "✉️ Отправка", text: "Пишите сообщения, прикрепляйте фото и файлы. Длинный тап по сообщению — реакции, ответ, удаление.", pos: "top" },
+    { sel: "#me", title: "👤 Мой профиль", text: "Ваше имя, должность и фото. Нажмите, чтобы заполнить профиль — коллеги увидят ваши данные.", pos: "top" },
+  ];
+  let step = 0;
+  const ov = el("div"); ov.id = "tourOverlay"; document.body.append(ov);
+  const bd = el("div", "tour-backdrop"); ov.append(bd);
+  const hl = el("div", "tour-hl"); ov.append(hl);
+  const box = el("div", "tour-box"); ov.append(box);
+  function render(i) {
+    const s = STEPS[i];
+    const target = document.querySelector(s.sel);
+    box.innerHTML = "";
+    const h = el("h4", null, s.title); box.append(h);
+    const p = el("p", null, s.text); box.append(p);
+    const foot = el("div", "tour-footer");
+    const skipBtn = el("button", "tour-btn skip", "Пропустить");
+    skipBtn.onclick = closeTour;
+    const dots = el("div", "tour-dots");
+    STEPS.forEach((_, j) => { const d = el("div", "tour-dot" + (j === i ? " on" : "")); dots.append(d); });
+    const nextBtn = el("button", "tour-btn", i < STEPS.length - 1 ? "Далее →" : "Готово!");
+    nextBtn.onclick = () => { if (i < STEPS.length - 1) render(i + 1); else closeTour(); };
+    foot.append(skipBtn, dots, nextBtn);
+    box.append(foot);
+    if (!target) { hl.style.display = "none"; box.style.cssText = "top:50%;left:50%;transform:translate(-50%,-50%)"; return; }
+    const r = target.getBoundingClientRect();
+    hl.style.cssText = `left:${r.left - 6}px;top:${r.top - 6}px;width:${r.width + 12}px;height:${r.height + 12}px;display:block`;
+    const bw = 300, bh = 200;
+    let bx, by;
+    if (s.pos === "right") { bx = Math.min(r.right + 16, window.innerWidth - bw - 12); by = Math.max(8, Math.min(r.top, window.innerHeight - bh - 12)); }
+    else if (s.pos === "top") { bx = Math.max(8, Math.min(r.left, window.innerWidth - bw - 12)); by = Math.max(8, r.top - bh - 16); }
+    else { bx = Math.max(8, Math.min(r.left, window.innerWidth - bw - 12)); by = Math.min(r.bottom + 16, window.innerHeight - bh - 12); }
+    box.style.cssText = `left:${bx}px;top:${by}px`;
+  }
+  function closeTour() { ov.remove(); store.set("oc-tour", "done"); }
+  bd.onclick = closeTour;
+  render(0);
+}
+function maybeShowTour() { if (!store.get("oc-tour")) setTimeout(showTour, 1200); }
 
 /* ---------- разное ---------- */
 $("menuBtn").onclick = () => $("side").classList.toggle("open");
