@@ -552,6 +552,162 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 #toBottom .cnt{position:absolute;top:-6px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
 @media (max-width:760px){.post{border-radius:14px;padding:12px 12px 4px}.cmts{margin:4px -12px 0;padding:8px 12px 10px}#msgs.feed{padding-left:10px;padding-right:10px}.voice{min-width:210px}}
 
+/* Задачи */
+#msgs.tasks{padding:16px 20px 20px}
+.tk-top{max-width:1100px;margin:0 auto 12px;display:flex;flex-direction:column;gap:10px}
+.tk-r1{display:flex;gap:8px;align-items:center}
+.tk-add{display:inline-flex;align-items:center;gap:6px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:14px;padding:9px 16px;border-radius:10px;white-space:nowrap;transition:transform .15s var(--spring)}
+.tk-add:active{transform:scale(.95)}
+.tk-search{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:9px 14px;font:inherit;font-size:14px;outline:none}
+.tk-search:focus{border-color:#16419470}
+.tk-view{display:flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+.tk-view button{border:none;background:none;color:var(--muted);font-weight:600;font-size:13px;padding:6px 12px;border-radius:7px}
+.tk-view button.on{background:var(--blue);color:#fff}
+.tk-r2{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tk-roles{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.tk-role{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:18px;padding:6px 12px;font-size:13px;font-weight:600;white-space:nowrap}
+.tk-role b{font-size:11px;background:var(--band);color:var(--muted);border-radius:9px;padding:0 6px;min-width:18px;text-align:center}
+.tk-role b:empty{display:none}
+.tk-role.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.tk-role.on b{background:#ffffff30;color:#fff}
+.tk-done{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tk-list{max-width:1100px;margin:0 auto;background:var(--card);border-radius:14px;box-shadow:0 2px 10px #06306a12;overflow:hidden}
+.tk-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s;animation:fadeUp .3s var(--ease) both}
+.tk-row:last-child{border-bottom:none}
+.tk-row:hover{background:var(--hover)}
+.tk-row.late{box-shadow:inset 3px 0 0 #E53935}
+.tk-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:grid;place-items:center;color:#fff}
+.tk-dot.s-progress{border-color:#2E7D32;box-shadow:inset 0 0 0 3px var(--card);background:#2E7D32}
+.tk-dot.s-review{border-color:#E8A300;background:#E8A300;box-shadow:inset 0 0 0 3px var(--card)}
+.tk-dot.s-defer{border-style:dashed}
+.tk-dot.s-done{border-color:#2E7D32;background:#2E7D32}
+.tk-main{flex:1;min-width:0}
+.tk-title{font-weight:600;color:var(--title);font-size:15px;display:flex;gap:4px;align-items:baseline;overflow-wrap:anywhere}
+.tk-row.s-done .tk-title span:last-child{text-decoration:line-through;opacity:.6}
+.tk-fire{flex-shrink:0}
+.tk-sub{display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap}
+.tk-st{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--band);color:var(--muted);white-space:nowrap}
+.tk-st.s-progress{background:#2E7D3218;color:#2E7D32}
+.tk-st.s-review{background:#E8A30020;color:#9A6C00}
+.tk-st.s-done{background:#2E7D3218;color:#2E7D32}
+.tk-st.s-defer{background:var(--band);color:var(--muted)}
+.tk-st.s-new{background:#16419414;color:var(--blue)}
+[data-theme=dark] .tk-st.s-new{color:#8FB0FF}
+[data-theme=dark] .tk-st.s-review{color:#F2C14E}
+[data-theme=dark] .tk-st.s-progress,[data-theme=dark] .tk-st.s-done{color:#6FCF7A}
+.tk-meta{display:flex;gap:10px;font-size:12px;color:var(--muted)}
+.tk-meta span{display:inline-flex;align-items:center;gap:3px}
+.tk-meta .full{color:#2E7D32}
+.tk-dl{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;padding:3px 8px;border-radius:8px;background:var(--band)}
+.tk-dl.none{background:none;font-weight:400;opacity:.7}
+.tk-dl.soon{background:#E8A30020;color:#9A6C00}
+.tk-dl.late{background:#E5393518;color:#E53935}
+.tk-dl.ok{color:#2E7D32;background:#2E7D3214}
+.tk-who{display:flex;align-items:center;gap:6px;width:170px;flex-shrink:0;font-size:13px;color:var(--text);min-width:0}
+.tk-who span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk-who .av,.kb-ft .av{width:26px;height:26px;font-size:10px}
+.tk-who .av.on::after,.kb-ft .av.on::after,.tk-who .av.ceo::before,.kb-ft .av.ceo::before{display:none}
+.tk-empty{padding:50px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.tk-empty-ic{width:64px;height:64px;border-radius:50%;background:var(--band);color:var(--blue);display:grid;place-items:center;font-size:30px;font-weight:700}
+.tk-empty-t{color:var(--muted)}
+.kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;align-items:flex-start;min-height:60vh}
+.kb-col{flex:1 0 170px;min-width:0;background:color-mix(in srgb,var(--card) 55%,transparent);border-radius:14px;padding:10px;border-top:4px solid var(--line);transition:background .15s}
+.kb-col.s-new{border-top-color:var(--blue)}.kb-col.s-progress{border-top-color:#2E7D32}.kb-col.s-review{border-top-color:#E8A300}.kb-col.s-defer{border-top-color:var(--muted)}.kb-col.s-done{border-top-color:#2E7D32;opacity:.85}
+.kb-col.over{background:#16419418}
+.kb-h{display:flex;align-items:center;gap:8px;padding:2px 4px 10px;font-weight:700;color:var(--title);font-size:13px}
+.kb-t{flex:1}
+.kb-n{font-size:12px;background:var(--band);color:var(--muted);border-radius:10px;padding:1px 8px}
+.kb-cards{display:flex;flex-direction:column;gap:8px;min-height:40px}
+.kb-card{background:var(--card);border-radius:10px;padding:10px 12px;box-shadow:0 1px 4px #06306a14;cursor:pointer;transition:transform .15s,box-shadow .15s;animation:fadeUp .3s var(--ease) both}
+.kb-card:hover{box-shadow:0 4px 14px #06306a22;transform:translateY(-1px)}
+.kb-card.drag{opacity:.4}
+.kb-card.late{box-shadow:inset 3px 0 0 #E53935,0 1px 4px #06306a14}
+.kb-card .tk-title{font-size:14px}
+.kb-ft{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.kb-ft .av{margin-left:auto}.kb-card .tk-dl{white-space:normal;max-width:100%}
+.kb-empty{font-size:12px;color:var(--muted);text-align:center;padding:14px 0;border:1px dashed var(--line);border-radius:10px}
+#taskPanel{position:fixed;inset:0;z-index:45;display:flex;justify-content:flex-end}
+#taskPanel .tp-shade{position:absolute;inset:0;background:#06306a44;animation:fadeIn .2s}
+#taskPanel .tp{position:relative;width:min(620px,100%);height:100%;background:var(--card);display:flex;flex-direction:column;box-shadow:-10px 0 40px #06306a33;animation:tpIn .3s var(--ease) both}
+#taskPanel.out .tp{animation:tpOut .22s var(--ease) forwards}#taskPanel.out .tp-shade{opacity:0;transition:opacity .2s}
+@keyframes tpIn{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes tpOut{to{transform:translateX(40px);opacity:0}}
+.tp-hd{display:flex;align-items:center;gap:4px;padding:10px 12px 10px 20px;border-bottom:1px solid var(--line);padding-top:max(10px,env(safe-area-inset-top))}
+.tp-kicker{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.tp-tools{display:flex;gap:2px}
+.tp-x{width:36px;height:36px;border:none;background:none;color:var(--muted);border-radius:50%;display:grid;place-items:center;padding:0}
+.tp-x:hover{background:var(--band);color:var(--title)}
+.tp-x.danger:hover{color:#E53935}
+.tp-body{flex:1;overflow-y:auto;padding:16px 20px 20px}
+.tp-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tk-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--band);color:var(--muted)}
+.tk-tag.pri{background:#E5467A18;color:#C2185B}
+.tk-tag.late{background:#E5393518;color:#E53935}
+.tp-title{font-family:Montserrat,sans-serif;font-size:21px;line-height:1.3;color:var(--title);margin:10px 0 12px;overflow-wrap:anywhere}
+.tp-acts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.tp-act{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);color:var(--text);font-weight:600;font-size:13px;padding:8px 14px;border-radius:10px;transition:transform .15s var(--spring),background .15s}
+.tp-act:hover{background:var(--band)}
+.tp-act:active{transform:scale(.95)}
+.tp-act.prim{background:var(--blue);border-color:var(--blue);color:#fff}
+.tp-note{font-size:13px;color:#9A6C00;background:#E8A30018;padding:7px 12px;border-radius:10px}
+.tp-info{background:var(--band);border-radius:12px;padding:6px 14px;margin-bottom:14px}
+.tp-ir{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.tp-ir:last-child{border-bottom:none}
+.tp-k{width:130px;flex-shrink:0;color:var(--muted);font-size:13px}
+.tp-v{flex:1;min-width:0}
+.tp-people{display:flex;flex-wrap:wrap;gap:6px}
+.tp-person{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:500}
+.tp-person:hover span{text-decoration:underline}
+.tp-person .av{width:24px;height:24px;font-size:9px}
+.tp-person .av.on::after,.tp-person .av.ceo::before{display:none}
+.tp-desc{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;font-size:15px;margin-bottom:16px}
+.tp-sec{margin-bottom:16px}
+.tp-h{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--title);font-size:14px;margin-bottom:8px}
+.tp-hn{font-weight:600;color:var(--muted);font-size:12px}
+.tp-bar{height:6px;border-radius:3px;background:var(--band);overflow:hidden;margin-bottom:8px}
+.tp-bar span{display:block;height:100%;background:#2E7D32;border-radius:3px;transition:width .4s var(--ease)}
+.tp-ck{display:flex;align-items:flex-start;gap:10px;padding:7px 4px;border-radius:8px;cursor:pointer;font-size:14px}
+.tp-ck:hover{background:var(--hover)}
+.tp-ck.ro{cursor:default}.tp-ck.ro:hover{background:none}
+.tp-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);flex-shrink:0;display:grid;place-items:center;color:transparent;transition:all .2s var(--spring)}
+.tp-ck.on .tp-box{background:#2E7D32;border-color:#2E7D32;color:#fff}
+.tp-ck.on>span:last-child{text-decoration:line-through;opacity:.6}
+.tp-none{color:var(--muted);font-size:13px;padding:4px 0 8px}
+.tp-hist{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.tp-hist summary{cursor:pointer;font-weight:600;padding:4px 0}
+.tp-lg{padding:4px 0}
+.tp-lg b{color:var(--text);font-weight:600}
+.tp-cin{display:flex;align-items:flex-end;gap:8px;padding:10px 16px;border-top:1px solid var(--line);padding-bottom:max(10px,env(safe-area-inset-bottom))}
+.tp-cin .av{width:30px;height:30px;font-size:11px}
+.tp-cin .av.on::after{display:none}
+.tp-cin textarea{flex:1;min-width:0;border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--text);font:inherit;font-size:14px;padding:8px 14px;resize:none;outline:none;line-height:1.4}
+.tp-cin.has .csend{opacity:1;transform:none;pointer-events:auto}
+.tp-body .cm .av{width:30px;height:30px}
+.tp-body .cb{background:var(--band)}
+.tk-dlg{max-width:520px}
+.tk-in-title{font-size:16px;font-weight:600}
+.tk-in-desc{margin-top:8px!important;resize:vertical;font:inherit;min-height:70px}
+.mcard select.inp{appearance:auto}
+.tk-aud{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tk-audsel{border:1px dashed var(--line);background:none;color:var(--blue-l);border-radius:14px;padding:5px 10px;font:inherit;font-size:13px;max-width:100%}
+.tk-pres{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tk-pres button{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:14px;padding:4px 10px;font-size:12px;font-weight:600}
+.tk-pres button:hover{color:var(--title);border-color:var(--blue)}
+@media (max-width:760px){
+  #msgs.tasks{padding:10px 10px 16px}
+  .tk-r1{flex-wrap:wrap}.tk-add{order:0}.tk-view{margin-left:auto}.tk-search{order:3;flex-basis:100%}
+  .tk-done{display:none}
+  .tk-row{flex-wrap:wrap;padding:12px;gap:8px 10px}
+  .tk-main{flex-basis:calc(100% - 30px)}
+  .tk-row .tk-dl{margin-left:28px}
+  .tk-who{width:auto;margin-left:auto}
+  .tk-who span{display:none}
+  .kanban{scroll-snap-type:x mandatory;margin:0 -10px;padding:0 10px 10px}
+  .kb-col{flex-basis:82vw;scroll-snap-align:center}
+  #taskPanel .tp{width:100%}
+  .tp-k{width:110px}
+}
+
 /* Tour */
 #tourOverlay{position:fixed;inset:0;z-index:9000;pointer-events:none}
 .tour-backdrop{position:fixed;inset:0;background:#06306a88;backdrop-filter:blur(1px);z-index:9001;pointer-events:auto}
@@ -688,6 +844,9 @@ window.ICONS = {
   star:    SVG('<polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/>',16),
   alert:   SVG('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',16),
   feed:    SVG('<path d="M4 4h13a3 3 0 0 1 3 3v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>',17),
+  tasks:   SVG('<rect x="3" y="4" width="18" height="17" rx="3"/><polyline points="7.5 10.5 9.5 12.5 13 9"/><line x1="7.5" y1="16.5" x2="16.5" y2="16.5"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/>',17),
+  plus:    SVG('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',16),
+  clock:   SVG('<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>',12),
   trash:   SVG('<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',14),
 };
 const ico = (n, sz) => ICONS[n].replace(/width="\d+" height="\d+"/, `width="${sz}" height="${sz}"`);
@@ -720,7 +879,7 @@ const isOnline = u => !!u && Date.now() - ms(u.lastSeen) < 150000;
 const uName = (uid, fb) => (usersMap[uid] && usersMap[uid].name) || fb || "Сотрудник";
 const isCEO = uid => { const u = usersMap[uid]; return u && u.name && u.name.startsWith("Gerchek"); };
 const isDM = id => !!id && id.startsWith("dm_");
-const isChan = id => !!id && id !== "ann" && id !== "feed" && id !== "profile" && !id.startsWith("user:") && !isDM(id);
+const isChan = id => !!id && id !== "ann" && id !== "feed" && id !== "tasks" && id !== "profile" && !id.startsWith("user:") && !isDM(id);
 const fmtTime = d => d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 const fmtDay = d => d.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
@@ -805,9 +964,9 @@ function start(user) {
   if ($("app").classList.contains("hidden")) { $("app").classList.add("enter"); setTimeout(() => $("app").classList.remove("enter"), 700); }
   $("auth").classList.add("hidden"); $("app").classList.remove("hidden");
   if (started) return; started = true;
-  renderMe();
+  renderMe(); subTasks();
   onSnapshot(query(collection(db, "channels"), orderBy("name")), snap => {
-    channelsList = snap.docs.filter(d => d.id !== "feed").map(d => ({ id: d.id, ...d.data() }));
+    channelsList = snap.docs.filter(d => d.id !== "feed" && d.id !== "tasks").map(d => ({ id: d.id, ...d.data() }));
     renderSidebar();
     if (isChan(current) && !channelsList.some(c => c.id === current)) current = null;
     if (!current) {
@@ -899,6 +1058,7 @@ MOB.addEventListener("change", () => { if (!isMob()) $("app").classList.remove("
 function renderSidebar() {
   if (!me) return;
   const ab = $("annBox"); ab.innerHTML = ""; const aic = el("span", "ic"); aic.innerHTML = ico("feed", 17); const ai = item("feed", "Лента", aic, { title: "Лента" }); ai.style.marginTop = "4px"; ab.append(ai);
+  const tic = el("span", "ic"); tic.innerHTML = ico("tasks", 17); ab.append(item(TASKS, "Задачи", tic, { title: "Задачи", sub: isMob() ? "Поручения и сроки" : "" }));
   if (isMob()) return renderMobileList();
   $("chH").textContent = "Каналы"; $("usH").textContent = "Сотрудники";
   const ch = $("channels"); ch.innerHTML = "";
@@ -959,11 +1119,12 @@ $("me").onclick = () => { open("profile"); showChat(); };
 function msgsRef(id) {
   if (id === "ann") return collection(db, "announcements");
   if (id === "feed") return collection(db, "channels", "feed", "messages");
+  if (id === "tasks") return collection(db, "channels", "tasks", "messages");
   return isDM(id) ? collection(db, "dms", id, "messages") : collection(db, "channels", id, "messages");
 }
 function convRef(id) { return isDM(id) ? doc(db, "dms", id) : isChan(id) ? doc(db, "channels", id) : null; }
 function dmPeer(id) { return id.slice(3).split("_").find(x => x !== me.uid) || me.uid; }
-function stopConv() { if (rec) recFinish(false); stopVoice(); document.querySelectorAll(".amenu,.pmenu").forEach(x => x.remove()); $("msgs").classList.remove("loading", "feed"); if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } if (unsubConv) { unsubConv(); unsubConv = null; } lastSnap = null; convData = {}; msgLimit = 80; const tb = $("toBottom"); if (tb) tb.remove(); }
+function stopConv() { if (rec) recFinish(false); stopVoice(); document.querySelectorAll(".amenu,.pmenu").forEach(x => x.remove()); $("msgs").classList.remove("loading", "feed", "tasks"); if (taskOpenId) closeTask(); if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } if (unsubConv) { unsubConv(); unsubConv = null; } lastSnap = null; convData = {}; msgLimit = 80; const tb = $("toBottom"); if (tb) tb.remove(); }
 function titleAnim() { const e = $("title"); e.classList.remove("switch"); void e.offsetWidth; e.classList.add("switch"); }
 function msgsAnim() { const e = $("msgs"); e.classList.remove("loading", "switch"); void e.offsetWidth; e.classList.add("switch"); }
 function switchAnim() { for (const e of [$("title"), $("msgs")]) { e.classList.remove("switch"); void e.offsetWidth; e.classList.add("switch"); } }
@@ -987,6 +1148,7 @@ function open(id) {
   $("pinBar").classList.add("hidden"); $("typingLine").innerHTML = "";
   $("msgs").classList.add("loading");
   if (id === FEED) { openFeed(); return; }
+  if (id === TASKS) { openTasks(); return; }
   const subMsgs = () => {
     if (unsubMsgs) unsubMsgs();
     const isAnn = id === "ann";
@@ -1013,6 +1175,7 @@ function headerInfo() {
   } else if (isChan(current)) sub.textContent = Object.keys(usersMap).length + " участников · канал";
   else if (current === "ann") sub.textContent = "Видят все сотрудники";
   else if (current === FEED) sub.textContent = "Новости, опросы и благодарности компании";
+  else if (current === TASKS) sub.textContent = "Поручения, сроки и контроль";
   else sub.textContent = "";
 }
 
@@ -1129,6 +1292,7 @@ function reconcile(box, nodes) {
 function rerender() {
   if (!lastSnap) return;
   if (current === FEED) return renderFeed();
+  if (current === TASKS) return renderTasks();
   if (current === "ann") return renderAnn(lastSnap);
   const box = $("msgs");
   if (seen === null) { seen = new Set(); msgsAnim(); }
@@ -2205,9 +2369,357 @@ function buildComposer() {
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape") return;
   if (rec) { recFinish(false); return; }
+  if (document.querySelector(".modal")) { document.querySelector(".modal").remove(); return; }
+  if (taskOpenId) { closeTask(); return; }
   const top = document.querySelector(".modal,#lightbox,.amenu,.pmenu,#fwdPick");
   if (top) { top.remove(); e.preventDefault(); }
 });
+/* ---------- задачи (как в Битрикс24) ----------
+   Хранение: channels/tasks/messages. Неизменяемые поля пишет постановщик при создании,
+   всё, что меняют другие (статус, чек-лист, комментарии, история, правки), лежит в reactions под ключами «~»,
+   потому что правила Firebase разрешают другим сотрудникам менять только reactions. */
+const TASKS = "tasks";
+const ST = { new: "Ждёт выполнения", progress: "Выполняется", review: "Ждёт контроля", defer: "Отложена", done: "Завершена" };
+const ST_ORDER = ["new", "progress", "review", "defer", "done"];
+const ROLES = [["all", "Все"], ["doing", "Делаю"], ["gave", "Поручил"], ["watch", "Наблюдаю"]];
+let tasksAll = [], tasksReady = false, taskKnown = new Map(), taskView = store.get("oc-tview") || "list", taskRole = "all", taskQ = "", taskShowDone = false, taskOpenId = null, taskDraft = {}, tasksTop = null;
+const tref = id => doc(msgsRef(TASKS), id);
+const tid = () => Math.random().toString(36).slice(2, 10);
+function normTask(d) {
+  const m = d.data(), rx = m.reactions || {};
+  const t = { id: d.id, uid: m.uid, name: m.name, time: m.time ? ms(m.time) : Date.now(), title: m.text || "", desc: m.desc || "", resp: m.resp || m.uid, aud: m.aud || [], dl: m.dl || 0, pri: !!m.pri, ctrl: !!m.ctrl, ck: m.ck || [] };
+  const e = rx["~e"] && rx["~e"][0];
+  if (e) { try { Object.assign(t, JSON.parse(e)); } catch (x) {} }
+  const st = rx["~st"] || []; t.status = ST[st[0]] ? st[0] : "new";
+  t.log = (rx["~log"] || []).slice().sort((a, b) => a.t - b.t);
+  t.comments = (rx["~c"] || []).slice().sort((a, b) => a.t - b.t);
+  t.ckDone = new Set(rx["~ck"] || []);
+  t.overdue = !!t.dl && t.status !== "done" && t.status !== "defer" && t.dl < Date.now();
+  return t;
+}
+const isBoss = t => t.uid === me.uid || me.uid === ADMIN;
+const isResp = t => t.resp === me.uid;
+const canMove = t => isBoss(t) || isResp(t);
+function taskCounter() {
+  return tasksAll.filter(t => (isResp(t) && t.uid !== me.uid && t.status === "new") || (isResp(t) && t.overdue) || (t.uid === me.uid && t.resp !== me.uid && t.status === "review")).length;
+}
+function fmtDL(v) {
+  const d = new Date(v), now = new Date(), tm = new Date(); tm.setDate(tm.getDate() + 1);
+  const day = fmtDay(d) === fmtDay(now) ? "Сегодня" : fmtDay(d) === fmtDay(tm) ? "Завтра" : d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  return day + ", " + fmtTime(d);
+}
+function dlClass(t) { if (!t.dl) return ""; if (t.status === "done") return "ok"; if (t.overdue) return "late"; if (t.dl - Date.now() < 86400000) return "soon"; return ""; }
+function subTasks() {
+  onSnapshot(query(msgsRef(TASKS), orderBy("time", "desc"), limit(300)), snap => {
+    const list = snap.docs.map(normTask);
+    if (tasksReady) list.forEach(t => {
+      const prev = taskKnown.get(t.id);
+      if (!prev) { if (t.resp === me.uid && t.uid !== me.uid) taskNotify(t, "Новая задача для вас"); return; }
+      if (prev.resp !== me.uid && t.resp === me.uid && t.uid !== me.uid) taskNotify(t, "Вам назначена задача");
+      else if (prev.status !== t.status && t.status === "review" && t.uid === me.uid && t.resp !== me.uid) taskNotify(t, "Задача ждёт вашей проверки");
+      else if (prev.status === "review" && t.status === "done" && t.resp === me.uid && t.uid !== me.uid) taskNotify(t, "Работа принята");
+      else if (prev.status === "review" && t.status === "progress" && t.resp === me.uid && t.uid !== me.uid) taskNotify(t, "Задача возвращена на доработку");
+    });
+    taskKnown = new Map(list.map(t => [t.id, { status: t.status, resp: t.resp }]));
+    tasksAll = list; tasksReady = true;
+    unread[TASKS] = taskCounter(); renderBadges();
+    if (current === TASKS) { renderTasks(); $("msgs").classList.remove("loading"); }
+    if (taskOpenId) renderTaskPanel();
+  }, () => {});
+  setInterval(() => { if (!tasksReady) return; tasksAll.forEach(t => { t.overdue = !!t.dl && t.status !== "done" && t.status !== "defer" && t.dl < Date.now(); }); unread[TASKS] = taskCounter(); renderBadges(); }, 60000);
+}
+function taskNotify(t, head) {
+  beep(); toast(head + ": " + t.title);
+  if ("Notification" in window && Notification.permission === "granted" && (document.hidden || !document.hasFocus())) {
+    try { const n = new Notification(head, { body: t.title, tag: "task" + t.id, icon: document.querySelector("link[rel=icon]").href }); n.onclick = () => { window.focus(); open(TASKS); showChat(); openTask(t.id); n.close(); }; } catch (e) {}
+  }
+}
+async function taskWrite(fn) {
+  try { await fn(); return true; }
+  catch (e) {
+    if (e.code === "permission-denied") {
+      try { await setDoc(doc(db, "channels", TASKS), { name: "Задачи", system: true }, { merge: true }); await fn(); return true; }
+      catch (e2) { toast("Ошибка: " + (e2.code || e2.message)); return false; }
+    }
+    toast("Ошибка: " + (e.code || e.message)); return false;
+  }
+}
+function setStatus(t, s) {
+  if (t.status === s) return;
+  if (s === "done" && t.ctrl && !isBoss(t)) s = "review";
+  vibrate(8);
+  taskWrite(() => updateDoc(tref(t.id), FP("~st"), [s, me.uid, String(Date.now())], FP("~log"), arrayUnion({ u: me.uid, s, t: Date.now() })));
+  if (s === "review") toast("Отправлено постановщику на проверку");
+}
+function openTasks() {
+  $("form").classList.add("hidden"); $("searchBtn").classList.add("hidden"); $("msgs").classList.add("tasks");
+  tasksTop = null;
+  unread[TASKS] = taskCounter(); renderBadges();
+  if (tasksReady) { msgsAnim(); renderTasks(); }
+}
+function roleMatch(t, r) {
+  if (r === "doing") return t.resp === me.uid;
+  if (r === "gave") return t.uid === me.uid && t.resp !== me.uid;
+  if (r === "watch") return (t.aud || []).includes(me.uid);
+  return true;
+}
+function filteredTasks(forKanban) {
+  const q = taskQ.trim().toLowerCase();
+  return tasksAll.filter(t => roleMatch(t, taskRole) && (forKanban || taskShowDone || t.status !== "done") &&
+    (!q || (t.title + " " + t.desc + " " + uName(t.resp) + " " + uName(t.uid)).toLowerCase().includes(q)))
+    .sort((a, b) => ((a.status === "done") - (b.status === "done")) || (b.overdue - a.overdue) || (b.pri - a.pri) || ((a.dl || 9e15) - (b.dl || 9e15)) || (b.time - a.time));
+}
+function buildTasksTop() {
+  const top = el("div", "tk-top");
+  const r1 = el("div", "tk-r1");
+  const add = el("button", "tk-add"); add.type = "button"; add.innerHTML = ico("plus", 16); add.append(el("span", null, "Новая задача")); add.onclick = () => taskDialog();
+  const s = el("input", "tk-search"); s.placeholder = "Поиск задач…"; s.value = taskQ; s.oninput = () => { taskQ = s.value; renderTasks(); };
+  const vw = el("div", "tk-view");
+  [["list", "Список"], ["kanban", "Канбан"]].forEach(([k, l]) => { const b = el("button", k === taskView ? "on" : "", l); b.type = "button"; b.dataset.v = k; b.onclick = () => { taskView = k; store.set("oc-tview", k); renderTasks(); }; vw.append(b); });
+  r1.append(add, s, vw);
+  const r2 = el("div", "tk-r2"), roles = el("div", "tk-roles");
+  ROLES.forEach(([k, l]) => { const b = el("button", "tk-role"); b.type = "button"; b.dataset.r = k; b.append(el("span", null, l), el("b")); b.onclick = () => { taskRole = k; renderTasks(); }; roles.append(b); });
+  const dn = el("label", "tk-done"), cb = el("input"); cb.type = "checkbox"; cb.checked = taskShowDone; cb.onchange = () => { taskShowDone = cb.checked; renderTasks(); };
+  dn.append(cb, el("span", null, "Показывать завершённые"));
+  r2.append(roles, dn); top.append(r1, r2);
+  return top;
+}
+function updateTasksTop() {
+  tasksTop.querySelectorAll(".tk-view button").forEach(b => b.classList.toggle("on", b.dataset.v === taskView));
+  tasksTop.querySelectorAll(".tk-role").forEach(b => {
+    b.classList.toggle("on", b.dataset.r === taskRole);
+    const n = tasksAll.filter(t => roleMatch(t, b.dataset.r) && t.status !== "done").length;
+    b.querySelector("b").textContent = n || "";
+  });
+  tasksTop.querySelector(".tk-done").classList.toggle("hidden", taskView === "kanban");
+}
+function renderTasks() {
+  if (current !== TASKS) return;
+  if (!tasksTop) tasksTop = buildTasksTop();
+  updateTasksTop();
+  const body = taskView === "kanban" ? buildKanban(filteredTasks(true)) : buildTaskList(filteredTasks(false));
+  reconcile($("msgs"), [tasksTop, body]);
+}
+function stPill(s) { return el("span", "tk-st s-" + s, ST[s]); }
+function dlChip(t) {
+  if (!t.dl) return el("span", "tk-dl none", "Без срока");
+  const c = el("span", "tk-dl " + dlClass(t)); c.innerHTML = ico("clock", 12); c.append(el("span", null, t.overdue ? "Просрочена · " + fmtDL(t.dl) : fmtDL(t.dl))); return c;
+}
+function metaBits(t) {
+  const m = el("span", "tk-meta");
+  if (t.ck.length) { const done = t.ck.filter(x => t.ckDone.has(x.id)).length; const c = el("span", done === t.ck.length ? "full" : ""); c.innerHTML = ico("checks", 12); c.append(done + "/" + t.ck.length); m.append(c); }
+  if (t.comments.length) { const c = el("span"); c.innerHTML = ico("comment", 12); c.append(String(t.comments.length)); m.append(c); }
+  return m;
+}
+function buildTaskList(list) {
+  const wrap = el("div", "tk-list");
+  if (!list.length) {
+    const e = el("div", "tk-empty"); e.append(el("div", "tk-empty-ic", "✓"), el("div", "tk-empty-t", taskQ ? "Ничего не найдено" : "Задач здесь пока нет"));
+    if (!taskQ) { const b = el("button", "tk-add", "Поставить задачу"); b.type = "button"; b.onclick = () => taskDialog(); e.append(b); }
+    wrap.append(e); return wrap;
+  }
+  list.forEach(t => {
+    const r = el("div", "tk-row s-" + t.status + (t.overdue ? " late" : "")); r.onclick = () => openTask(t.id);
+    const dot = el("span", "tk-dot s-" + t.status); if (t.status === "done") dot.innerHTML = ico("check", 12);
+    const main = el("div", "tk-main"), tt = el("div", "tk-title");
+    if (t.pri) tt.append(el("span", "tk-fire", "🔥"));
+    tt.append(el("span", null, t.title));
+    const sub = el("div", "tk-sub"); sub.append(stPill(t.status), metaBits(t));
+    main.append(tt, sub);
+    const who = el("div", "tk-who"); who.title = "Ответственный: " + uName(t.resp); who.append(avatar(t.resp, uName(t.resp)), el("span", null, uName(t.resp)));
+    r.append(dot, main, dlChip(t), who);
+    wrap.append(r);
+  });
+  return wrap;
+}
+function buildKanban(list) {
+  const k = el("div", "kanban");
+  ST_ORDER.forEach(s => {
+    const items = list.filter(t => t.status === s), col = el("div", "kb-col s-" + s);
+    const h = el("div", "kb-h"); h.append(el("span", "kb-t", ST[s]), el("span", "kb-n", String(items.length))); col.append(h);
+    const cards = el("div", "kb-cards");
+    (s === "done" ? items.slice(0, 30) : items).forEach(t => {
+      const c = el("div", "kb-card" + (t.overdue ? " late" : "")); c.onclick = () => openTask(t.id);
+      const tt = el("div", "tk-title"); if (t.pri) tt.append(el("span", "tk-fire", "🔥")); tt.append(el("span", null, t.title));
+      const ft = el("div", "kb-ft"); ft.append(dlChip(t), metaBits(t), avatar(t.resp, uName(t.resp)));
+      c.append(tt, ft);
+      if (canMove(t) && !isMob()) { c.draggable = true; c.ondragstart = e => { e.dataTransfer.setData("text/plain", t.id); c.classList.add("drag"); }; c.ondragend = () => c.classList.remove("drag"); }
+      cards.append(c);
+    });
+    if (!items.length) cards.append(el("div", "kb-empty", "Пусто"));
+    col.ondragover = e => { e.preventDefault(); col.classList.add("over"); };
+    col.ondragleave = () => col.classList.remove("over");
+    col.ondrop = e => { e.preventDefault(); col.classList.remove("over"); const t = tasksAll.find(x => x.id === e.dataTransfer.getData("text/plain")); if (!t) return; if (s === "review" && !isResp(t) && !isBoss(t)) return; if (s === "done" && t.status !== "review" && t.ctrl && !isBoss(t)) { setStatus(t, "review"); return; } if (s === "done" && t.status === "review" && !isBoss(t)) { toast("Принять работу может только постановщик"); return; } setStatus(t, s); };
+    col.append(cards); k.append(col);
+  });
+  return k;
+}
+/* ----- карточка задачи ----- */
+function openTask(id) { taskOpenId = id; renderTaskPanel(); }
+function closeTask() { taskOpenId = null; const p = $("taskPanel"); if (p) { p.classList.add("out"); setTimeout(() => p.remove(), 220); } }
+function taskActions(t) {
+  const A = [];
+  if (t.status === "new" && canMove(t)) A.push(["Начать выполнение", "progress", "play", 1]);
+  if ((t.status === "new" || t.status === "progress") && canMove(t)) A.push([t.ctrl && !isBoss(t) ? "Завершить (на проверку)" : "Завершить", "done", "check", t.status === "progress" ? 1 : 0]);
+  if (t.status === "review" && isBoss(t)) A.push(["Принять работу", "done", "check", 1], ["Вернуть на доработку", "progress", "reply", 0]);
+  if ((t.status === "new" || t.status === "progress") && canMove(t)) A.push(["Отложить", "defer", "pause", 0]);
+  if (t.status === "defer" && canMove(t)) A.push(["Возобновить", "progress", "play", 1]);
+  if (t.status === "done" && canMove(t)) A.push(["Возобновить", "progress", "reply", 0]);
+  return A;
+}
+const LOGTXT = { created: "поставил(а) задачу", edited: "изменил(а) задачу", new: "вернул(а) в «Ждёт выполнения»", progress: "перевёл(а) в «Выполняется»", review: "отправил(а) на проверку", defer: "отложил(а) задачу", done: "завершил(а) задачу" };
+function renderTaskPanel() {
+  const t = tasksAll.find(x => x.id === taskOpenId);
+  let p = $("taskPanel");
+  if (!t) { if (p) closeTask(); return; }
+  if (!p) {
+    p = el("div"); p.id = "taskPanel";
+    const sh = el("div", "tp-shade"); sh.onclick = closeTask;
+    const card = el("div", "tp"), hd = el("div", "tp-hd");
+    const back = el("button", "tp-x"); back.type = "button"; back.title = "Закрыть"; back.innerHTML = ico("x", 18); back.onclick = closeTask;
+    hd.append(el("span", "tp-kicker", "Задача"), el("span", "grow"), el("span", "tp-tools"), back);
+    const body = el("div", "tp-body");
+    const ci = el("div", "tp-cin"), ta2 = el("textarea"); ta2.rows = 1; ta2.placeholder = "Написать комментарий…"; ta2.maxLength = 3000;
+    const grow = () => { ta2.style.height = "auto"; ta2.style.height = Math.min(ta2.scrollHeight, 140) + "px"; ci.classList.toggle("has", !!ta2.value.trim()); };
+    ta2.oninput = () => { if (taskOpenId) taskDraft[taskOpenId] = ta2.value; grow(); };
+    const sb = el("button", "csend"); sb.type = "button"; sb.innerHTML = ico("send", 15); sb.title = "Отправить";
+    const go = () => {
+      const txt = ta2.value.trim(), id = taskOpenId; if (!txt || !id) return;
+      ta2.value = ""; delete taskDraft[id]; grow();
+      taskWrite(() => updateDoc(tref(id), FP("~c"), arrayUnion({ id: tid(), uid: me.uid, name: uName(me.uid, me.displayName), text: txt, t: Date.now() })));
+      setTimeout(() => { const b = p.querySelector(".tp-body"); if (b) b.scrollTop = b.scrollHeight; }, 120);
+    };
+    ta2.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing && !isMob()) { e.preventDefault(); go(); } };
+    sb.onclick = go;
+    ci.append(avatar(me.uid, uName(me.uid, me.displayName)), ta2, sb);
+    card.append(hd, body, ci); p.append(sh, card); document.body.append(p);
+    p._ta = ta2; p._id = null;
+  }
+  if (p._id !== t.id) { p._id = t.id; p._ta.value = taskDraft[t.id] || ""; p._ta.dispatchEvent(new Event("input")); p.querySelector(".tp-body").scrollTop = 0; }
+  const tools = p.querySelector(".tp-tools"); tools.innerHTML = "";
+  if (isBoss(t)) {
+    const eb = el("button", "tp-x"); eb.type = "button"; eb.title = "Редактировать"; eb.innerHTML = ico("edit", 16); eb.onclick = () => taskDialog(t);
+    const db2 = el("button", "tp-x danger"); db2.type = "button"; db2.title = "Удалить"; db2.innerHTML = ico("trash", 16);
+    db2.onclick = async () => { if (!confirm("Удалить задачу «" + t.title + "»?")) return; closeTask(); try { await deleteDoc(tref(t.id)); toast("Задача удалена"); } catch (e) { toast("Ошибка: " + e.code); } };
+    tools.append(eb, db2);
+  }
+  const body = p.querySelector(".tp-body"), keep = body.scrollTop; body.innerHTML = "";
+  const tags = el("div", "tp-tags"); tags.append(stPill(t.status));
+  if (t.pri) tags.append(el("span", "tk-tag pri", "🔥 Важная"));
+  if (t.overdue) tags.append(el("span", "tk-tag late", "Просрочена"));
+  if (t.ctrl) tags.append(el("span", "tk-tag", "С проверкой результата"));
+  body.append(tags, el("h2", "tp-title", t.title));
+  const acts = el("div", "tp-acts");
+  taskActions(t).forEach(([l, s, i, prim]) => { const b = el("button", "tp-act" + (prim ? " prim" : "")); b.type = "button"; b.innerHTML = ico(i, 15); b.append(el("span", null, l)); b.onclick = () => setStatus(t, s); acts.append(b); });
+  if (t.status === "review" && !isBoss(t) && isResp(t)) acts.append(el("span", "tp-note", "Ждёт проверки постановщиком"));
+  if (acts.children.length) body.append(acts);
+  const info = el("div", "tp-info");
+  const row = (k, v) => { const r = el("div", "tp-ir"); r.append(el("span", "tp-k", k)); const vv = el("span", "tp-v"); typeof v === "string" ? vv.textContent = v : vv.append(v); r.append(vv); info.append(r); };
+  const person = uid => { const s = el("span", "tp-person"); s.append(avatar(uid, uName(uid)), el("span", null, uName(uid))); s.onclick = () => { closeTask(); open("user:" + uid); }; return s; };
+  row("Крайний срок", t.dl ? dlChip(t) : "Не указан");
+  row("Постановщик", person(t.uid));
+  row("Ответственный", person(t.resp));
+  if (t.aud.length) { const w = el("span", "tp-people"); t.aud.forEach(u => w.append(person(u))); row("Наблюдатели", w); }
+  row("Создана", fmtDL(t.time).replace("Сегодня", "сегодня").replace("Завтра", "завтра"));
+  body.append(info);
+  if (t.desc) { const d = el("div", "tp-desc"); linkify(d, t.desc, ""); body.append(d); }
+  if (t.ck.length) {
+    const done = t.ck.filter(x => t.ckDone.has(x.id)).length, sec = el("div", "tp-sec");
+    const h = el("div", "tp-h"); h.append(el("span", null, "Чек-лист"), el("span", "tp-hn", done + " из " + t.ck.length)); sec.append(h);
+    const bar = el("div", "tp-bar"), fill = el("span"); fill.style.width = Math.round(done / t.ck.length * 100) + "%"; bar.append(fill); sec.append(bar);
+    const can = canMove(t);
+    t.ck.forEach(x => {
+      const on = t.ckDone.has(x.id), r = el("label", "tp-ck" + (on ? " on" : "") + (can ? "" : " ro"));
+      const box = el("span", "tp-box"); box.innerHTML = ico("check", 12);
+      r.append(box, el("span", null, x.t));
+      if (can) r.onclick = e => { e.preventDefault(); vibrate(6); taskWrite(() => updateDoc(tref(t.id), FP("~ck"), on ? arrayRemove(x.id) : arrayUnion(x.id))); };
+      sec.append(r);
+    });
+    body.append(sec);
+  }
+  const cs = el("div", "tp-sec"), ch = el("div", "tp-h"); ch.append(el("span", null, "Комментарии"), el("span", "tp-hn", t.comments.length ? String(t.comments.length) : "")); cs.append(ch);
+  if (!t.comments.length) cs.append(el("div", "tp-none", "Пока нет комментариев. Обсуждайте задачу здесь."));
+  t.comments.forEach(x => {
+    const r = el("div", "cm"), a = avatar(x.uid, uName(x.uid, x.name));
+    const b = el("div", "cb"), hd = el("div", "ch"); hd.append(el("b", null, uName(x.uid, x.name)), el("span", null, relTime(new Date(x.t))));
+    const tx = el("div", "ct"); linkify(tx, x.text, ""); b.append(hd, tx);
+    if (x.uid === me.uid || me.uid === ADMIN) { const d = el("button", "cdel"); d.type = "button"; d.title = "Удалить"; d.innerHTML = ico("x", 12); d.onclick = () => taskWrite(() => updateDoc(tref(t.id), FP("~c"), arrayRemove(x))); b.append(d); }
+    r.append(a, b); cs.append(r);
+  });
+  body.append(cs);
+  const hist = el("details", "tp-hist"); hist.append(el("summary", null, "История изменений (" + (t.log.length || 1) + ")"));
+  (t.log.length ? t.log : [{ u: t.uid, s: "created", t: t.time }]).forEach(l => { const r = el("div", "tp-lg"); r.append(el("b", null, uName(l.u)), " " + (LOGTXT[l.s] || l.s), el("span", null, " · " + relTime(new Date(l.t)))); hist.append(r); });
+  if (p._histOpen) hist.open = true; hist.ontoggle = () => { p._histOpen = hist.open; };
+  body.append(hist);
+  body.scrollTop = keep;
+}
+/* ----- создание / редактирование ----- */
+function toLocalInput(v) { const d = new Date(v - new Date(v).getTimezoneOffset() * 60000); return d.toISOString().slice(0, 16); }
+function taskDialog(t) {
+  const md = el("div", "modal"), card = el("div", "mcard tk-dlg");
+  card.append(el("div", "mh", t ? "Редактирование задачи" : "Новая задача"));
+  const title = el("input", "inp tk-in-title"); title.placeholder = "Что нужно сделать?"; title.maxLength = 200; title.value = t ? t.title : "";
+  const desc = el("textarea", "inp tk-in-desc"); desc.placeholder = "Описание (необязательно)"; desc.rows = 3; desc.maxLength = 5000; desc.value = t ? t.desc : "";
+  const lbl = s => el("div", "mlbl", s);
+  const users = Object.entries(usersMap).sort((a, b) => (a[1].name || "").localeCompare(b[1].name || ""));
+  const resp = el("select", "inp");
+  users.forEach(([uid, u]) => { const o = el("option", null, (u.name || "—") + (uid === me.uid ? " (я)" : "") + (u.position ? " · " + u.position : "")); o.value = uid; resp.append(o); });
+  resp.value = t ? t.resp : me.uid;
+  let aud = t ? [...t.aud] : [];
+  const audBox = el("div", "tk-aud");
+  const drawAud = () => {
+    audBox.innerHTML = "";
+    aud.forEach(uid => { const c = el("span", "cp-tou"); c.append(avatar(uid, uName(uid)), el("span", null, uName(uid))); const x = el("button"); x.type = "button"; x.innerHTML = ico("x", 11); x.onclick = () => { aud = aud.filter(v => v !== uid); drawAud(); }; c.append(x); audBox.append(c); });
+    const sel = el("select", "tk-audsel"); const o0 = el("option", null, aud.length ? "+ ещё" : "+ Добавить наблюдателя"); o0.value = ""; sel.append(o0);
+    users.filter(([uid]) => !aud.includes(uid)).forEach(([uid, u]) => { const o = el("option", null, u.name || "—"); o.value = uid; sel.append(o); });
+    sel.onchange = () => { if (sel.value) { aud.push(sel.value); drawAud(); } };
+    audBox.append(sel);
+  };
+  drawAud();
+  const dl = el("input", "inp"); dl.type = "datetime-local"; if (t && t.dl) dl.value = toLocalInput(t.dl);
+  const pres = el("div", "tk-pres");
+  const at = (days, h) => { const d = new Date(); d.setDate(d.getDate() + days); d.setHours(h, 0, 0, 0); return d.getTime(); };
+  const nextFri = () => { const d = new Date(); d.setDate(d.getDate() + ((5 - d.getDay() + 7) % 7 || 7)); d.setHours(18, 0, 0, 0); return d.getTime(); };
+  [["Сегодня", () => at(0, 18)], ["Завтра", () => at(1, 18)], ["В пятницу", nextFri], ["Через неделю", () => at(7, 18)], ["Без срока", () => 0]].forEach(([l, f]) => {
+    const b = el("button", null, l); b.type = "button"; b.onclick = () => { const v = f(); dl.value = v ? toLocalInput(v) : ""; }; pres.append(b);
+  });
+  const tg = (label, on) => { const l = el("label", "ptog"), c = el("input"); c.type = "checkbox"; c.checked = !!on; l.append(c, el("span", "sw"), el("span", null, label)); return [l, c]; };
+  const [l1, pri] = tg("Важная задача 🔥", t && t.pri), [l2, ctrl] = tg("Проверить результат после завершения", t ? t.ctrl : true);
+  const ckBox = el("div", "popts");
+  const addCk = (x) => {
+    const row = el("div", "popt"), i = el("input", "inp"); i.placeholder = "Пункт чек-листа"; i.maxLength = 200; i.value = x ? x.t : ""; row._id = x ? x.id : tid();
+    const xb = el("button", "px"); xb.type = "button"; xb.innerHTML = ico("x", 14); xb.onclick = () => { row.remove(); if (!ckBox.children.length) addCk(); };
+    i.oninput = () => { if (ckBox.lastElementChild === row && i.value.trim() && ckBox.children.length < 30) addCk(); };
+    i.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); const n = row.nextElementSibling; if (n) n.querySelector("input").focus(); } };
+    row.append(i, xb); ckBox.append(row);
+  };
+  (t ? t.ck : []).forEach(addCk); addCk();
+  const acts = el("div", "macts"), cancel = el("button", "btn ghost", "Отмена"), ok = el("button", "btn", t ? "Сохранить" : "Поставить задачу");
+  cancel.type = ok.type = "button";
+  const close = () => { md.classList.add("out"); setTimeout(() => md.remove(), 180); };
+  cancel.onclick = close; md.onclick = e => { if (e.target === md) close(); };
+  ok.onclick = async () => {
+    const v = title.value.trim(); if (!v) { toast("Введите название задачи"); title.focus(); return; }
+    const ck = [...ckBox.children].map(r => ({ id: r._id, t: r.querySelector("input").value.trim() })).filter(x => x.t);
+    const dv = dl.value ? new Date(dl.value).getTime() : 0;
+    const f = { title: v, desc: desc.value.trim(), resp: resp.value, aud: aud.filter(u => u !== resp.value), dl: dv, pri: pri.checked, ctrl: ctrl.checked && resp.value !== me.uid, ck };
+    ok.disabled = true;
+    let good;
+    if (t) good = await taskWrite(() => updateDoc(tref(t.id), FP("~e"), [JSON.stringify(f)], FP("~log"), arrayUnion({ u: me.uid, s: "edited", t: Date.now() })));
+    else {
+      const ref = doc(msgsRef(TASKS));
+      good = await taskWrite(() => setDoc(ref, { kind: "task", uid: me.uid, name: uName(me.uid, me.displayName), time: serverTimestamp(), text: f.title, desc: f.desc, resp: f.resp, aud: f.aud, dl: f.dl, pri: f.pri, ctrl: f.ctrl, ck: f.ck, reactions: { "~log": [{ u: me.uid, s: "created", t: Date.now() }] } }));
+      if (good) toast(f.resp === me.uid ? "Задача создана" : "Задача поставлена: " + uName(f.resp));
+    }
+    ok.disabled = false;
+    if (good) close();
+  };
+  acts.append(cancel, ok);
+  card.append(title, desc, lbl("Ответственный"), resp, lbl("Наблюдатели"), audBox, lbl("Крайний срок"), dl, pres, l1, l2, lbl("Чек-лист"), ckBox, acts);
+  md.append(card); document.body.append(md);
+  setTimeout(() => title.focus(), 60);
+}
+
 /* ---------- печатает… ---------- */
 let lastTyping = 0;
 function typing() {
@@ -2256,7 +2768,7 @@ function checkInitialUnread() {
   renderBadges();
 }
 function watch(id) {
-  if (watched[id]) return; watched[id] = { t: null };
+  if (watched[id] || id === "tasks") return; watched[id] = { t: null };
   onSnapshot(query(msgsRef(id), orderBy("time", "desc"), limit(1)), snap => {
     const w = watched[id];
     if (snap.empty) { if (w.t === null) w.t = 0; return; }
@@ -2345,7 +2857,7 @@ function closeSearch(silent) { const had = searchQ; $("searchBar").classList.add
 /* ---------- профиль ---------- */
 function showProfile(uid) {
   stopConv(); cancelBar(); closeSearch(true);
-  cancelMotion(); closeMenu(); rowCache = new Map(); $("msgs").classList.remove("dm", "feed");
+  cancelMotion(); closeMenu(); rowCache = new Map(); $("msgs").classList.remove("dm", "feed", "tasks"); if (taskOpenId) closeTask();
   current = uid === me.uid ? "profile" : "user:" + uid; seen = null;
   highlightNav(); $("side").classList.remove("open");
   $("form").classList.add("hidden"); $("pinBar").classList.add("hidden"); $("typingLine").innerHTML = ""; $("searchBtn").classList.add("hidden");
@@ -2438,6 +2950,7 @@ function showProfile(uid) {
 function showTour() {
   let STEPS = [
     { sel: "#annBox", title: "📰 Лента", text: "Новости компании: посты, опросы, благодарности коллегам и важные сообщения с отметкой «Ознакомлен». Ставьте лайки и комментируйте.", pos: "right" },
+    { sel: '.item[data-id="tasks"]', title: "✅ Задачи", text: "Ставьте задачи коллегам со сроком, чек-листом и проверкой результата. Счётчик показывает новые и просроченные задачи.", pos: "right" },
     { sel: "#channels", title: "💬 Каналы", text: "Тематические чаты отделов и проектов. Напишите в нужный канал, чтобы вся команда увидела.", pos: "right" },
     { sel: "#users", title: "👥 Сотрудники", text: "Список всех коллег. Нажмите на имя — откроется личный диалог (DM). Зелёная точка = в сети прямо сейчас.", pos: "right" },
     { sel: "#findUser", title: "🔍 Поиск коллег", text: "Начните вводить имя — список мгновенно фильтруется.", pos: "right" },
