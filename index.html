@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#06306A">
 <title>OguzChat</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23164194'/%3E%3Ctext x='32' y='43' font-size='32' font-family='Arial' font-weight='700' fill='white' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2306306A'/%3E%3Cpath d='M16 6H48A8 8 0 0156 14V40A8 8 0 0148 48H26L8 60L18 48H16A8 8 0 018 40V14A8 8 0 0116 6Z' fill='white'/%3E%3Ctext x='32' y='31' font-size='20' font-family='Arial' font-weight='800' fill='%23164194' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -67,7 +67,7 @@ button.link{background:none;border:none;color:var(--blue-l);padding:10px 0 0;fon
 .badge{margin-left:auto;background:#E53935;color:#fff;font-size:11px;font-weight:700;min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;padding:0 6px;flex-shrink:0}
 .del{opacity:0;border:none;background:none;color:#fff;width:24px;height:24px;border-radius:6px;font-size:16px;line-height:1;transition:opacity .15s,background .15s;flex-shrink:0}
 .item:hover .del{opacity:.7}.del:hover{opacity:1!important;background:#E5393580}
-.av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0;position:relative;user-select:none}
+.av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0;position:relative;user-select:none;overflow:hidden}
 .av.on::after{content:"";position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:50%;background:#2ECC71;border:2px solid var(--side)}
 .av.ceo::before{content:"👑";position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:12px;line-height:1;pointer-events:none;z-index:2}
 #me{padding:12px 14px;border-top:1px solid #ffffff1a;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s}
@@ -312,7 +312,7 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 
 <div id="app" class="hidden">
   <div id="side">
-    <div class="logo"><span class="mark">O</span><span class="grow">OguzChat</span><button class="iconbtn" id="themeBtn" title="Тема"></button></div>
+    <div class="logo"><span class="mark"><svg viewBox="0 0 16 16" width="18" height="18" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M2 0H14A2 2 0 0116 2V10A2 2 0 0114 12H8L4 16V12H2A2 2 0 010 10V2A2 2 0 012 0Z"/><text x="8" y="8.5" font-size="6" font-family="Arial" font-weight="800" fill="#164194" text-anchor="middle" dominant-baseline="middle">O</text></svg></span><span class="grow">OguzChat</span><button class="iconbtn" id="themeBtn" title="Тема"></button></div>
     <div class="scroll">
       <div id="annBox"></div>
       <h3>Каналы <button id="newChan" title="Новый канал"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></h3>
@@ -431,7 +431,23 @@ const fmtTime = d => d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2
 const fmtDay = d => d.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
 function toast(t) { const o = $("toast"); if (o) o.remove(); const x = el("div", null, t); x.id = "toast"; document.body.append(x); setTimeout(() => x.remove(), 2400); }
-function avatar(uid, name, cls) { const a = el("div", "av" + (cls ? " " + cls : ""), initials(name)); a.style.background = color(uid); if (isOnline(usersMap[uid])) a.classList.add("on"); if (isCEO(uid)) a.classList.add("ceo"); return a; }
+function avatar(uid, name, cls) {
+  const a = el("div", "av" + (cls ? " " + cls : ""));
+  const u = usersMap[uid];
+  if (u && u.photoURL) {
+    const img = document.createElement("img");
+    img.src = u.photoURL;
+    img.style.cssText = "width:100%;height:100%;object-fit:cover;display:block";
+    img.onerror = () => { img.remove(); a.textContent = initials(name); a.style.background = color(uid); };
+    a.append(img);
+  } else {
+    a.textContent = initials(name);
+    a.style.background = color(uid);
+  }
+  if (isOnline(u)) a.classList.add("on");
+  if (isCEO(uid)) a.classList.add("ceo");
+  return a;
+}
 function lastSeenText(u) {
   if (!u) return ""; if (isOnline(u)) return "в сети";
   const t = ms(u.lastSeen); if (!t) return "не в сети";
@@ -520,7 +536,17 @@ function heartbeat() { if (me && !document.hidden) setDoc(doc(db, "users", me.ui
 function renderMe() {
   const u = usersMap[me.uid] || {}, n = u.name || me.displayName;
   $("meName").textContent = n; $("mePos").textContent = u.position || "Заполните профиль";
-  const a = $("meAv"); a.textContent = initials(n); a.style.background = color(me.uid);
+  const a = $("meAv"); a.innerHTML = "";
+  if (u.photoURL) {
+    const img = document.createElement("img");
+    img.src = u.photoURL;
+    img.style.cssText = "width:100%;height:100%;object-fit:cover;display:block";
+    img.onerror = () => { img.remove(); a.textContent = initials(n); a.style.background = color(me.uid); };
+    a.append(img);
+  } else {
+    a.textContent = initials(n);
+    a.style.background = color(me.uid);
+  }
 }
 
 /* ---------- боковая панель ---------- */
@@ -549,8 +575,9 @@ function renderSidebar() {
   })));
   const us = $("users"); us.innerHTML = "";
   const q = $("findUser").value.trim().toLowerCase();
+  const dmLastT = uid => { const w = watched["dm_" + [me.uid, uid].sort().join("_")]; return w && w.t ? w.t : 0; };
   const list = Object.entries(usersMap).filter(([uid]) => uid !== me.uid)
-    .sort((a, b) => (isOnline(b[1]) - isOnline(a[1])) || (a[1].name || "").localeCompare(b[1].name || ""));
+    .sort((a, b) => { const td = dmLastT(b[0]) - dmLastT(a[0]); return td !== 0 ? td : (isOnline(b[1]) - isOnline(a[1])) || (a[1].name || "").localeCompare(b[1].name || ""); });
   let online = 0;
   list.forEach(([uid, u]) => {
     if (isOnline(u)) online++;
@@ -598,7 +625,7 @@ function open(id) {
   $("text").placeholder = id === "ann" ? "Объявление для всех сотрудников…" : "Сообщение";
   $("pinBar").classList.add("hidden"); $("typingLine").innerHTML = "";
   $("msgs").classList.add("loading");
-  unsubMsgs = onSnapshot(query(msgsRef(id), orderBy("time", id === "ann" ? "desc" : "asc"), limit(400)), snap => {
+  unsubMsgs = onSnapshot(query(msgsRef(id), orderBy("time", id === "ann" ? "desc" : "asc"), limit(80)), snap => {
     lastSnap = snap; rerender(); markRead(id);
   }, e => { $("msgs").classList.remove("loading"); $("msgs").innerHTML = ""; $("msgs").append(el("div", "empty", "Ошибка доступа: " + e.code)); });
   const cr = convRef(id);
@@ -1358,16 +1385,41 @@ function showProfile(uid) {
   const f = (lbl, id, ph, ro) => { body.append(el("label", null, lbl)); const i = el("input", "inp"); i.id = id; i.maxLength = 60; if (ph) i.placeholder = ph; if (ro) i.readOnly = true; body.append(i); return i; };
   const fN = f("Имя и фамилия", "fName"), fP = f("Должность", "fPos", "Например: Менеджер проектов"), fD = f("Отдел", "fDep", "Например: MICE"), fT = f("Телефон", "fPhone", "+993 …"), fE = f("Email", "fEmail", "", true);
   fN.value = u.name || me.displayName || ""; fP.value = u.position || ""; fD.value = u.department || ""; fT.value = u.phone || ""; fE.value = me.email || "";
-  const preview = () => { const n = fN.value.trim() || "—"; pn.textContent = n; if (isCEO(me.uid)) pn.append(el("span", "badge-ceo", " 👑")); if (me.uid === ADMIN) pn.append(el("span", "badge-admin", " Admin")); av.textContent = initials(n); pp.textContent = [fP.value.trim(), fD.value.trim()].filter(Boolean).join(" · ") || "Должность не указана"; };
+  let pendingPhoto = null;
+  const preview = () => { const n = fN.value.trim() || "—"; pn.textContent = n; if (isCEO(me.uid)) pn.append(el("span", "badge-ceo", " 👑")); if (me.uid === ADMIN) pn.append(el("span", "badge-admin", " Admin")); if (!av.querySelector("img")) { av.textContent = initials(n); av.style.background = color(me.uid); } pp.textContent = [fP.value.trim(), fD.value.trim()].filter(Boolean).join(" · ") || "Должность не указана"; };
   preview(); [fN, fP, fD].forEach(i => i.addEventListener("input", preview));
+  body.append(el("label", null, "Фото профиля"));
+  const photoRow = el("div"); photoRow.style.cssText = "display:flex;align-items:center;gap:12px;margin:4px 0 4px";
+  const photoAvPrev = el("div", "av"); photoAvPrev.style.cssText = "width:52px;height:52px;flex-shrink:0;font-size:18px";
+  if (u.photoURL) { const pi = document.createElement("img"); pi.src = u.photoURL; pi.style.cssText = "width:100%;height:100%;object-fit:cover;display:block"; photoAvPrev.append(pi); } else { photoAvPrev.textContent = initials(u.name || me.displayName || ""); photoAvPrev.style.background = color(me.uid); }
+  const photoBtn = el("button", "btn ghost", "Выбрать фото"); photoBtn.style.cssText = "flex:1;margin:0";
+  const photoInput = document.createElement("input"); photoInput.type = "file"; photoInput.accept = "image/*"; photoInput.style.display = "none";
+  photoInput.onchange = () => {
+    const file = photoInput.files[0]; if (!file) return;
+    const reader = new FileReader(); reader.onload = e => {
+      const img = new Image(); img.onload = () => {
+        const c = document.createElement("canvas"); c.width = 96; c.height = 96;
+        const cx = c.getContext("2d"), s = Math.min(img.width, img.height);
+        cx.drawImage(img, (img.width-s)/2, (img.height-s)/2, s, s, 0, 0, 96, 96);
+        pendingPhoto = c.toDataURL("image/jpeg", 0.75);
+        photoAvPrev.innerHTML = ""; const pvi = document.createElement("img"); pvi.src = pendingPhoto; pvi.style.cssText = "width:100%;height:100%;object-fit:cover;display:block"; photoAvPrev.append(pvi);
+        av.innerHTML = ""; const avi = document.createElement("img"); avi.src = pendingPhoto; avi.style.cssText = "width:100%;height:100%;object-fit:cover;display:block"; av.append(avi);
+      }; img.src = e.target.result;
+    }; reader.readAsDataURL(file);
+  };
+  photoBtn.onclick = () => photoInput.click();
+  photoRow.append(photoAvPrev, photoBtn, photoInput); body.append(photoRow);
   const save = el("button", "btn", "Сохранить"); save.style.marginTop = "20px"; const ok = el("div", "prof-ok"); body.append(save, ok);
   save.onclick = async () => {
     const n = fN.value.trim(); if (!n) { ok.style.color = "#c62828"; ok.textContent = "Введите имя"; return; }
     save.disabled = true; ok.textContent = "";
     try {
-      await setDoc(doc(db, "users", me.uid), { name: n, position: fP.value.trim(), department: fD.value.trim(), phone: fT.value.trim(), email: me.email || "" }, { merge: true });
+      const upd = { name: n, position: fP.value.trim(), department: fD.value.trim(), phone: fT.value.trim(), email: me.email || "" };
+      if (pendingPhoto) upd.photoURL = pendingPhoto;
+      await setDoc(doc(db, "users", me.uid), upd, { merge: true });
       if (n !== me.displayName) await updateProfile(me, { displayName: n });
       ok.style.color = "#2E7D32"; ok.textContent = "Сохранено";
+      if (pendingPhoto) { pendingPhoto = null; renderMe(); renderSidebar(); }
     } catch (e) { ok.style.color = "#c62828"; ok.textContent = "Ошибка: " + e.code; }
     save.disabled = false;
   };
