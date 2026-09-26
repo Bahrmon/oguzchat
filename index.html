@@ -114,9 +114,9 @@ button.link{background:none;border:none;color:var(--blue-l);padding:10px 0 0;fon
 .bubble{padding:8px 12px;background:var(--bubble);border-radius:14px;box-shadow:0 1px 2px #06306a14;word-wrap:break-word;overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.42;position:relative;max-width:100%}
 .row.mine .bubble{background:var(--mine);color:var(--mine-text)}
 .row.new .bubble{animation:popIn .38s var(--spring) both;transform-origin:bottom left}
-.row.new.mine .bubble{animation-name:popMine;transform-origin:bottom right;animation-duration:.36s}
+.row.new.mine .bubble{animation:fadeIn .12s ease both}
 .row.new{animation:rowSlide .38s var(--spring) both}
-.row.new.mine{animation-name:rowSlideMine}
+.row.new.mine{animation:none}
 .meta{font-size:12px;font-weight:600;margin-bottom:2px;cursor:pointer}
 .meta .pos{font-weight:400;color:var(--muted);margin-left:6px;font-size:11px}
 .foot{font-size:11px;color:var(--muted);margin-left:10px;float:right;margin-top:5px;display:inline-flex;gap:4px;align-items:center;white-space:nowrap}
@@ -817,17 +817,20 @@ function flyBubble(txt) {
   const tr = ta.getBoundingClientRect(), mr = msgsEl.getBoundingClientRect();
   const g = document.createElement("div");
   g.className = "bubble";
-  g.style.cssText = `position:fixed;left:${tr.left}px;top:${tr.top}px;max-width:${tr.width * 0.75}px;background:var(--mine);color:var(--mine-text);pointer-events:none;z-index:9999;margin:0;opacity:1;will-change:transform,opacity;transition:none;font-size:15px;line-height:1.42;white-space:pre-wrap;word-break:break-word`;
+  const rightOffset = window.innerWidth - mr.right + 20;
+  g.style.cssText = `position:fixed;right:${rightOffset}px;top:${tr.top}px;max-width:min(${tr.width * 0.68}px,480px);background:var(--mine);color:var(--mine-text);pointer-events:none;z-index:9999;margin:0;opacity:1;will-change:transform;transition:none;font-size:15px;line-height:1.42;white-space:pre-wrap;word-break:break-word;box-shadow:0 1px 2px #06306a14`;
   g.textContent = txt.length > 80 ? txt.slice(0, 80) + "\u2026" : txt;
   document.body.appendChild(g);
   const gr = g.getBoundingClientRect();
-  const dx = mr.right - gr.right - 12;
-  const dy = mr.bottom - gr.bottom - 12;
+  const dy = mr.bottom - gr.bottom - 52;
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    g.style.transition = "transform .44s cubic-bezier(.34,1.56,.64,1),opacity .3s ease .18s";
-    g.style.transform = `translate(${dx}px,${dy}px) scale(.88)`;
-    g.style.opacity = "0";
-    setTimeout(() => g.remove(), 520);
+    g.style.transition = "transform .42s cubic-bezier(.2,.8,.2,1)";
+    g.style.transform = `translateY(${dy}px)`;
+    setTimeout(() => {
+      g.style.transition = "opacity .06s ease";
+      g.style.opacity = "0";
+      setTimeout(() => g.remove(), 80);
+    }, 400);
   }));
 }
 let sending = false;
