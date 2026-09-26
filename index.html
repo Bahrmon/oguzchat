@@ -257,7 +257,10 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
     <h2 id="authTitle">Вход</h2>
     <input class="inp hidden" id="name" placeholder="Имя и фамилия">
     <input class="inp" id="email" type="email" placeholder="Email" autocomplete="email">
-    <input class="inp" id="pass" type="password" placeholder="Пароль (мин. 6 символов)" autocomplete="current-password">
+    <div style="position:relative">
+      <input class="inp" id="pass" type="password" placeholder="Пароль (мин. 6 символов)" autocomplete="current-password" style="padding-right:44px;width:100%">
+      <button type="button" onclick="var p=document.getElementById('pass');p.type=p.type==='password'?'text':'password';this.textContent=p.type==='password'?'👁️':'🙈'" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;padding:0;line-height:1;color:var(--muted)">👁️</button>
+    </div>
     <div id="err"></div>
     <button class="btn" id="authBtn">Войти</button>
     <button class="link" id="toggle">Нет аккаунта? Регистрация</button>
