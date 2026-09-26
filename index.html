@@ -11,7 +11,7 @@
 <style>
 :root{--blue:#164194;--navy:#06306A;--blue-l:#006FB5;--text:#424A4E;--muted:#849299;--line:#C8D3E6;--band:#EEF2F8;--card:#fff;--bubble:#fff;--mine:#164194;--mine-text:#fff;--side:#06306A;--title:#06306A;--hover:#E4EAF4;--quote:#EEF2F8;
   --ease:cubic-bezier(.2,.8,.2,1);--spring:cubic-bezier(.34,1.56,.64,1);
-  --tail:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 18'%3E%3Cpath d='M0 0H9C9 7.4 10.3 13.2 14 18C11.3 18.3 8.3 17.5 6 15.6C4.4 17 2.4 17.8 0 18Z'/%3E%3C/svg%3E")}
+  --tail:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 20'%3E%3Cpath d='M0 0H10C10 8.4 11.6 15 16 20C12.8 20.4 9.4 19.4 6.8 17.3C5 18.9 2.7 19.8 0 20Z'/%3E%3C/svg%3E")}
 [data-theme=dark]{--text:#D3DAE4;--muted:#8793A3;--line:#283346;--band:#0E1520;--card:#161F2C;--bubble:#1C2736;--mine:#2150B8;--side:#08162C;--title:#DCE6F5;--hover:#223047;--quote:#243247}
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -122,8 +122,8 @@ button.link{background:none;border:none;color:var(--blue-l);padding:10px 0 0;fon
 .row.mine .bubble{background:var(--mine);color:var(--mine-text)}
 .row.last:not(.mine) .bubble{border-bottom-left-radius:6px}
 .row.mine.last .bubble{border-bottom-right-radius:6px}
-.row.last .bubble::before{content:"";position:absolute;bottom:0;left:-5px;width:14px;height:18px;background:inherit;z-index:-1;-webkit-mask:var(--tail) no-repeat 0 0/100% 100%;mask:var(--tail) no-repeat 0 0/100% 100%;transform:scaleX(-1)}
-.row.mine.last .bubble::before{left:auto;right:-5px;transform:none}
+.row.last .bubble::before{content:"";position:absolute;bottom:0;left:-6px;width:16px;height:20px;background:inherit;z-index:-1;-webkit-mask:var(--tail) no-repeat 0 0/100% 100%;mask:var(--tail) no-repeat 0 0/100% 100%;transform:scaleX(-1)}
+.row.mine.last .bubble::before{left:auto;right:-6px;transform:none}
 .bubble.jumbo{background:none!important;filter:none!important;padding:0 2px;font-size:42px;line-height:1.12}
 .bubble.jumbo::before{display:none}
 .row.mine .bubble.jumbo{color:var(--text)}
