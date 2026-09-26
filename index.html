@@ -259,7 +259,7 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
     <input class="inp" id="email" type="email" placeholder="Email" autocomplete="email">
     <div style="position:relative">
       <input class="inp" id="pass" type="password" placeholder="Пароль (мин. 6 символов)" autocomplete="current-password" style="padding-right:44px;width:100%">
-      <button type="button" onclick="var p=document.getElementById('pass');p.type=p.type==='password'?'text':'password';this.textContent=p.type==='password'?'👁️':'🙈'" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;padding:0;line-height:1;color:var(--muted)">👁️</button>
+      <button type="button" id="passToggle" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;line-height:1;color:var(--muted);display:flex;align-items:center"></button>
     </div>
     <div id="err"></div>
     <button class="btn" id="authBtn">Войти</button>
@@ -271,7 +271,7 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 
 <div id="app" class="hidden">
   <div id="side">
-    <div class="logo"><span class="mark">O</span><span class="grow">OguzChat</span><button class="iconbtn" id="themeBtn" title="Тема">🌙</button></div>
+    <div class="logo"><span class="mark">O</span><span class="grow">OguzChat</span><button class="iconbtn" id="themeBtn" title="Тема"></button></div>
     <div class="scroll">
       <div id="annBox"></div>
       <h3>Каналы <button id="newChan" title="Новый канал">＋</button></h3>
@@ -292,7 +292,7 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
       <button class="hbtn hidden" id="bell"><span>🔔</span><span class="t">Включить уведомления</span></button>
     </div>
     <div id="searchBar" class="hidden"><input id="searchIn" placeholder="Поиск в этом чате…"><span id="searchInfo"></span><button class="hbtn" id="searchClose">✕</button></div>
-    <div id="pinBar" class="hidden"><span>📌</span><div class="pl"><div class="pt">Закреплённое сообщение</div><div class="px" id="pinText"></div></div><button id="unpin" title="Открепить">✕</button></div>
+    <div id="pinBar" class="hidden"><span id="pinIco"></span><div class="pl"><div class="pt">Закреплённое сообщение</div><div class="px" id="pinText"></div></div><button id="unpin" title="Открепить">✕</button></div>
     <div id="msgs"></div>
     <div id="typingLine"></div>
     <div id="bar" class="hidden"></div>
@@ -328,6 +328,35 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const $ = id => document.getElementById(id);
 const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const SVG = (d,s=16) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const SVGf = (d,s=16) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor">${d}</svg>`;
+window.ICONS = {
+  eye:     SVG('<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',18),
+  eyeOff:  SVG('<path d="M17.94 17.94A10 10 0 0 1 12 20C5 20 1 12 1 12a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9 9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>',18),
+  moon:    SVG('<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',18),
+  sun:     SVG('<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',18),
+  pin:     SVG('<line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24z"/>',14),
+  dots:    SVGf('<circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>',16),
+  reply:   SVG('<polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/>',14),
+  react:   SVG('<circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',14),
+  copy:    SVG('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',14),
+  forward: SVG('<polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/>',14),
+  edit:    SVG('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',14),
+  trash:   SVG('<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',14),
+};
+// Setup password toggle
+const passToggle = document.getElementById("passToggle");
+if (passToggle) {
+  passToggle.innerHTML = ICONS.eye;
+  passToggle.onclick = function() {
+    const p = document.getElementById("pass");
+    p.type = p.type === "password" ? "text" : "password";
+    this.innerHTML = p.type === "password" ? ICONS.eye : ICONS.eyeOff;
+  };
+}
+// Setup pin bar icon
+const pinIco = document.getElementById("pinIco");
+if (pinIco) pinIco.innerHTML = ICONS.pin;
 
 let me = null, started = false, current = null;
 let usersMap = {}, channelsList = [], unsubMsgs = null, unsubConv = null, lastSnap = null, seen = null;
@@ -362,7 +391,7 @@ let keysOn = store.get("oc-keys") !== "off";
 function applyTheme(t) {
   const dark = t === "dark" || (t === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
   document.documentElement.dataset.theme = dark ? "dark" : "light";
-  $("themeBtn").textContent = dark ? "☀️" : "🌙";
+  $("themeBtn").innerHTML = dark ? ICONS.sun : ICONS.moon;
 }
 applyTheme(theme);
 $("themeBtn").onclick = () => { theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; store.set("oc-theme", theme); applyTheme(theme); };
@@ -601,7 +630,7 @@ function rerender() {
         c.title = rx[k].map(u => uName(u)).join(", "); c.onclick = () => react(d.id, k, has); rr.append(c); });
       wrap.append(rr);
     }
-    const trig = el("button", "mtrig", "⋮"); trig.title = "Действия";
+    const trig = el("button", "mtrig"); trig.innerHTML = ICONS.dots; trig.title = "Действия";
     trig.onclick = ev => {
       ev.stopPropagation();
       document.querySelectorAll(".row.act").forEach(r => r !== row && r.classList.remove("act"));
@@ -613,13 +642,13 @@ function rerender() {
         x.onclick = ev2 => { ev2.stopPropagation(); menu.remove(); row.classList.remove("act"); fn(ev2); };
         menu.append(x);
       };
-      ai("↩", "Ответить", () => setReply(d.id, m));
-      ai("😊", "Реакция", ev2 => picker(ev2.currentTarget, QUICK, e => react(d.id, e, (rx[e] || []).includes(me.uid)), 4));
-      if (m.text) ai("⧉", "Копировать", () => { try { navigator.clipboard.writeText(m.text); toast("Скопировано"); } catch (e) {} });
-      ai("📤", "Переслать", () => fwd(d.id, m));
-      if (isChan(current)) ai("📌", "Закрепить", () => pin(d.id, m));
-      if (mine && m.text) ai("✎", "Изменить", () => setEdit(d.id, m));
-      if (mine || me.uid === ADMIN) ai("🗑", "Удалить", () => delMsg(d.id), true);
+      ai(ICONS.reply, "Ответить", () => setReply(d.id, m));
+      ai(ICONS.react, "Реакция", ev2 => picker(ev2.currentTarget, QUICK, e => react(d.id, e, (rx[e] || []).includes(me.uid)), 4));
+      if (m.text) ai(ICONS.copy, "Копировать", () => { try { navigator.clipboard.writeText(m.text); toast("Скопировано"); } catch (e) {} });
+      ai(ICONS.forward, "Переслать", () => fwd(d.id, m));
+      if (isChan(current)) ai(ICONS.pin, "Закрепить", () => pin(d.id, m));
+      if (mine && m.text) ai(ICONS.edit, "Изменить", () => setEdit(d.id, m));
+      if (mine || me.uid === ADMIN) ai(ICONS.trash, "Удалить", () => delMsg(d.id), true);
       document.body.append(menu);
       const r = trig.getBoundingClientRect();
       let top = r.bottom + 6, left = mine ? r.right - 170 : r.left - 4;
@@ -773,10 +802,10 @@ function cancelBar() {
 function setReply(id, m) {
   if (editing) cancelBar();
   replyTo = { id, uid: m.uid, name: uName(m.uid, m.name), text: (m.text || (m.image ? "📷 Фото" : "📎 " + (m.file ? m.file.name : ""))).slice(0, 160) };
-  setBar("↩", "Ответ: " + replyTo.name, { text: replyTo.text }); $("text").focus();
+  setBar(ICONS.reply, "Ответ: " + replyTo.name, { text: replyTo.text }); $("text").focus();
 }
 function setEdit(id, m) {
-  replyTo = null; attach = null; editing = id; setBar("✎", "Редактирование сообщения", { text: m.text });
+  replyTo = null; attach = null; editing = id; setBar(ICONS.edit, "Редактирование сообщения", { text: m.text });
   $("text").value = m.text; autoGrow(); $("text").focus();
 }
 let sending = false;
