@@ -687,8 +687,29 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 .tp-ck.ro{cursor:default}.tp-ck.ro:hover{background:none}
 .tp-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);flex-shrink:0;display:grid;place-items:center;color:transparent;transition:all .2s var(--spring)}
 .tp-ck.on .tp-box{background:#2E7D32;border-color:#2E7D32;color:#fff}
-.tp-ck.on>span:last-child{text-decoration:line-through;opacity:.6}
+.tp-ck .t{flex:1;min-width:0;overflow-wrap:break-word}
+.tp-ck.on .t{text-decoration:line-through;opacity:.6}
+.tp-ckdel{opacity:0;border:none;background:none;color:var(--muted);width:22px;height:22px;border-radius:6px;display:grid;place-items:center;flex-shrink:0}
+.tp-ck:hover .tp-ckdel{opacity:.7}.tp-ckdel:hover{opacity:1!important;background:var(--band);color:#E53935}
 .tp-none{color:var(--muted);font-size:13px;padding:4px 0 8px}
+.ckgrp{margin-bottom:10px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ckgrp-h{display:flex;align-items:center;gap:6px;padding:8px 6px 8px 2px;background:var(--band)}
+.ckgrp-chev{border:none;background:none;color:var(--muted);width:26px;height:26px;flex-shrink:0;display:grid;place-items:center;border-radius:6px;transition:transform .2s var(--ease)}
+.ckgrp-chev:hover{background:var(--hover)}
+.ckgrp-chev.open{transform:rotate(0deg)}.ckgrp-chev:not(.open){transform:rotate(-90deg)}
+.ckgrp-title{flex:1;min-width:0;font-weight:600;font-size:13.5px;color:var(--title);cursor:text;padding:3px 6px;border-radius:6px;overflow-wrap:break-word}
+.ckgrp-title:hover{background:var(--hover)}
+.ckgrp-in{flex:1;min-width:0;font-weight:600;font-size:13.5px;padding:3px 6px;border-radius:6px;border:1.5px solid var(--blue-l);background:var(--card);color:var(--title)}
+.ckgrp-cnt{font-size:12px;color:var(--muted);flex-shrink:0;padding:0 4px}
+.ckgrp-del{border:none;background:none;color:var(--muted);width:24px;height:24px;flex-shrink:0;display:grid;place-items:center;border-radius:6px;opacity:0;transition:opacity .15s}
+.ckgrp-h:hover .ckgrp-del{opacity:.6}.ckgrp-del:hover{opacity:1!important;background:var(--hover);color:#E53935}
+.ckgrp-list{padding:4px 8px 8px;animation:slideUpIn .22s var(--ease) both}
+.ckgrp-list.hidden{display:none}
+.ckgrp-add{padding:2px 4px}
+.ckgrp-add .inp{border:none;background:none;padding:6px 4px;font-size:13.5px;color:var(--muted)}
+.ckgrp-add .inp:focus{color:var(--text)}
+.ckgrp-addbtn{display:flex;align-items:center;gap:6px;border:1px dashed var(--line);background:none;color:var(--blue-l);font-size:13.5px;font-weight:600;padding:8px 10px;border-radius:10px;width:100%;justify-content:center;margin-top:2px}
+.ckgrp-addbtn:hover{background:var(--hover)}
 .tp-hist{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
 .tp-hist summary{cursor:pointer;font-weight:600;padding:4px 0}
 .tp-lg{padding:4px 0}
@@ -2553,17 +2574,29 @@ const ROLES = [["all", "Все"], ["doing", "Делаю"], ["gave", "Поруч�
 let tasksAll = [], tasksReady = false, taskKnown = new Map(), taskView = store.get("oc-tview") || "list", taskRole = "all", taskQ = "", taskShowDone = false, taskOpenId = null, taskDraft = {}, tasksTop = null;
 const tref = id => doc(msgsRef(TASKS), id);
 const tid = () => Math.random().toString(36).slice(2, 10);
+function migrateCk(ck) {
+  if (!ck || !ck.length) return [];
+  if (ck.some(g => Array.isArray(g.items))) return ck.filter(g => Array.isArray(g.items));
+  return [{ id: "g_" + tid(), title: "", items: ck }];
+}
 function normTask(d) {
   const m = d.data(), rx = m.reactions || {};
   const t = { id: d.id, uid: m.uid, name: m.name, time: m.time ? ms(m.time) : Date.now(), title: m.text || "", desc: m.desc || "", resp: m.resp || m.uid, aud: m.aud || [], dl: m.dl || 0, pri: !!m.pri, ctrl: !!m.ctrl, ck: m.ck || [] };
   const e = rx["~e"] && rx["~e"][0];
   if (e) { try { Object.assign(t, JSON.parse(e)); } catch (x) {} }
+  t.ck = migrateCk(t.ck);
   const st = rx["~st"] || []; t.status = ST[st[0]] ? st[0] : "new";
   t.log = (rx["~log"] || []).slice().sort((a, b) => a.t - b.t);
   t.comments = (rx["~c"] || []).slice().sort((a, b) => a.t - b.t);
   t.ckDone = new Set(rx["~ck"] || []);
   t.overdue = !!t.dl && t.status !== "done" && t.status !== "defer" && t.dl < Date.now();
   return t;
+}
+function ckTotal(t) { return t.ck.reduce((s, g) => s + g.items.length, 0); }
+function ckDoneCount(t) { return t.ck.reduce((s, g) => s + g.items.filter(x => t.ckDone.has(x.id)).length, 0); }
+function saveCk(t, ck) {
+  const f = { title: t.title, desc: t.desc, resp: t.resp, aud: t.aud, dl: t.dl, pri: t.pri, ctrl: t.ctrl, ck };
+  return taskWrite(() => updateDoc(tref(t.id), FP("~e"), [JSON.stringify(f)], FP("~log"), arrayUnion({ u: me.uid, s: "edited", t: Date.now() })));
 }
 const isBoss = t => t.uid === me.uid || me.uid === ADMIN;
 const isResp = t => t.resp === me.uid;
@@ -2690,7 +2723,7 @@ function dlChip(t) {
 }
 function metaBits(t) {
   const m = el("span", "tk-meta");
-  if (t.ck.length) { const done = t.ck.filter(x => t.ckDone.has(x.id)).length; const c = el("span", done === t.ck.length ? "full" : ""); c.innerHTML = ico("checks", 12); c.append(done + "/" + t.ck.length); m.append(c); }
+  { const total = ckTotal(t); if (total) { const done = ckDoneCount(t); const c = el("span", done === total ? "full" : ""); c.innerHTML = ico("checks", 12); c.append(done + "/" + total); m.append(c); } }
   if (t.comments.length) { const c = el("span"); c.innerHTML = ico("comment", 12); c.append(String(t.comments.length)); m.append(c); }
   return m;
 }
@@ -2808,22 +2841,71 @@ function renderTaskPanel() {
   row("Создана", fmtDL(t.time).replace("Сегодня", "сегодня").replace("Завтра", "завтра"));
   body.append(info);
   if (t.desc) { const d = el("div", "tp-desc"); linkify(d, t.desc, ""); body.append(d); }
-  if (t.ck.length) {
-    const done = t.ck.filter(x => t.ckDone.has(x.id)).length, sec = el("div", "tp-sec");
-    const h = el("div", "tp-h"); h.append(el("span", null, "Чек-лист"), el("span", "tp-hn", done + " из " + t.ck.length)); sec.append(h);
-    const bar = el("div", "tp-bar"), fill = el("span"), w = Math.round(done / t.ck.length * 100) + "%";
-    fill.style.width = !firstShow && prevW ? prevW : (firstShow ? "0%" : w); p._ckw = w;
-    requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = w; }));
-    bar.append(fill); sec.append(bar);
-    const can = canMove(t);
-    t.ck.forEach(x => {
-      const on = t.ckDone.has(x.id), r = el("label", "tp-ck" + (on ? " on" : "") + (can ? "" : " ro"));
-      const box = el("span", "tp-box"); box.innerHTML = ico("check", 12);
-      r.append(box, el("span", null, x.t));
-      if (can) r.onclick = e => { e.preventDefault(); vibrate(6); taskWrite(() => updateDoc(tref(t.id), FP("~ck"), on ? arrayRemove(x.id) : arrayUnion(x.id))); };
-      sec.append(r);
+  {
+    const can = canMove(t), total = ckTotal(t), sec = el("div", "tp-sec");
+    p._ckClosed = p._ckClosed || new Set();
+    if (total) {
+      const done = ckDoneCount(t);
+      const h = el("div", "tp-h"); h.append(el("span", null, "Чек-лист"), el("span", "tp-hn", done + " из " + total)); sec.append(h);
+      const bar = el("div", "tp-bar"), fill = el("span"), w = Math.round(done / total * 100) + "%";
+      fill.style.width = !firstShow && prevW ? prevW : (firstShow ? "0%" : w); p._ckw = w;
+      requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = w; }));
+      bar.append(fill); sec.append(bar);
+    }
+    t.ck.forEach(g => {
+      const grp = el("div", "ckgrp"), closed = p._ckClosed.has(g.id);
+      const gh = el("div", "ckgrp-h");
+      const chev = el("button", "ckgrp-chev" + (closed ? "" : " open")); chev.type = "button"; chev.innerHTML = ico("chevDown", 15);
+      const list = el("div", "ckgrp-list" + (closed ? " hidden" : ""));
+      chev.onclick = () => {
+        const nowClosed = !p._ckClosed.has(g.id);
+        if (nowClosed) p._ckClosed.add(g.id); else p._ckClosed.delete(g.id);
+        chev.classList.toggle("open", !nowClosed); list.classList.toggle("hidden", nowClosed);
+      };
+      const titleSpan = el("span", "ckgrp-title", g.title || "Чек-лист");
+      if (can) titleSpan.onclick = e => {
+        e.stopPropagation();
+        const inp = el("input", "inp ckgrp-in"); inp.value = g.title || ""; inp.placeholder = "Название чек-листа"; inp.maxLength = 100;
+        titleSpan.replaceWith(inp); inp.focus(); inp.select();
+        const commit = () => {
+          const v = inp.value.trim();
+          if (v !== (g.title || "")) saveCk(t, t.ck.map(gg => gg.id === g.id ? Object.assign({}, gg, { title: v }) : gg));
+          titleSpan.textContent = v || "Чек-лист"; if (inp.parentNode) inp.replaceWith(titleSpan);
+        };
+        inp.onblur = commit;
+        inp.onkeydown = e2 => { if (e2.key === "Enter") { e2.preventDefault(); inp.blur(); } if (e2.key === "Escape") { inp.value = g.title || ""; inp.blur(); } };
+      };
+      const gdone = g.items.filter(x => t.ckDone.has(x.id)).length;
+      gh.append(chev, titleSpan, el("span", "ckgrp-cnt", gdone + "/" + g.items.length));
+      if (can) { const delg = el("button", "ckgrp-del"); delg.type = "button"; delg.innerHTML = ico("trash", 13); delg.title = "Удалить чек-лист"; delg.onclick = e => { e.stopPropagation(); if (!confirm("Удалить чек-лист «" + (g.title || "Чек-лист") + "»?")) return; saveCk(t, t.ck.filter(x => x.id !== g.id)); }; gh.append(delg); }
+      grp.append(gh);
+      g.items.forEach(x => {
+        const on = t.ckDone.has(x.id), r = el("label", "tp-ck" + (on ? " on" : "") + (can ? "" : " ro"));
+        const box = el("span", "tp-box"); box.innerHTML = ico("check", 12);
+        r.append(box, el("span", "t", x.t));
+        if (can) {
+          r.onclick = e => { e.preventDefault(); vibrate(6); taskWrite(() => updateDoc(tref(t.id), FP("~ck"), on ? arrayRemove(x.id) : arrayUnion(x.id))); };
+          const deli = el("button", "tp-ckdel"); deli.type = "button"; deli.innerHTML = ico("x", 12); deli.title = "Удалить пункт";
+          deli.onclick = e => { e.preventDefault(); e.stopPropagation(); saveCk(t, t.ck.map(gg => gg.id === g.id ? Object.assign({}, gg, { items: gg.items.filter(ii => ii.id !== x.id) }) : gg)); };
+          r.append(deli);
+        }
+        list.append(r);
+      });
+      if (can) {
+        const addRow = el("div", "ckgrp-add"), itemInput = el("input", "inp"); itemInput.placeholder = "+ Добавить пункт"; itemInput.maxLength = 200;
+        const commitAdd = () => { const v = itemInput.value.trim(); if (!v) return; itemInput.value = ""; saveCk(t, t.ck.map(gg => gg.id === g.id ? Object.assign({}, gg, { items: [...gg.items, { id: tid(), t: v }] }) : gg)); };
+        itemInput.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); commitAdd(); } };
+        itemInput.onblur = () => { if (itemInput.value.trim()) commitAdd(); };
+        addRow.append(itemInput); list.append(addRow);
+      }
+      grp.append(list); sec.append(grp);
     });
-    body.append(sec);
+    if (can) {
+      const addGrp = el("button", "ckgrp-addbtn"); addGrp.type = "button"; addGrp.innerHTML = ico("plus", 14); addGrp.append(el("span", null, "Добавить чек-лист"));
+      addGrp.onclick = () => { const ng = { id: "g_" + tid(), title: "", items: [] }; saveCk(t, [...t.ck, ng]); };
+      sec.append(addGrp);
+    }
+    if (total || can) body.append(sec);
   }
   const cs = el("div", "tp-sec"), ch = el("div", "tp-h"); ch.append(el("span", null, "Комментарии"), el("span", "tp-hn", t.comments.length ? String(t.comments.length) : "")); cs.append(ch);
   if (!t.comments.length) cs.append(el("div", "tp-none", "Пока нет комментариев. Обсуждайте задачу здесь."));
@@ -2882,14 +2964,16 @@ function taskDialog(t) {
     i.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); const n = row.nextElementSibling; if (n) n.querySelector("input").focus(); } };
     row.append(i, xb); ckBox.append(row);
   };
-  (t ? t.ck : []).forEach(addCk); addCk();
+  if (!t) addCk();
   const acts = el("div", "macts"), cancel = el("button", "btn ghost", "Отмена"), ok = el("button", "btn", t ? "Сохранить" : "Поставить задачу");
   cancel.type = ok.type = "button";
   const close = () => { md.classList.add("out"); setTimeout(() => md.remove(), 180); };
   cancel.onclick = close; md.onclick = e => { if (e.target === md) close(); };
   ok.onclick = async () => {
     const v = title.value.trim(); if (!v) { toast("Введите название задачи"); title.focus(); return; }
-    const ck = [...ckBox.children].map(r => ({ id: r._id, t: r.querySelector("input").value.trim() })).filter(x => x.t);
+    let ck;
+    if (t) ck = t.ck;
+    else { const items = [...ckBox.children].map(r => ({ id: r._id, t: r.querySelector("input").value.trim() })).filter(x => x.t); ck = items.length ? [{ id: "g_" + tid(), title: "", items }] : []; }
     const dv = dl.value ? new Date(dl.value).getTime() : 0;
     const f = { title: v, desc: desc.value.trim(), resp: resp.value, aud: aud.filter(u => u !== resp.value), dl: dv, pri: pri.checked, ctrl: ctrl.checked && resp.value !== me.uid, ck };
     ok.disabled = true;
@@ -2904,7 +2988,9 @@ function taskDialog(t) {
     if (good) close();
   };
   acts.append(cancel, ok);
-  card.append(title, desc, lbl("Ответственный"), resp, lbl("Наблюдатели"), audBox, lbl("Крайний срок"), dl, pres, l1, l2, lbl("Чек-лист"), ckBox, acts);
+  card.append(title, desc, lbl("Ответственный"), resp, lbl("Наблюдатели"), audBox, lbl("Крайний срок"), dl, pres, l1, l2);
+  if (!t) card.append(lbl("Чек-лист"), ckBox);
+  card.append(acts);
   md.append(card); document.body.append(md);
   setTimeout(() => title.focus(), 60);
 }
