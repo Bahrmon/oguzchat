@@ -708,6 +708,54 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
   .tp-k{width:110px}
 }
 
+/* ===== Motion: короткие мягкие переходы (только opacity/transform — не нагружают телефон) ===== */
+@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes slideUpIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes popOut{to{opacity:0;transform:scale(.94)}}
+@keyframes fadeOutQ{to{opacity:0}}
+@keyframes badgePop{0%{transform:scale(.3)}55%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,16px) scale(.96)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes toastOut{to{opacity:0;transform:translate(-50%,8px) scale(.97)}}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes rowNew{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+#msgs.switch{animation:viewIn .32s var(--ease)}
+.badge{animation:badgePop .38s var(--spring)}
+#toast{animation:toastIn .34s var(--spring) both}
+#toast.out{animation:toastOut .22s ease forwards}
+.pop.out,.amenu.out,.pmenu.out,.tapback.out,.mact.out{animation:popOut .16s ease forwards!important;pointer-events:none}
+#ctxShade.out,#lightbox.out{animation:fadeOutQ .18s ease forwards;pointer-events:none}
+.modal.out .mcard{animation:popOut .18s ease forwards}
+.amenu button{animation:slideUpIn .28s var(--ease) both}
+.amenu button:nth-child(2){animation-delay:.03s}.amenu button:nth-child(3){animation-delay:.06s}.amenu button:nth-child(4){animation-delay:.09s}
+.pmenu button{animation:slideUpIn .24s var(--ease) both}
+.tk-row,.kb-card{animation:none}
+.tk-list.enter .tk-row,.kanban.enter .kb-card{animation:slideUpIn .34s var(--ease) both}
+.tk-list.enter .tk-row:nth-child(2),.kanban.enter .kb-card:nth-child(2){animation-delay:.03s}
+.tk-list.enter .tk-row:nth-child(3),.kanban.enter .kb-card:nth-child(3){animation-delay:.06s}
+.tk-list.enter .tk-row:nth-child(4),.kanban.enter .kb-card:nth-child(4){animation-delay:.09s}
+.tk-list.enter .tk-row:nth-child(5),.kanban.enter .kb-card:nth-child(5){animation-delay:.12s}
+.tk-list.enter .tk-row:nth-child(6){animation-delay:.15s}.tk-list.enter .tk-row:nth-child(7){animation-delay:.18s}.tk-list.enter .tk-row:nth-child(n+8){animation-delay:.2s}
+.kanban.enter .kb-col{animation:slideUpIn .34s var(--ease) both}
+.kanban.enter .kb-col:nth-child(2){animation-delay:.04s}.kanban.enter .kb-col:nth-child(3){animation-delay:.08s}.kanban.enter .kb-col:nth-child(4){animation-delay:.12s}.kanban.enter .kb-col:nth-child(5){animation-delay:.16s}
+.tk-row.fresh,.kb-card.fresh{animation:rowNew .45s var(--ease) both}
+.tk-st{transition:background .25s,color .25s}
+.tk-st.bump{animation:bump .4s var(--spring)}
+.tp-ck .tp-box{transition:background .2s,border-color .2s,transform .25s var(--spring)}
+.tp-ck:active .tp-box{transform:scale(.85)}
+.tp-act,.tk-add,.tk-role,.ff,.cp-tab,.tk-view button,.pact,.cp-pub,.imp-b,.tk-pres button,.cp-badge{transition:transform .18s var(--spring),background .18s,color .18s,border-color .18s}
+.tp-act:active,.tk-add:active,.tk-role:active,.ff:active,.cp-tab:active,.tk-view button:active,.pact:active,.tk-pres button:active,.cp-badge:active{transform:scale(.95)}
+.item{transition:background .18s,color .18s,transform .15s,box-shadow .25s}
+.item .ic{transition:transform .25s var(--spring)}
+@media(hover:hover){.item:hover .ic{transform:scale(1.08)}.post:hover{box-shadow:0 6px 22px #06306a1c}}
+.post{transition:box-shadow .25s}
+.tp-body>*{animation:slideUpIn .3s var(--ease) both}
+.tp-body>*:nth-child(2){animation-delay:.03s}.tp-body>*:nth-child(3){animation-delay:.06s}.tp-body>*:nth-child(4){animation-delay:.09s}.tp-body>*:nth-child(n+5){animation-delay:.12s}
+.tp-body.still>*,.tp-body.still .cm{animation:none}
+.tp-body.still .cm.fresh{animation:slideUpIn .3s var(--ease) both}
+.cmts .cm{animation:none}
+.cmts .cm.fresh{animation:slideUpIn .3s var(--ease) both}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.35s;animation-timing-function:ease}
+
 /* Tour */
 #tourOverlay{position:fixed;inset:0;z-index:9000;pointer-events:none}
 .tour-backdrop{position:fixed;inset:0;background:#06306a88;backdrop-filter:blur(1px);z-index:9001;pointer-events:auto}
@@ -888,7 +936,9 @@ const DF_SHORT = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "shor
 const fmtTime = d => DF_TIME.format(d);
 const fmtDay = d => DF_DAY.format(d);
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
-function toast(t) { const o = $("toast"); if (o) o.remove(); const x = el("div", null, t); x.id = "toast"; document.body.append(x); setTimeout(() => x.remove(), 2400); }
+/* Плавное исчезновение: элемент получает .out, теряет клики и удаляется после анимации */
+function vanish(x, ms) { if (!x || x._gone) return; x._gone = true; if (RM.matches) { x.remove(); return; } x.classList.add("out"); x.style.pointerEvents = "none"; setTimeout(() => x.remove(), ms || 180); }
+function toast(t) { const o = $("toast"); if (o) o.remove(); const x = el("div", null, t); x.id = "toast"; document.body.append(x); setTimeout(() => x.classList.add("out"), 2200); setTimeout(() => x.remove(), 2450); }
 /* Фото профиля хранятся как длинные data:URL. Превращаем каждое один раз в короткий blob:URL,
    чтобы браузер не разбирал ~100 КБ строки при каждой перерисовке аватарки */
 const photoCache = new Map();
@@ -936,7 +986,7 @@ function applyTheme(t) {
   $("themeBtn").innerHTML = dark ? ICONS.sun : ICONS.moon;
 }
 applyTheme(theme);
-$("themeBtn").onclick = () => { theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; store.set("oc-theme", theme); applyTheme(theme); };
+$("themeBtn").onclick = () => { theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; store.set("oc-theme", theme); if (document.startViewTransition && !RM.matches) document.startViewTransition(() => applyTheme(theme)); else applyTheme(theme); };
 
 /* ---------- вход ---------- */
 let registering = false;
@@ -1479,7 +1529,7 @@ $("msgs").addEventListener("scroll", () => {
   const b = $("msgs"), gap = b.scrollHeight - b.scrollTop - b.clientHeight;
   if (!motion) pinned = gap < 48;
   if (gap < 80 && $("toBottom")) $("toBottom").remove();
-  if (!motion && document.querySelector(".mact")) closeMenu();
+  if (!motion && document.querySelector(".mact:not(.out)")) closeMenu();
 }, { passive: true });
 ["wheel", "touchstart"].forEach(t => $("msgs").addEventListener(t, () => { if (motion) finishMotion(); }, { passive: true }));
 if (window.ResizeObserver) new ResizeObserver(() => { const b = $("msgs"); if (pinned && !motion && (isChan(current) || isDM(current))) b.scrollTop = b.scrollHeight; }).observe($("msgs"));
@@ -1488,8 +1538,8 @@ if (window.ResizeObserver) new ResizeObserver(() => { const b = $("msgs"); if (p
 /* Повторное нажатие на ту же кнопку закрывает меню (а не открывает заново) */
 const justClosed = a => { const r = !!a && !!a._closedAt && Date.now() - a._closedAt < 450; if (a) a._closedAt = 0; return r; };
 function closeMenu() {
-  if (openMenu._row && document.querySelector(".mact")) { openMenu._row._closedAt = Date.now(); openMenu._row = null; }
-  document.querySelectorAll(".tapback,.mact,#ctxShade").forEach(x => x.remove());
+  if (openMenu._row && document.querySelector(".mact:not(.out)")) { openMenu._row._closedAt = Date.now(); openMenu._row = null; }
+  document.querySelectorAll(".tapback,.mact,#ctxShade").forEach(x => vanish(x, 170));
   document.querySelectorAll(".row.lifted").forEach(r => r.classList.remove("lifted"));
 }
 function openMenu(row, touch) {
@@ -1526,7 +1576,7 @@ function openMenu(row, touch) {
   Object.assign(tap.style, { left: hx(tap.offsetWidth) + "px", top: tTop + "px", transformOrigin: side + " bottom" });
   Object.assign(act.style, { left: hx(act.offsetWidth) + "px", top: aTop + "px", transformOrigin: side + (aTop < br.top ? " bottom" : " top") });
 }
-document.addEventListener("pointerdown", e => { if (!e.target.closest(".tapback,.mact,#ctxShade") && document.querySelector(".mact") && !document.querySelector("#ctxShade")) closeMenu(); });
+document.addEventListener("pointerdown", e => { if (!e.target.closest(".tapback,.mact,#ctxShade") && document.querySelector(".mact:not(.out)") && !document.querySelector("#ctxShade:not(.out)")) closeMenu(); });
 (() => {
   const box = $("msgs"), vib = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
   let g = null, lpAt = 0;
@@ -1597,7 +1647,7 @@ function lightbox(src) {
   const lb = el("div"); lb.id = "lightbox"; const im = el("img"); im.src = src;
   const dl = el("a"); dl.innerHTML = ico("download", 15) + "<span>Скачать</span>"; dl.href = src; dl.download = "photo.jpg";
   const x = el("button"); x.innerHTML = ico("x", 18); lb.append(im, dl, x);
-  lb.onclick = e => { if (!e.target.closest("a")) lb.remove(); }; document.body.append(lb);
+  lb.onclick = e => { if (!e.target.closest("a")) vanish(lb, 200); }; document.body.append(lb);
 }
 async function react(id, e, has) {
   try { await updateDoc(doc(msgsRef(current), id), new FieldPath("reactions", e), has ? arrayRemove(me.uid) : arrayUnion(me.uid)); }
@@ -1805,13 +1855,13 @@ function picker(anchor, list, onPick, cols) {
   if (justClosed(anchor)) return;
   document.querySelectorAll(".pop").forEach(p => p.remove());
   const p = el("div", "pop"); p.style.gridTemplateColumns = "repeat(" + (cols || 8) + ",36px)";
-  list.forEach(x => { const b = el("button", null, x); b.type = "button"; b.onclick = ev => { ev.stopPropagation(); onPick(x); p.remove(); }; p.append(b); });
+  list.forEach(x => { const b = el("button", null, x); b.type = "button"; b.onclick = ev => { ev.stopPropagation(); onPick(x); vanish(p); }; p.append(b); });
   document.body.append(p);
   const r = anchor.getBoundingClientRect(), pr = { width: p.offsetWidth, height: p.offsetHeight };
   const left = Math.min(window.innerWidth - pr.width - 8, Math.max(8, r.left + r.width / 2 - pr.width / 2));
   let top = r.top - pr.height - 8; if (top < 8) top = r.bottom + 8;
   p.style.left = left + "px"; p.style.top = top + "px";
-  setTimeout(() => document.addEventListener("pointerdown", function h(e) { if (!p.contains(e.target)) { p.remove(); if (anchor.contains(e.target)) anchor._closedAt = Date.now(); document.removeEventListener("pointerdown", h); } }), 0);
+  setTimeout(() => document.addEventListener("pointerdown", function h(e) { if (!p.contains(e.target)) { vanish(p); if (anchor.contains(e.target)) anchor._closedAt = Date.now(); document.removeEventListener("pointerdown", h); } }), 0);
 }
 $("emojiBtn").onclick = e => picker(e.currentTarget, EMOJI, x => { const s = ta.selectionStart ?? ta.value.length; ta.value = ta.value.slice(0, s) + x + ta.value.slice(s); ta.focus(); ta.selectionStart = ta.selectionEnd = s + x.length; autoGrow(); }, window.innerWidth < 500 ? 7 : 8);
 
@@ -2070,12 +2120,12 @@ $("recPause").onclick = () => {
 
 /* ---------- меню вложений ---------- */
 function attachMenu() {
-  const old = document.querySelector(".amenu"); if (old) { old.remove(); return; }
+  const old = document.querySelector(".amenu:not(.out)"); if (old) { vanish(old); return; }
   if (!(isChan(current) || isDM(current))) return;
   const mnu = el("div", "amenu");
   const it = (icon, bg, label, fn) => {
     const b = el("button"); b.type = "button"; const c = el("span", "aic"); c.style.background = bg; c.innerHTML = ico(icon, 20);
-    b.append(c, el("span", null, label)); b.onclick = e => { e.stopPropagation(); mnu.remove(); fn(); }; mnu.append(b);
+    b.append(c, el("span", null, label)); b.onclick = e => { e.stopPropagation(); vanish(mnu); fn(); }; mnu.append(b);
   };
   it("image", "#7C4DFF", "Фото и видео", () => $("mediaIn").click());
   if (matchMedia("(pointer:coarse)").matches) it("camera", "#E5467A", "Камера", () => $("camIn").click());
@@ -2084,7 +2134,7 @@ function attachMenu() {
   document.body.append(mnu);
   const r = $("attachBtn").getBoundingClientRect();
   mnu.style.left = Math.max(8, r.left) + "px"; mnu.style.bottom = (innerHeight - r.top + 10) + "px";
-  setTimeout(() => document.addEventListener("pointerdown", function h(e) { if (!mnu.contains(e.target) && !e.target.closest("#attachBtn")) { mnu.remove(); document.removeEventListener("pointerdown", h); } }), 0);
+  setTimeout(() => document.addEventListener("pointerdown", function h(e) { if (!mnu.contains(e.target) && !e.target.closest("#attachBtn")) { vanish(mnu); document.removeEventListener("pointerdown", h); } }), 0);
 }
 
 /* ---------- опросы ---------- */
@@ -2163,6 +2213,7 @@ async function closePoll(id) {
 
 /* ---------- лента (как в Битрикс24) ---------- */
 const FEED = "feed";
+const feedCmCount = new Map();
 let annSnap = null, feedFilter = "all", feedCache = new Map(), feedOpen = new Set(), feedDrafts = {}, feedTop = null;
 const BADGES = [["🙏", "Спасибо"], ["🏆", "Лучший"], ["💡", "Отличная идея"], ["🤝", "Помощь"], ["🚀", "Результат"], ["❤️", "Забота"]];
 const FILTERS = [["all", "Все"], ["important", "Важные"], ["poll", "Опросы"], ["thanks", "Благодарности"], ["mine", "Мои"]];
@@ -2272,7 +2323,7 @@ function buildPost(p) {
   const rbn = act("react", ""); rbn.title = "Реакция"; rbn.onclick = e => picker(e.currentTarget, QUICK, x => react(id, x, (rx[x] || []).includes(me.uid)), 4);
   act("comment", cm.length ? "Комментарии · " + cm.length : "Комментировать").onclick = () => { const i = c.querySelector(".cin textarea"); if (i) i.focus(); };
   c.append(bar);
-  const cs = el("div", "cmts"), all = feedOpen.has(id), shown = all ? cm : cm.slice(-3);
+  const cs = el("div", "cmts"), all = feedOpen.has(id), shown = all ? cm : cm.slice(-3), prevCm = feedCmCount.get(id); feedCmCount.set(id, cm.length);
   if (cm.length > shown.length) { const mr = el("button", "cmore", "Показать все комментарии (" + cm.length + ")"); mr.type = "button"; mr.onclick = () => { feedOpen.add(id); renderFeed(); }; cs.append(mr); }
   shown.forEach(x => {
     const r = el("div", "cm"), a = avatar(x.uid, uName(x.uid, x.name)); a.onclick = () => open("user:" + x.uid);
@@ -2281,6 +2332,7 @@ function buildPost(p) {
     if (x.uid === me.uid || me.uid === ADMIN) { const d = el("button", "cdel"); d.type = "button"; d.title = "Удалить"; d.innerHTML = ico("x", 12); d.onclick = () => feedWrite(() => updateDoc(ref, FP("~c"), arrayRemove(x))); b.append(d); }
     r.append(a, b); cs.append(r);
   });
+  if (prevCm != null && cm.length > prevCm) { const rows = cs.querySelectorAll(".cm"), n = Math.min(rows.length, cm.length - prevCm); for (let k = rows.length - n; k < rows.length; k++) rows[k].classList.add("fresh"); }
   const ci = el("div", "cin"), tai = el("textarea"); tai.rows = 1; tai.placeholder = "Написать комментарий…"; tai.value = feedDrafts[id] || ""; tai.maxLength = 2000;
   const grow = () => { tai.style.height = "auto"; tai.style.height = Math.min(tai.scrollHeight, 120) + "px"; };
   tai.oninput = () => { feedDrafts[id] = tai.value; grow(); ci.classList.toggle("has", !!tai.value.trim()); };
@@ -2299,7 +2351,7 @@ function postMenu(anchor, p) {
   if (justClosed(anchor)) return;
   document.querySelectorAll(".pmenu").forEach(x => x.remove());
   const { id, m, legacy } = p, mnu = el("div", "pmenu");
-  const ai = (icon, label, fn, danger) => { const b = el("button", danger ? "danger" : ""); b.type = "button"; const i = el("span", "mi"); i.innerHTML = ico(icon, 16); b.append(i, el("span", null, label)); b.onclick = e => { e.stopPropagation(); mnu.remove(); fn(); }; mnu.append(b); };
+  const ai = (icon, label, fn, danger) => { const b = el("button", danger ? "danger" : ""); b.type = "button"; const i = el("span", "mi"); i.innerHTML = ico(icon, 16); b.append(i, el("span", null, label)); b.onclick = e => { e.stopPropagation(); vanish(mnu); fn(); }; mnu.append(b); };
   const ref = legacy ? doc(db, "announcements", id) : doc(msgsRef(FEED), id);
   if (!legacy && me.uid === ADMIN) ai("pin", m.pinned ? "Открепить" : "Закрепить вверху", () => feedWrite(() => updateDoc(ref, FP("~pin"), m.pinned ? [] : [me.uid])));
   if (!legacy && m.poll && !m.poll.closed && (m.uid === me.uid || me.uid === ADMIN)) ai("check", "Завершить опрос", () => feedWrite(() => updateDoc(ref, FP("~closed"), arrayUnion(me.uid))));
@@ -2309,7 +2361,7 @@ function postMenu(anchor, p) {
   const r = anchor.getBoundingClientRect(), w = mnu.offsetWidth, hgt = mnu.offsetHeight;
   mnu.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.right - w)) + "px";
   mnu.style.top = (r.bottom + 6 + hgt > innerHeight ? r.top - hgt - 6 : r.bottom + 6) + "px";
-  setTimeout(() => document.addEventListener("pointerdown", function h(e) { if (!mnu.contains(e.target)) { mnu.remove(); if (anchor.contains(e.target)) anchor._closedAt = Date.now(); document.removeEventListener("pointerdown", h); } }), 0);
+  setTimeout(() => document.addEventListener("pointerdown", function h(e) { if (!mnu.contains(e.target)) { vanish(mnu); if (anchor.contains(e.target)) anchor._closedAt = Date.now(); document.removeEventListener("pointerdown", h); } }), 0);
 }
 async function readAttachment(f) {
   if (f.type.startsWith("image/")) { toast("Подготовка фото…"); return { image: await compress(f) }; }
@@ -2519,12 +2571,27 @@ function updateTasksTop() {
   });
   tasksTop.querySelector(".tk-done").classList.toggle("hidden", taskView === "kanban");
 }
+let taskKey = "", taskSeen = new Set();
 function renderTasks() {
   if (current !== TASKS) return;
   if (!tasksTop) tasksTop = buildTasksTop();
   updateTasksTop();
+  const box = $("msgs"), key = taskView + "|" + taskRole + "|" + taskShowDone + "|" + taskQ + "|" + (tasksTop._gen || 0);
+  const entering = key !== taskKey; taskKey = key;
+  /* FLIP: запоминаем, где были карточки, чтобы после перестройки плавно «переехать» на новые места */
+  const before = new Map();
+  if (!entering && !RM.matches) box.querySelectorAll("[data-tid]").forEach(n => before.set(n.dataset.tid, n.getBoundingClientRect()));
   const body = taskView === "kanban" ? buildKanban(filteredTasks(true)) : buildTaskList(filteredTasks(false));
-  reconcile($("msgs"), [tasksTop, body]);
+  if (entering) body.classList.add("enter");
+  reconcile(box, [tasksTop, body]);
+  if (entering) { taskSeen = new Set(tasksAll.map(t => t.id)); return; }
+  body.querySelectorAll("[data-tid]").forEach(n => {
+    const id = n.dataset.tid, a = before.get(id);
+    if (!a) { if (!taskSeen.has(id)) n.classList.add("fresh"); return; }
+    const b = n.getBoundingClientRect(), dx = a.left - b.left, dy = a.top - b.top;
+    if (Math.abs(dx) > 1 || Math.abs(dy) > 1) n.animate([{ transform: `translate(${dx}px,${dy}px)` }, { transform: "none" }], { duration: 380, easing: "cubic-bezier(.2,.8,.2,1)" });
+  });
+  tasksAll.forEach(t => taskSeen.add(t.id));
 }
 function stPill(s) { return el("span", "tk-st s-" + s, ST[s]); }
 function dlChip(t) {
@@ -2545,7 +2612,7 @@ function buildTaskList(list) {
     wrap.append(e); return wrap;
   }
   list.forEach(t => {
-    const r = el("div", "tk-row s-" + t.status + (t.overdue ? " late" : "")); r.onclick = () => openTask(t.id);
+    const r = el("div", "tk-row s-" + t.status + (t.overdue ? " late" : "")); r.dataset.tid = t.id; r.onclick = () => openTask(t.id);
     const dot = el("span", "tk-dot s-" + t.status); if (t.status === "done") dot.innerHTML = ico("check", 12);
     const main = el("div", "tk-main"), tt = el("div", "tk-title");
     if (t.pri) tt.append(el("span", "tk-fire", "🔥"));
@@ -2565,7 +2632,7 @@ function buildKanban(list) {
     const h = el("div", "kb-h"); h.append(el("span", "kb-t", ST[s]), el("span", "kb-n", String(items.length))); col.append(h);
     const cards = el("div", "kb-cards");
     (s === "done" ? items.slice(0, 30) : items).forEach(t => {
-      const c = el("div", "kb-card" + (t.overdue ? " late" : "")); c.onclick = () => openTask(t.id);
+      const c = el("div", "kb-card" + (t.overdue ? " late" : "")); c.dataset.tid = t.id; c.onclick = () => openTask(t.id);
       const tt = el("div", "tk-title"); if (t.pri) tt.append(el("span", "tk-fire", "🔥")); tt.append(el("span", null, t.title));
       const ft = el("div", "kb-ft"); ft.append(dlChip(t), metaBits(t), avatar(t.resp, uName(t.resp)));
       c.append(tt, ft);
@@ -2629,8 +2696,10 @@ function renderTaskPanel() {
     db2.onclick = async () => { if (!confirm("Удалить задачу «" + t.title + "»?")) return; closeTask(); try { await deleteDoc(tref(t.id)); toast("Задача удалена"); } catch (e) { toast("Ошибка: " + e.code); } };
     tools.append(eb, db2);
   }
-  const body = p.querySelector(".tp-body"), keep = body.scrollTop; body.innerHTML = "";
-  const tags = el("div", "tp-tags"); tags.append(stPill(t.status));
+  const body = p.querySelector(".tp-body"), keep = body.scrollTop, firstShow = p._shown !== t.id; body.innerHTML = "";
+  body.classList.toggle("still", !firstShow); p._shown = t.id;
+  const prevSt = p._st, prevW = p._ckw, prevC = p._cn || 0; p._st = t.status; p._cn = t.comments.length;
+  const tags = el("div", "tp-tags"), pill = stPill(t.status); if (!firstShow && prevSt && prevSt !== t.status) pill.classList.add("bump"); tags.append(pill);
   if (t.pri) tags.append(el("span", "tk-tag pri", "🔥 Важная"));
   if (t.overdue) tags.append(el("span", "tk-tag late", "Просрочена"));
   if (t.ctrl) tags.append(el("span", "tk-tag", "С проверкой результата"));
@@ -2652,7 +2721,10 @@ function renderTaskPanel() {
   if (t.ck.length) {
     const done = t.ck.filter(x => t.ckDone.has(x.id)).length, sec = el("div", "tp-sec");
     const h = el("div", "tp-h"); h.append(el("span", null, "Чек-лист"), el("span", "tp-hn", done + " из " + t.ck.length)); sec.append(h);
-    const bar = el("div", "tp-bar"), fill = el("span"); fill.style.width = Math.round(done / t.ck.length * 100) + "%"; bar.append(fill); sec.append(bar);
+    const bar = el("div", "tp-bar"), fill = el("span"), w = Math.round(done / t.ck.length * 100) + "%";
+    fill.style.width = !firstShow && prevW ? prevW : (firstShow ? "0%" : w); p._ckw = w;
+    requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = w; }));
+    bar.append(fill); sec.append(bar);
     const can = canMove(t);
     t.ck.forEach(x => {
       const on = t.ckDone.has(x.id), r = el("label", "tp-ck" + (on ? " on" : "") + (can ? "" : " ro"));
@@ -2672,6 +2744,7 @@ function renderTaskPanel() {
     if (x.uid === me.uid || me.uid === ADMIN) { const d = el("button", "cdel"); d.type = "button"; d.title = "Удалить"; d.innerHTML = ico("x", 12); d.onclick = () => taskWrite(() => updateDoc(tref(t.id), FP("~c"), arrayRemove(x))); b.append(d); }
     r.append(a, b); cs.append(r);
   });
+  if (!firstShow && t.comments.length > prevC) { const all = cs.querySelectorAll(".cm"); for (let k = all.length - (t.comments.length - prevC); k < all.length; k++) if (all[k]) all[k].classList.add("fresh"); }
   body.append(cs);
   const hist = el("details", "tp-hist"); hist.append(el("summary", null, "История изменений (" + (t.log.length || 1) + ")"));
   (t.log.length ? t.log : [{ u: t.uid, s: "created", t: t.time }]).forEach(l => { const r = el("div", "tp-lg"); r.append(el("b", null, uName(l.u)), " " + (LOGTXT[l.s] || l.s), el("span", null, " · " + relTime(new Date(l.t)))); hist.append(r); });
@@ -2820,7 +2893,7 @@ function renderBadges() {
   document.querySelectorAll(".item[data-id]").forEach(it => {
     const n = unread[it.dataset.id] || 0; let bd = it.querySelector(".badge");
     it.classList.toggle("unread", n !== 0);
-    if (n !== 0) { if (!bd) { bd = el("span", "badge"); const d = it.querySelector(".del"); d ? it.insertBefore(bd, d) : it.append(bd); } bd.textContent = n < 0 ? "•" : n > 99 ? "99+" : n; }
+    if (n !== 0) { if (!bd) { bd = el("span", "badge"); const d = it.querySelector(".del"); d ? it.insertBefore(bd, d) : it.append(bd); } const txt = n < 0 ? "•" : n > 99 ? "99+" : String(n); if (bd.textContent !== txt) { bd.textContent = txt; if (bd._shown) { bd.style.animation = "none"; void bd.offsetWidth; bd.style.animation = ""; } bd._shown = true; } }
     else if (bd) bd.remove();
   });
   const vals = Object.values(unread), total = vals.reduce((a, b) => a + (b > 0 ? b : 0), 0), any = vals.some(v => v);
