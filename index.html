@@ -880,16 +880,35 @@ const uName = (uid, fb) => (usersMap[uid] && usersMap[uid].name) || fb || "Со�
 const isCEO = uid => { const u = usersMap[uid]; return u && u.name && u.name.startsWith("Gerchek"); };
 const isDM = id => !!id && id.startsWith("dm_");
 const isChan = id => !!id && id !== "ann" && id !== "feed" && id !== "tasks" && id !== "profile" && !id.startsWith("user:") && !isDM(id);
-const fmtTime = d => d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
-const fmtDay = d => d.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
+/* Форматтеры создаются один раз: toLocale*String на каждый вызов строит новый Intl-форматтер и очень медленный */
+const DF_TIME = new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit" });
+const DF_DAY = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long" });
+const DF_DM = new Intl.DateTimeFormat("ru-RU", { day: "2-digit", month: "2-digit" });
+const DF_SHORT = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "short" });
+const fmtTime = d => DF_TIME.format(d);
+const fmtDay = d => DF_DAY.format(d);
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
 function toast(t) { const o = $("toast"); if (o) o.remove(); const x = el("div", null, t); x.id = "toast"; document.body.append(x); setTimeout(() => x.remove(), 2400); }
+/* Фото профиля хранятся как длинные data:URL. Превращаем каждое один раз в короткий blob:URL,
+   чтобы браузер не разбирал ~100 КБ строки при каждой перерисовке аватарки */
+const photoCache = new Map();
+function photoSrc(p) {
+  if (!p || !p.startsWith("data:")) return p;
+  const key = p.length + ":" + p.slice(-48);
+  let v = photoCache.get(key);
+  if (!v) {
+    try { const i = p.indexOf(","), bin = atob(p.slice(i + 1)), arr = new Uint8Array(bin.length); for (let k = 0; k < bin.length; k++) arr[k] = bin.charCodeAt(k); v = URL.createObjectURL(new Blob([arr], { type: p.slice(5, p.indexOf(";")) || "image/jpeg" })); }
+    catch (e) { v = p; }
+    photoCache.set(key, v);
+  }
+  return v;
+}
 function avatar(uid, name, cls) {
   const a = el("div", "av" + (cls ? " " + cls : ""));
   const u = usersMap[uid];
   if (u && u.photoURL) {
     const img = document.createElement("img");
-    img.src = u.photoURL;
+    img.src = photoSrc(u.photoURL); img.decoding = "async";
     img.style.cssText = "width:100%;height:100%;object-fit:cover;display:block";
     img.onerror = () => { img.remove(); a.textContent = initials(name); a.style.background = color(uid); };
     a.append(img);
@@ -977,11 +996,11 @@ function start(user) {
   onSnapshot(query(collection(db, "users"), orderBy("name")), snap => {
     usersMap = {}; snap.forEach(d => usersMap[d.id] = d.data());
     if (!usersMap[me.uid]) setDoc(doc(db, "users", me.uid), { name: me.displayName, email: me.email || "" }, { merge: true }).catch(() => {});
-    renderSidebar(); renderMe(); checkInitialUnread();
+    sidebarIfChanged(); renderMe(); checkInitialUnread();
     if (current && current !== "profile" && !current.startsWith("user:")) { headerInfo(); rerender(); }
   });
   heartbeat(); setInterval(heartbeat, 60000);
-  setInterval(() => { renderSidebar(); if (current && current !== "profile" && !current.startsWith("user:")) headerInfo(); }, 30000);
+  setInterval(() => { sidebarIfChanged(); if (current && current !== "profile" && !current.startsWith("user:")) headerInfo(); }, 30000);
   setInterval(showTyping, 2000);
   bellState();
   maybeShowTour();
@@ -993,7 +1012,7 @@ function renderMe() {
   const a = $("meAv"); a.innerHTML = "";
   if (u.photoURL) {
     const img = document.createElement("img");
-    img.src = u.photoURL;
+    img.src = photoSrc(u.photoURL);
     img.style.cssText = "width:100%;height:100%;object-fit:cover;display:block";
     img.onerror = () => { img.remove(); a.textContent = initials(n); a.style.background = color(me.uid); };
     a.append(img);
@@ -1023,7 +1042,7 @@ function fmtListTime(t) {
   const d = new Date(t), y = new Date(); y.setDate(y.getDate() - 1);
   if (fmtDay(d) === fmtDay(new Date())) return fmtTime(d);
   if (fmtDay(d) === fmtDay(y)) return "вчера";
-  return d.toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit" });
+  return DF_DM.format(d);
 }
 function lastLine(id) {
   const w = watched[id]; if (!w || !w.last || !w.last.text) return "";
@@ -1055,6 +1074,13 @@ function setBackIcon() {
   $("findUser").placeholder = isMob() ? "Поиск" : "Поиск сотрудника…";
 }
 MOB.addEventListener("change", () => { if (!isMob()) $("app").classList.remove("chat"); setBackIcon(); renderSidebar(); });
+/* Перерисовываем боковую панель только если изменилось видимое: имена, должности, фото, «в сети» */
+let sideSig = "";
+function sidebarIfChanged() {
+  const sig = Object.entries(usersMap).map(([id, u]) => id + "|" + (u.name || "") + "|" + (u.position || "") + "|" + (u.photoURL ? u.photoURL.length : 0) + "|" + (isOnline(u) ? 1 : 0)).join(";");
+  if (sig === sideSig) return;
+  sideSig = sig; renderSidebar();
+}
 function renderSidebar() {
   if (!me) return;
   const ab = $("annBox"); ab.innerHTML = ""; const aic = el("span", "ic"); aic.innerHTML = ico("feed", 17); const ai = item("feed", "Лента", aic, { title: "Лента" }); ai.style.marginTop = "4px"; ab.append(ai);
@@ -2405,7 +2431,7 @@ function taskCounter() {
 }
 function fmtDL(v) {
   const d = new Date(v), now = new Date(), tm = new Date(); tm.setDate(tm.getDate() + 1);
-  const day = fmtDay(d) === fmtDay(now) ? "Сегодня" : fmtDay(d) === fmtDay(tm) ? "Завтра" : d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  const day = fmtDay(d) === fmtDay(now) ? "Сегодня" : fmtDay(d) === fmtDay(tm) ? "Завтра" : DF_SHORT.format(d);
   return day + ", " + fmtTime(d);
 }
 function dlClass(t) { if (!t.dl) return ""; if (t.status === "done") return "ok"; if (t.overdue) return "late"; if (t.dl - Date.now() < 86400000) return "soon"; return ""; }
