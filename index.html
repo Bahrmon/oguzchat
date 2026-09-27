@@ -40,6 +40,21 @@ button.link{background:none;border:none;color:var(--blue-l);padding:10px 0 0;fon
 #auth.shake{animation:shake .4s}
 .powered{font-size:11px;color:var(--muted);text-align:center;padding:0 0 14px;letter-spacing:.3px}
 .powered b{color:var(--blue);font-weight:600}
+#splash{position:fixed;inset:0;z-index:100;background:radial-gradient(120% 90% at 50% 38%,#164194 0%,#06306A 58%,#041F47 100%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .45s var(--ease),visibility .45s}
+html.boot #splash{display:flex!important}html.boot #auth{display:none!important}
+#splash.out{opacity:0;visibility:hidden;pointer-events:none}
+#splash.out .sp-c{transform:scale(1.04)}
+.sp-c{display:flex;flex-direction:column;align-items:center;transition:transform .45s var(--ease)}
+.sp-logo{width:88px;height:88px;border-radius:24px;overflow:hidden;box-shadow:0 18px 50px #0006,0 0 0 1px #ffffff1f;animation:spIn .8s var(--spring) both,spFloat 3.2s 1s ease-in-out infinite}
+.sp-logo img{width:100%;height:100%;display:block}
+.sp-name{font-family:Montserrat,sans-serif;font-weight:700;font-size:30px;letter-spacing:.3px;margin-top:22px;animation:fadeUp .7s .25s var(--ease) both}
+.sp-bar{width:180px;height:3px;border-radius:3px;background:#ffffff26;margin-top:30px;overflow:hidden;animation:fadeUp .6s .45s var(--ease) both}
+.sp-bar i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#8FB8FF,#fff);box-shadow:0 0 12px #ffffff80}
+.sp-st{font-size:12px;opacity:.6;margin-top:12px;height:16px;letter-spacing:.3px;animation:fadeUp .6s .55s var(--ease) both}
+.sp-pw{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));font-size:11px;letter-spacing:.4px;color:#ffffff73;animation:fadeUp .6s .7s var(--ease) both}
+.sp-pw b{color:#ffffffc0;font-weight:600}
+@keyframes spIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes spFloat{0%,100%{transform:none}50%{transform:translateY(-5px)}}
 #app{display:flex;width:100%;height:100vh;height:100dvh}
 #app.enter #side{animation:slideIn .45s var(--ease) both}
 #app.enter .item{animation:slideIn .4s var(--ease) both}
@@ -56,6 +71,33 @@ button.link{background:none;border:none;color:var(--blue-l);padding:10px 0 0;fon
 #side h3 button:hover{color:#fff;background:#ffffff1a}
 #findUser{margin:4px 12px 2px;width:calc(100% - 24px);padding:8px 12px;border-radius:9px;border:none;background:#ffffff14;color:#fff;outline:none;font-size:13px}
 #findUser::placeholder{color:#ffffff70}
+.fu-row{display:flex;gap:6px;align-items:center;margin:6px 12px 4px}
+.fu-row #findUser{margin:0;flex:1;min-width:0;width:auto}
+#newChan{flex-shrink:0;width:32px;height:32px;border:none;border-radius:9px;background:#ffffff14;color:#ffffffc0;display:grid;place-items:center;transition:background .15s,transform .15s var(--spring)}
+#newChan:hover{background:#ffffff26;color:#fff}#newChan:active{transform:scale(.9)}
+#plats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:2px 10px 4px}
+.plat{border:none;background:none;color:#ffffffa8;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 2px 7px;border-radius:12px;transition:background .15s,color .15s,transform .15s var(--spring)}
+.plat:hover{background:#ffffff12;color:#fff}.plat:active{transform:scale(.94)}
+.plat.on{background:#ffffff1c;color:#fff}
+.plat .pt{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;position:relative;background:#ffffff14;transition:box-shadow .2s}
+.plat .pt img{width:100%;height:100%;border-radius:11px;display:block}
+.plat.on .pt{box-shadow:0 0 0 2px #8FB8FF}
+.plat.locked .pt>svg{opacity:.5}
+.plk{position:absolute;right:-4px;bottom:-4px;width:17px;height:17px;border-radius:50%;background:#0B2553;color:#fff;display:grid;place-items:center;box-shadow:0 0 0 2px var(--side)}
+.plat .pn{font-size:10.5px;font-weight:500;white-space:nowrap}
+.plat .pb{position:absolute;top:-6px;right:-8px;background:#E53935;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;display:grid;place-items:center;padding:0 4px;box-shadow:0 0 0 2px var(--side)}
+.plock{margin:12px 12px;padding:22px 16px 18px;border-radius:14px;background:#ffffff0d;text-align:center;animation:fadeUp .35s var(--ease) both}
+.plock-i{width:60px;height:60px;border-radius:18px;background:#ffffff14;display:grid;place-items:center;margin:0 auto 12px;position:relative;color:#fff}
+.plock-i>svg{opacity:.75}
+.plock-i .plk{width:22px;height:22px;right:-5px;bottom:-5px}
+.plock-t{font-weight:600;font-size:15px}
+.plock-s{display:inline-block;margin:7px 0 9px;font-size:10.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:#E8A30026;color:#FFC857}
+.plock-x{font-size:12.5px;opacity:.65;line-height:1.45}
+.plock-b{margin-top:14px;border:none;background:#ffffff1a;color:#fff;border-radius:9px;padding:8px 14px;font-size:13px;font-weight:500;transition:background .15s}
+.plock-b:hover{background:#ffffff2a}
+.side-empty{font-size:12.5px;opacity:.5;padding:10px 20px}
+.item .tm{font-size:11px;opacity:.5;margin-left:4px;flex-shrink:0}
+.item>.chav{font-size:13px;font-weight:700}
 .item{display:flex;align-items:center;gap:10px;padding:7px 10px;margin:2px 8px;border-radius:10px;color:#ffffffd0;transition:background .12s,transform .12s;position:relative;overflow:hidden;cursor:pointer}
 .item:hover{background:#ffffff14;color:#fff}
 .item:active{transform:scale(.97)}
@@ -260,14 +302,30 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 .prof-top .av.on::after{width:14px;height:14px;right:-2px;bottom:-2px;border:2.5px solid #fff;background:#2ECC71;box-shadow:0 1px 3px #0004;z-index:3;animation:dotBlink 2.6s ease-in-out infinite}
 .prof-top .av.ceo::before{font-size:26px;top:-24px}
 .prof-top .pn{font-family:Montserrat,sans-serif;font-size:20px;font-weight:700}
-.prof-top .pp{opacity:.85;font-size:14px;margin-top:2px}
+.prof-top .pp{opacity:.85;font-size:14px;margin-top:2px;text-align:left;font-weight:500;white-space:normal}
 .prof-top .ps{opacity:.7;font-size:12px;margin-top:4px}
 .prof-body{padding:18px 24px 24px}
 .prof-body label{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px}
 .prof-body .inp[readonly]{background:var(--band);color:var(--muted)}
 .prof-line{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
-.prof-line .k{font-size:12px;color:var(--muted);width:90px;flex-shrink:0}
+.prof-line .k{font-size:12px;color:var(--muted);width:110px;flex-shrink:0}
 .prof-ok{font-size:13px;margin-top:10px;min-height:1.2em;text-align:center}
+.prof-sec{font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;color:var(--title);margin:26px 0 2px}
+.prof-body>.prof-sec:first-child,.prof-fill+.prof-sec,.prof-bday+.prof-sec{margin-top:12px}
+.prof-person .av.ceo::before{display:none}
+.prof-hint{font-size:12px;color:var(--muted);margin-top:2px}
+.prof-body textarea.inp{resize:vertical;min-height:70px}
+.prof-fill{background:var(--band);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--text);display:flex;flex-direction:column;gap:7px}
+.pf-bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.pf-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-l));border-radius:3px;transition:width .4s var(--ease)}
+.prof-fill.full .pf-bar i{background:#2E9E5B}
+.prof-bday{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#FFF4D6,#FFE3EC);color:#7A4B00;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:500;margin-bottom:6px}
+.prof-bday span:first-child{font-size:22px}
+[data-theme=dark] .prof-bday{background:linear-gradient(135deg,#3A2E12,#3A1E2A);color:#FFD98A}
+.prof-about{white-space:pre-wrap;font-size:14px;line-height:1.5;padding:12px 0;color:var(--text)}
+.prof-person{display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:var(--blue-l)}
+.prof-person .av{width:24px;height:24px;font-size:10px}
+.prof-person .av.on::after{width:9px;height:9px;border-width:1.5px;border-color:var(--card)}
 .seg{display:flex;background:var(--band);border-radius:10px;padding:3px;gap:3px}
 .seg button{flex:1;border:none;background:none;padding:8px;border-radius:8px;font-size:13px;color:var(--muted)}
 .seg button.on{background:var(--card);color:var(--title);font-weight:600;box-shadow:0 1px 3px #0002}
@@ -309,6 +367,24 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
   #side h3 button{color:var(--muted)}
   #findUser{background:var(--band);color:var(--text);margin:10px 12px 2px;padding:10px 14px;border-radius:12px;font-size:15px;width:calc(100% - 24px)}
   #findUser::placeholder{color:var(--muted)}
+  .fu-row{margin:6px 12px 2px}
+  .fu-row #findUser{margin:0;width:auto}
+  #newChan{width:42px;height:42px;border-radius:12px;background:var(--band);color:var(--title)}
+  #plats{margin:4px 10px 6px}
+  .plat{color:var(--muted)}.plat:hover{background:var(--hover);color:var(--text)}.plat.on{background:var(--band);color:var(--title)}
+  .plat .pt{width:46px;height:46px;border-radius:14px;background:var(--band);color:var(--title)}
+  .plat .pt img{border-radius:14px}
+  .plat.on .pt{box-shadow:0 0 0 2px var(--blue)}
+  .plat .pn{font-size:12px}
+  .plk{background:var(--title);color:var(--card);box-shadow:0 0 0 2px var(--card)}
+  .plat .pb{box-shadow:0 0 0 2px var(--card)}
+  .plock{background:var(--band);color:var(--text)}
+  .plock-i{background:var(--card);color:var(--title)}
+  .plock-t{color:var(--title)}
+  .plock-s{color:#9A6C00}
+  .plock-b{background:var(--blue);color:#fff}.plock-b:hover{background:var(--navy)}
+  .side-empty{color:var(--muted);opacity:1;padding:14px 18px}
+  .item>.chav{font-size:18px}
   .item{margin:0;border-radius:0;padding:9px 14px;gap:12px;color:var(--text);min-height:70px;overflow:visible}
   .item::after{content:"";position:absolute;left:76px;right:0;bottom:0;height:1px;background:var(--line);opacity:.55}
   .item:hover,.item:active{background:var(--hover);color:var(--text)}
@@ -527,6 +603,20 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 .post .vid{max-width:100%;margin-top:10px}
 .post .filecard{margin-top:10px}
 .post .poll{max-width:none;margin-top:8px;background:var(--band);border-radius:12px;padding:12px 14px}
+.sysav{background:none;overflow:hidden;border-radius:12px}.sysav img{border-radius:12px;width:100%;height:100%;display:block}
+.bday{position:relative;overflow:hidden;text-align:center;background:linear-gradient(135deg,#FFF1CC 0%,#FFE0EA 55%,#E3ECFF 100%);border-radius:16px;padding:26px 18px 20px;margin-bottom:10px}
+[data-theme=dark] .bday{background:linear-gradient(135deg,#3A2F10 0%,#3A1C2A 55%,#172747 100%)}
+.bday-conf{position:absolute;inset:0;pointer-events:none}
+.bday-conf span{position:absolute;font-size:20px;opacity:.7;animation:bdFloat 3.6s calc(var(--i) * -.6s) ease-in-out infinite}
+.bday-conf span:nth-child(1){left:7%;top:12%}.bday-conf span:nth-child(2){right:8%;top:10%}.bday-conf span:nth-child(3){left:4%;top:42%}
+.bday-conf span:nth-child(4){right:4%;top:38%}.bday-conf span:nth-child(5){left:27%;top:5%}.bday-conf span:nth-child(6){right:26%;top:7%}
+@keyframes bdFloat{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-7px) rotate(6deg)}}
+.bday .bday-av{width:84px;height:84px;font-size:28px;margin:0 auto;border:4px solid #fff;box-shadow:0 8px 24px #06306a26;cursor:pointer;animation:popIn .6s var(--spring) both}
+[data-theme=dark] .bday .bday-av{border-color:#ffffff30}
+.bday .bday-av.on::after{width:16px;height:16px;border-width:3px;border-color:#fff}
+.bday-t{position:relative;font-family:Montserrat,sans-serif;font-weight:700;font-size:20px;color:var(--title);margin-top:14px}
+.bday-s{position:relative;font-size:13px;color:var(--muted);margin-top:3px}
+.bday-x{position:relative;font-size:14px;color:var(--text);margin:12px auto 0;max-width:420px;line-height:1.45}
 .thx{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#E5467A14,#F2A90018);border-radius:14px;padding:14px 16px;margin-bottom:10px}
 .thx-e{font-size:40px;line-height:1;animation:popIn .5s var(--spring) both}
 .thx-t{font-family:Montserrat,sans-serif;font-weight:700;font-size:17px;color:var(--title);margin-bottom:6px}
@@ -575,6 +665,102 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 
 /* Задачи */
 #msgs.tasks{padding:16px 20px 20px}
+#msgs.staff{padding:16px 20px 24px}
+.st-top{max-width:1100px;margin:0 auto 14px;display:flex;flex-direction:column;gap:10px}
+.st-r1{display:flex;gap:8px;align-items:center}
+.st-tabs button{display:inline-flex;align-items:center;gap:6px}
+.st-r1 .st-add{margin-left:auto}
+.st-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.st-chips::-webkit-scrollbar{display:none}
+.st-chips .ff{display:inline-flex;align-items:center;gap:6px}
+.st-chips .ff b{font-size:11px;opacity:.7}
+.st-list,.org{max-width:1100px;margin:0 auto}
+.st-list.enter,.org.enter{animation:fadeUp .35s var(--ease) both}
+.st-bd{background:var(--card);border-radius:16px;padding:12px 14px;margin-bottom:14px;box-shadow:0 1px 3px #06306a0f}
+.st-bdh{display:flex;align-items:center;gap:7px;font-weight:600;font-size:13px;color:var(--title);margin-bottom:10px}
+.st-bdh svg{color:#E5467A}
+.st-bdr{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.st-bdr::-webkit-scrollbar{display:none}
+.st-bdc{display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:7px 12px 7px 8px;flex-shrink:0;text-align:left;transition:background .15s,transform .15s var(--spring)}
+.st-bdc:hover{background:var(--hover)}.st-bdc:active{transform:scale(.96)}
+.st-bdc .av{width:34px;height:34px;font-size:12px}
+.st-bdc .av.on::after{border-color:var(--card)}
+.st-bdc b{display:block;font-size:13px;font-weight:600;color:var(--title);white-space:nowrap}
+.st-bdc span{display:block;font-size:12px;color:var(--muted)}
+.st-bdc.today{background:linear-gradient(135deg,#FFF1CC,#FFE0EA);border-color:transparent}
+.st-bdc.today span{color:#B5541C;font-weight:600}
+[data-theme=dark] .st-bdc.today{background:linear-gradient(135deg,#3A2F10,#3A1C2A)}
+[data-theme=dark] .st-bdc.today span{color:#FFC857}
+.st-cnt{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:2px 2px 8px}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.st-grid .empty{grid-column:1/-1;margin-top:8vh}
+.emp{background:var(--card);border-radius:16px;padding:14px;box-shadow:0 1px 3px #06306a0f;cursor:pointer;display:flex;flex-direction:column;gap:9px;transition:transform .18s var(--ease),box-shadow .18s}
+.emp:hover{transform:translateY(-2px);box-shadow:0 8px 22px #06306a1a}
+.emp-h{display:flex;align-items:center;gap:11px;min-width:0}
+.emp-h .av{width:46px;height:46px;font-size:16px}
+.emp-h .av.on::after{width:12px;height:12px;border-color:var(--card)}
+.emp-w{min-width:0;flex:1}
+.emp-n{font-weight:600;font-size:15px;color:var(--title);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.emp-me{font-size:10.5px;font-weight:700;background:var(--band);color:var(--muted);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+.emp-p{font-size:13px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.emp-d{align-self:flex-start;font-size:12px;font-weight:600;color:var(--blue);background:#16419412;border-radius:8px;padding:3px 9px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+[data-theme=dark] .emp-d{color:#8FB0FF;background:#8FB0FF1a}
+.emp-ls{display:flex;flex-direction:column;gap:5px}
+.emp-l{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);text-decoration:none;min-width:0}
+.emp-l svg{flex-shrink:0;color:var(--muted)}
+.emp-l span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+a.emp-l:hover span{color:var(--blue-l);text-decoration:underline}
+.emp-l.hot{color:#B5541C;font-weight:600}.emp-l.hot svg{color:#E5467A}
+.emp-a{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:9px;border-top:1px solid var(--line)}
+.emp-b{display:inline-flex;align-items:center;gap:6px;border:none;background:var(--band);color:var(--title);font-size:13px;font-weight:600;border-radius:9px;padding:6px 11px;transition:background .15s,transform .15s var(--spring)}
+.emp-b:hover{background:var(--hover)}.emp-b:active{transform:scale(.95)}
+.emp-st{margin-left:auto;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.emp-st.on{color:#2E9E5B;font-weight:600}
+.org{display:flex;flex-direction:column;gap:12px}
+.org-card{background:var(--card);border-radius:16px;padding:12px 14px;box-shadow:0 1px 3px #06306a0f}
+.org-root{background:linear-gradient(135deg,#06306A,#164194);color:#fff}
+.org-ch{display:flex;align-items:center;gap:11px}
+.org-ch .sysav{width:40px;height:40px}
+.org-ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff;flex-shrink:0;background:var(--muted)}
+.org-tw{flex:1;min-width:0}
+.org-t{font-weight:700;font-size:15px;color:var(--title);font-family:Montserrat,sans-serif}
+.org-root .org-t{color:#fff;font-size:17px}
+.org-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.org-root .org-sub{color:#ffffffb0}
+.org-ib{width:32px;height:32px;border:none;border-radius:9px;background:var(--band);color:var(--muted);display:grid;place-items:center;flex-shrink:0;transition:background .15s,color .15s,transform .15s var(--spring)}
+.org-ib:hover{color:var(--title);background:var(--hover)}.org-ib:active{transform:scale(.9)}
+.org-root .org-ib{background:#ffffff1f;color:#fff}.org-root .org-ib:hover{background:#ffffff33}
+.org-ppl{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.org-p{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:5px 11px 5px 5px;text-align:left;max-width:100%;transition:background .15s,transform .15s var(--spring)}
+.org-p:hover{background:var(--hover)}.org-p:active{transform:scale(.96)}
+.org-p .av{width:30px;height:30px;font-size:11px}
+.org-p .av.on::after{width:10px;height:10px;border-color:var(--card)}
+.org-p .av.ceo::before{font-size:10px;top:-9px}
+.org-pw{min-width:0}
+.org-pw b{display:block;font-size:13px;font-weight:600;color:var(--title);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.org-pw span{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.org-p.head{border-color:#16419440;background:#1641940d}
+.org-p.head .org-pw span{color:var(--blue);font-weight:600}
+[data-theme=dark] .org-p.head .org-pw span{color:#8FB0FF}
+.org-root .org-p{background:#ffffff14;border-color:#ffffff26}
+.org-root .org-p .org-pw b{color:#fff}.org-root .org-p .org-pw span{color:#ffffffc0}
+.org-root .org-p .av.on::after{border-color:#164194}
+.org-root .org-p.head .org-pw span{color:#ffffffc0}
+.org-kids{display:flex;flex-direction:column;gap:10px;margin-left:18px;padding-left:18px;border-left:2px solid var(--line);position:relative}
+.org>.org-kids{margin-top:-2px}
+.org-node{position:relative;display:flex;flex-direction:column;gap:10px}
+.org-node>.org-card{position:relative}
+.org-node>.org-card::before{content:"";position:absolute;left:-20px;top:28px;width:18px;height:2px;background:var(--line)}
+.org-none{font-size:13px;color:var(--muted);padding:4px 2px}
+.org-empty{background:var(--card);border-radius:16px;padding:32px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted)}
+.org-empty svg{color:var(--blue);opacity:.7;margin-bottom:4px}
+.org-empty b{color:var(--title);font-size:15px}
+.org-empty span{font-size:13.5px;max-width:420px;line-height:1.45}
+.org-empty .tk-add{margin-top:12px}
+.org-unas{border:1px dashed var(--line);box-shadow:none;background:transparent}
+.org-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
+.org-dlg .org-del{margin-top:16px}
+.org-dlg .tk-aud{margin-top:2px}
 .tk-top{max-width:1100px;margin:0 auto 12px;display:flex;flex-direction:column;gap:10px}
 .tk-r1{display:flex;gap:8px;align-items:center}
 .tk-add{display:inline-flex;align-items:center;gap:6px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:14px;padding:9px 16px;border-radius:10px;white-space:nowrap;transition:transform .15s var(--spring)}
@@ -741,6 +927,14 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 .tk-pres button:hover{color:var(--title);border-color:var(--blue)}
 @media (max-width:760px){
   #msgs.tasks{padding:10px 10px 16px}
+  #msgs.staff{padding:10px 10px 18px}
+  .st-r1 .st-tabs{margin-left:0}
+  .st-r1{flex-wrap:wrap}
+  .st-r1 .st-search{order:3;flex-basis:100%}
+  .st-grid{grid-template-columns:1fr;gap:10px}
+  .emp:hover{transform:none}
+  .org-kids{margin-left:8px;padding-left:12px}
+  .org-node>.org-card::before{left:-14px;width:12px}
   .tk-r1{flex-wrap:wrap}.tk-add{order:0}.tk-view{margin-left:auto}.tk-search{order:3;flex-basis:100%}
   .tk-done{display:none}
   .tk-row{flex-wrap:wrap;padding:12px;gap:8px 10px}
@@ -820,6 +1014,8 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 </head>
 <body>
 
+<div id="splash" class="hidden"><div class="sp-c"><div class="sp-logo"><img id="spImg" alt="OguzChat"></div><div class="sp-name">OguzChat</div><div class="sp-bar"><i id="spBar"></i></div><div class="sp-st" id="spSt"></div></div><div class="sp-pw">Powered by <b>Bahramon</b></div></div>
+<script>try { if (localStorage.getItem("oc-authed")) document.documentElement.classList.add("boot"); } catch (e) {}</script>
 <div id="auth">
   <div class="top"><div class="brand">OguzChat</div><div class="sub">Oguz Forum &amp; Expo — внутренний чат</div></div>
   <div class="body">
@@ -843,11 +1039,15 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
     <div class="logo"><span class="mark"><img src="data:image/png;base64,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" alt="OguzChat"></span><span class="grow">OguzChat</span><button class="iconbtn" id="themeBtn" title="Тема"></button></div>
     <div class="scroll">
       <div id="annBox"></div>
-      <h3><span id="chH">Каналы</span> <button id="newChan" title="Новый канал"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></h3>
-      <div id="channels"></div>
-      <h3><span id="usH">Сотрудники</span> <span id="onlineCnt" style="margin-left:6px;text-transform:none;letter-spacing:0;font-weight:500"></span></h3>
-      <input id="findUser" placeholder="Поиск сотрудника…">
-      <div id="users"></div>
+      <h3 id="msH"><span>Мессенджеры и почта</span></h3>
+      <div id="plats"></div>
+      <div id="platBody">
+        <div class="fu-row"><input id="findUser" placeholder="Поиск чатов и коллег…"><button id="newChan" title="Новый канал"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <div id="channels"></div>
+        <h3 id="usHw" class="hidden"><span id="usH">Коллеги</span> <span id="onlineCnt" style="margin-left:6px;text-transform:none;letter-spacing:0;font-weight:500"></span></h3>
+        <div id="users"></div>
+      </div>
+      <div id="platLock" class="hidden"></div>
     </div>
     <div id="me" title="Мой профиль"><div class="av" id="meAv"></div><div class="nmw"><span class="nm" id="meName"></span><span class="sub" id="mePos"></span></div><button id="logout">Выйти</button></div>
     <div class="powered">Powered by <b>Bahramon</b></div>
@@ -885,12 +1085,13 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
     </form>
   </div>
 </div>
+<script>document.getElementById("spImg").src = document.querySelector("#side .logo .mark img").src;</script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, sendPasswordResetEmail }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, limit, limitToLast, onSnapshot, serverTimestamp, arrayUnion, arrayRemove, FieldPath, deleteField }
+import { getFirestore, collection, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, limit, limitToLast, onSnapshot, serverTimestamp, arrayUnion, arrayRemove, FieldPath, deleteField }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -948,6 +1149,17 @@ window.ICONS = {
   plus:    SVG('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',16),
   clock:   SVG('<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>',12),
   trash:   SVG('<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',14),
+  users:   SVG('<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',17),
+  mail:    SVG('<rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><polyline points="3 6.5 12 13 21 6.5"/>',18),
+  phoneChat:SVG('<path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3.5 21l1.4-4.6A8.5 8.5 0 1 1 21 12z"/><line x1="8.5" y1="12" x2="8.51" y2="12"/><line x1="12.5" y1="12" x2="12.51" y2="12"/><line x1="16.5" y1="12" x2="16.51" y2="12"/>',18),
+  plane:   SVG('<path d="M21.5 3.5 2.8 10.7c-.8.3-.8 1.4.1 1.6l4.6 1.4 1.8 5.6c.2.7 1.1.9 1.6.3l2.6-2.6 4.6 3.4c.6.4 1.4.1 1.6-.6l3-15.2c.2-.8-.6-1.4-1.3-1.1z"/><line x1="7.5" y1="13.7" x2="18" y2="6.5"/>',18),
+  lock:    SVG('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',12),
+  org:     SVG('<rect x="9" y="2.5" width="6" height="5" rx="1.2"/><rect x="2.5" y="16.5" width="6" height="5" rx="1.2"/><rect x="15.5" y="16.5" width="6" height="5" rx="1.2"/><path d="M12 7.5v4.5M5.5 16.5V12h13v4.5"/>',16),
+  list:    SVG('<line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',16),
+  cake:    SVG('<path d="M4 21V13a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8"/><path d="M4 16c1.3 0 1.3 1 2.7 1s1.3-1 2.6-1 1.4 1 2.7 1 1.3-1 2.7-1 1.3 1 2.6 1S19 16 20 16"/><line x1="2" y1="21" x2="22" y2="21"/><path d="M12 11V7"/><path d="M12 3.5c.8.9 1 1.6.5 2.3a.7.7 0 0 1-1 0c-.5-.7-.3-1.4.5-2.3z"/>',16),
+  phone:   SVG('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>',14),
+  pinMap:  SVG('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',14),
+  chevR:   SVG('<polyline points="9 18 15 12 9 6"/>',14),
 };
 const ico = (n, sz) => ICONS[n].replace(/width="\d+" height="\d+"/, `width="${sz}" height="${sz}"`);
 // Setup password toggle
@@ -979,7 +1191,7 @@ const isOnline = u => !!u && Date.now() - ms(u.lastSeen) < 150000;
 const uName = (uid, fb) => (usersMap[uid] && usersMap[uid].name) || fb || "Сотрудник";
 const isCEO = uid => { const u = usersMap[uid]; return u && u.name && u.name.startsWith("Gerchek"); };
 const isDM = id => !!id && id.startsWith("dm_");
-const isChan = id => !!id && id !== "ann" && id !== "feed" && id !== "tasks" && id !== "profile" && !id.startsWith("user:") && !isDM(id);
+const isChan = id => !!id && id !== "ann" && id !== "feed" && id !== "tasks" && id !== "profile" && id !== "staff" && id !== "org" && !id.startsWith("user:") && !isDM(id);
 /* Форматтеры создаются один раз: toLocale*String на каждый вызов строит новый Intl-форматтер и очень медленный */
 const DF_TIME = new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit" });
 const DF_DAY = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long" });
@@ -1073,21 +1285,60 @@ $("forgot").onclick = async () => {
   try { await sendPasswordResetEmail(auth, email); $("err").style.color = "#2E7D32"; $("err").textContent = "Письмо для сброса пароля отправлено на " + email; }
   catch (e) { authErr(e); }
 };
-$("logout").onclick = e => { e.stopPropagation(); signOut(auth).then(() => location.reload()); };
+$("logout").onclick = e => { e.stopPropagation(); try { localStorage.removeItem("oc-authed"); } catch (x) {} signOut(auth).then(() => location.reload()); };
 onAuthStateChanged(auth, user => {
   if (user && user.displayName) start(user);
-  else if (!user) { $("app").classList.add("hidden"); $("auth").classList.remove("hidden"); }
+  else if (!user) { splashAbort(); $("app").classList.add("hidden"); $("auth").classList.remove("hidden"); }
 });
+
+/* ---------- загрузочный экран ----------
+   Держится минимум 3.5 с; под ним уже идёт настоящая загрузка (каналы, сотрудники, задачи).
+   Если за 3.5 с данные не пришли — полоска замирает около 90% и ждёт (но не дольше 12 с). */
+const SPLASH_MS = 3500, SPLASH_MAX = 12000;
+const SP_STEPS = [[0, "Подключение…"], [.3, "Загрузка чатов…"], [.6, "Синхронизация…"], [.88, "Почти готово"]];
+const splash = { on: false, t0: 0, need: new Set(["chans", "users"]), raf: 0, shown: 0 };
+function splashShow() {
+  if (splash.on) return;
+  splash.on = true;
+  const booted = document.documentElement.classList.contains("boot");
+  splash.t0 = booted ? 0 : performance.now();
+  $("splash").classList.remove("hidden", "out"); document.documentElement.classList.add("boot");
+  const tick = () => {
+    const t = performance.now() - splash.t0, ready = !splash.need.size;
+    let p = Math.min(1, t / SPLASH_MS);
+    if (!ready) p = Math.min(p, .9 + Math.min(.06, (t - SPLASH_MS) / 60000));
+    if (ready && t >= SPLASH_MS) p = 1;
+    $("spBar").style.width = (p * 100).toFixed(1) + "%";
+    const st = SP_STEPS.filter(s => p >= s[0]).pop()[1]; if ($("spSt").textContent !== st) $("spSt").textContent = st;
+    if ((ready && t >= SPLASH_MS) || t >= SPLASH_MAX) { splash.raf = 0; setTimeout(splashDone, 180); return; }
+    splash.raf = requestAnimationFrame(tick);
+  };
+  splash.raf = requestAnimationFrame(tick);
+}
+function splashReady(part) { splash.need.delete(part); }
+function splashDone() {
+  const s = $("splash"); s.classList.add("out");
+  const app = $("app"); app.classList.add("enter"); setTimeout(() => app.classList.remove("enter"), 700);
+  setTimeout(() => { s.classList.add("hidden"); document.documentElement.classList.remove("boot"); splash.on = false; maybeShowTour(); }, 460);
+}
+function splashAbort() {
+  if (splash.raf) cancelAnimationFrame(splash.raf);
+  splash.on = false; $("splash").classList.add("hidden"); document.documentElement.classList.remove("boot");
+  try { localStorage.removeItem("oc-authed"); } catch (x) {}
+}
 
 /* ---------- запуск ---------- */
 function start(user) {
   me = user;
-  if ($("app").classList.contains("hidden")) { $("app").classList.add("enter"); setTimeout(() => $("app").classList.remove("enter"), 700); }
+  if (!started) { try { localStorage.setItem("oc-authed", "1"); } catch (x) {} splashShow(); }
   $("auth").classList.add("hidden"); $("app").classList.remove("hidden");
   if (started) return; started = true;
   renderMe(); subTasks();
   onSnapshot(query(collection(db, "channels"), orderBy("name")), snap => {
-    channelsList = snap.docs.filter(d => d.id !== "feed" && d.id !== "tasks").map(d => ({ id: d.id, ...d.data() })).filter(c => !c.members || c.members.includes(me.uid));
+    const od = snap.docs.find(d => d.id === ORG); orgData = od ? od.data() : {};
+    channelsList = snap.docs.filter(d => d.id !== "feed" && d.id !== "tasks" && d.id !== ORG).map(d => ({ id: d.id, ...d.data() })).filter(c => !c.members || c.members.includes(me.uid));
+    splashReady("chans");
+    if (current === STAFF) renderStaff();
     renderSidebar();
     if (isChan(current) && !channelsList.some(c => c.id === current)) current = null;
     if (!current) {
@@ -1098,6 +1349,8 @@ function start(user) {
   onSnapshot(query(collection(db, "users"), orderBy("name")), snap => {
     usersMap = {}; snap.forEach(d => usersMap[d.id] = d.data());
     if (!usersMap[me.uid]) setDoc(doc(db, "users", me.uid), { name: me.displayName, email: me.email || "" }, { merge: true }).catch(() => {});
+    splashReady("users"); checkBirthdays();
+    if (current === STAFF) renderStaff();
     sidebarIfChanged(); renderMe(); checkInitialUnread();
     if (current && current !== "profile" && !current.startsWith("user:")) { headerInfo(); rerender(); }
   });
@@ -1105,7 +1358,6 @@ function start(user) {
   setInterval(() => { sidebarIfChanged(); if (current && current !== "profile" && !current.startsWith("user:")) headerInfo(); }, 30000);
   setInterval(showTyping, 2000);
   bellState();
-  maybeShowTour();
 }
 function heartbeat() { if (me && !document.hidden) setDoc(doc(db, "users", me.uid), { lastSeen: serverTimestamp() }, { merge: true }).catch(() => {}); }
 function renderMe() {
@@ -1174,7 +1426,7 @@ function setBackIcon() {
     ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
     : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>';
   $("menuBtn").title = isMob() ? "Назад" : "Меню";
-  $("findUser").placeholder = isMob() ? "Поиск" : "Поиск сотрудника…";
+  $("findUser").placeholder = isMob() ? "Поиск" : "Поиск чатов и коллег…";
 }
 MOB.addEventListener("change", () => { if (!isMob()) $("app").classList.remove("chat"); setBackIcon(); renderSidebar(); });
 /* Перерисовываем боковую панель только если изменилось видимое: имена, должности, фото, «в сети» */
@@ -1184,56 +1436,76 @@ function sidebarIfChanged() {
   if (sig === sideSig) return;
   sideSig = sig; renderSidebar();
 }
+/* Мессенджеры и почта: переключатель платформ. Пока работает только OguzChat, остальные — «в замке». */
+const PLATS = [
+  { k: "oguz", name: "OguzChat" },
+  { k: "mail", name: "Mail", lock: true, title: "Корпоративная почта", text: "Скоро здесь можно будет читать и отвечать на письма корпоративной почты прямо в OguzChat." },
+  { k: "wa", name: "WhatsApp", lock: true, title: "WhatsApp", text: "Интеграция с WhatsApp появится в одном из следующих обновлений." },
+  { k: "tg", name: "Telegram", lock: true, title: "Telegram", text: "Интеграция с Telegram появится в одном из следующих обновлений." },
+];
+let platform = "oguz";
+function platIcon(k, sz) {
+  if (k === "oguz") { const i = el("img"); i.src = document.querySelector("#side .logo .mark img").src; i.alt = ""; return i; }
+  const s = el("span"); s.innerHTML = ico({ mail: "mail", wa: "phoneChat", tg: "plane" }[k], sz || 18); return s.firstChild;
+}
+function renderPlats() {
+  const box = $("plats"); box.innerHTML = "";
+  PLATS.forEach(p => {
+    const b = el("button", "plat" + (p.k === platform ? " on" : "") + (p.lock ? " locked" : "")); b.type = "button"; b.dataset.p = p.k; b.title = p.lock ? p.name + " — скоро" : p.name;
+    const t = el("span", "pt"); t.append(platIcon(p.k));
+    if (p.lock) { const l = el("span", "plk"); l.innerHTML = ico("lock", 10); t.append(l); }
+    b.append(t, el("span", "pn", p.name));
+    b.onclick = () => { if (platform === p.k) return; platform = p.k; renderSidebar(); };
+    box.append(b);
+  });
+}
 function renderSidebar() {
   if (!me) return;
-  const ab = $("annBox"); ab.innerHTML = ""; const aic = el("span", "ic"); aic.innerHTML = ico("feed", 17); const ai = item("feed", "Лента", aic, { title: "Лента" }); ai.style.marginTop = "4px"; ab.append(ai);
+  const ab = $("annBox"); ab.innerHTML = ""; const aic = el("span", "ic"); aic.innerHTML = ico("feed", 17); const ai = item("feed", "Лента", aic, { title: "Лента", sub: isMob() ? "Новости компании" : "" }); ai.style.marginTop = "4px"; ab.append(ai);
   const tic = el("span", "ic"); tic.innerHTML = ico("tasks", 17); ab.append(item(TASKS, "Задачи", tic, { title: "Задачи", sub: isMob() ? "Поручения и сроки" : "" }));
-  if (isMob()) return renderMobileList();
-  $("chH").textContent = "Каналы"; $("usH").textContent = "Сотрудники";
-  const ch = $("channels"); ch.innerHTML = "";
-  channelsList.forEach(c => ch.append(item(c.id, c.name, "#", {
-    title: "# " + c.name,
-    onDel: (me.uid === ADMIN || c.owner === me.uid) ? async it => {
-      if (!confirm("Удалить канал «" + c.name + "»? Его сообщения больше не будут видны.")) return;
-      it.style.transition = "all .25s"; it.style.opacity = "0"; it.style.transform = "translateX(-20px)";
-      try { await deleteDoc(doc(db, "channels", c.id)); } catch (e) { toast("Не удалось удалить: " + e.code); it.style.opacity = ""; it.style.transform = ""; }
-    } : null
-  })));
-  const us = $("users"); us.innerHTML = "";
-  const q = $("findUser").value.trim().toLowerCase();
-  const dmLastT = uid => { const w = watched["dm_" + [me.uid, uid].sort().join("_")]; return w && w.t ? w.t : 0; };
-  const list = Object.entries(usersMap).filter(([uid]) => uid !== me.uid)
-    .sort((a, b) => { const td = dmLastT(b[0]) - dmLastT(a[0]); return td !== 0 ? td : (isOnline(b[1]) - isOnline(a[1])) || (a[1].name || "").localeCompare(b[1].name || ""); });
-  let online = 0;
-  list.forEach(([uid, u]) => {
-    if (isOnline(u)) online++;
-    if (q && !((u.name || "") + " " + (u.position || "") + " " + (u.department || "")).toLowerCase().includes(q)) return;
-    const id = "dm_" + [me.uid, uid].sort().join("_");
-    us.append(item(id, u.name || "—", avatar(uid, u.name), { title: u.name, sub: u.position }));
-  });
-  $("onlineCnt").textContent = online ? "· " + online + " в сети" : "";
-  renderBadges();
-}
-function renderMobileList() {
-  $("chH").textContent = "Чаты"; $("usH").textContent = "Сотрудники";
-  const ch = $("channels"), us = $("users"); ch.innerHTML = ""; us.innerHTML = "";
+  const sic = el("span", "ic"); sic.innerHTML = ico("users", 17); ab.append(item(STAFF, "Сотрудники", sic, { title: "Сотрудники", sub: isMob() ? "Контакты и структура компании" : "" }));
+  renderPlats();
+  const p = PLATS.find(x => x.k === platform), lock = $("platLock");
+  $("platBody").classList.toggle("hidden", !!p.lock); lock.classList.toggle("hidden", !p.lock);
+  const ch = $("channels"), us = $("users");
   const q = $("findUser").value.trim().toLowerCase(), chats = [], contacts = [];
   const lastT = id => (watched[id] && watched[id].t) || 0;
   channelsList.forEach(c => {
     if (q && !c.name.toLowerCase().includes(q)) return;
-    chats.push({ t: lastT(c.id), build: () => { const av = el("div", "av chav", "#"); av.style.background = color(c.id); return item(c.id, c.name, av, { title: "# " + c.name, sub: lastLine(c.id) || "Канал", time: lastT(c.id) }); } });
+    chats.push({ t: lastT(c.id), build: () => {
+      const av = el("div", "av chav", c.taskChat ? "" : "#"); av.style.background = color(c.id);
+      if (c.taskChat) av.innerHTML = ico("tasks", isMob() ? 20 : 14);
+      return item(c.id, c.name, av, {
+        title: (c.taskChat ? "" : "# ") + c.name, sub: lastLine(c.id) || (c.taskChat ? "Чат задачи" : "Канал"), time: lastT(c.id),
+        onDel: (me.uid === ADMIN || c.owner === me.uid) ? async it => {
+          if (!confirm("Удалить канал «" + c.name + "»? Его сообщения больше не будут видны.")) return;
+          it.style.transition = "all .25s"; it.style.opacity = "0"; it.style.transform = "translateX(-20px)";
+          try { await deleteDoc(doc(db, "channels", c.id)); } catch (e) { toast("Не удалось удалить: " + e.code); it.style.opacity = ""; it.style.transform = ""; }
+        } : null
+      });
+    } });
   });
   let online = 0;
   Object.entries(usersMap).filter(([uid]) => uid !== me.uid).forEach(([uid, u]) => {
-    if (isOnline(u)) online++;
-    if (q && !((u.name || "") + " " + (u.position || "")).toLowerCase().includes(q)) return;
     const id = "dm_" + [me.uid, uid].sort().join("_"), t = lastT(id);
+    watch(id);
+    if (isOnline(u)) online++;
+    if (q && !((u.name || "") + " " + (u.position || "") + " " + (u.department || "")).toLowerCase().includes(q)) return;
     const e = { t, u, build: () => item(id, u.name || "—", avatar(uid, u.name), { title: u.name, sub: t ? lastLine(id) : (u.position || lastSeenText(u) || ""), time: t }) };
-    (t ? chats : contacts).push(e);
+    if (t || isDM(current) && current === id) chats.push(e); else if (q) contacts.push(e);
   });
+  if (p.lock) {
+    lock.innerHTML = "";
+    const w = el("div", "plock"), ic = el("div", "plock-i"); ic.append(platIcon(p.k, 30)); const l = el("span", "plk"); l.innerHTML = ico("lock", 13); ic.append(l);
+    const back = el("button", "plock-b", "Вернуться в OguzChat"); back.type = "button"; back.onclick = () => { platform = "oguz"; renderSidebar(); };
+    w.append(ic, el("div", "plock-t", p.title), el("div", "plock-s", "Скоро"), el("div", "plock-x", p.text), back); lock.append(w);
+    renderBadges(); return;
+  }
+  ch.innerHTML = ""; us.innerHTML = "";
   chats.sort((a, b) => b.t - a.t).forEach(x => ch.append(x.build()));
+  if (!chats.length) ch.append(el("div", "side-empty", q ? "Чатов не найдено" : "Чатов пока нет"));
   contacts.sort((a, b) => (isOnline(b.u) - isOnline(a.u)) || (a.u.name || "").localeCompare(b.u.name || "")).forEach(x => us.append(x.build()));
-  $("usH").parentElement.classList.toggle("hidden", !contacts.length);
+  $("usHw").classList.toggle("hidden", !contacts.length);
   $("onlineCnt").textContent = online ? "· " + online + " в сети" : "";
   renderBadges();
 }
@@ -1253,7 +1525,7 @@ function msgsRef(id) {
 }
 function convRef(id) { return isDM(id) ? doc(db, "dms", id) : isChan(id) ? doc(db, "channels", id) : null; }
 function dmPeer(id) { return id.slice(3).split("_").find(x => x !== me.uid) || me.uid; }
-function stopConv() { if (rec) recFinish(false); stopVoice(); document.querySelectorAll(".amenu,.pmenu").forEach(x => x.remove()); $("msgs").classList.remove("loading", "feed", "tasks"); if (taskOpenId) closeTask(); if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } if (unsubConv) { unsubConv(); unsubConv = null; } lastSnap = null; convData = {}; msgLimit = 80; const tb = $("toBottom"); if (tb) tb.remove(); }
+function stopConv() { if (rec) recFinish(false); stopVoice(); document.querySelectorAll(".amenu,.pmenu").forEach(x => x.remove()); $("msgs").classList.remove("loading", "feed", "tasks", "staff"); if (taskOpenId) closeTask(); if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } if (unsubConv) { unsubConv(); unsubConv = null; } lastSnap = null; convData = {}; msgLimit = 80; const tb = $("toBottom"); if (tb) tb.remove(); }
 function titleAnim() { const e = $("title"); e.classList.remove("switch"); void e.offsetWidth; e.classList.add("switch"); }
 function msgsAnim() { const e = $("msgs"); e.classList.remove("loading", "switch"); void e.offsetWidth; e.classList.add("switch"); }
 function switchAnim() { for (const e of [$("title"), $("msgs")]) { e.classList.remove("switch"); void e.offsetWidth; e.classList.add("switch"); } }
@@ -1264,6 +1536,7 @@ function highlightNav() {
 function open(id) {
   if (id === "profile") return showProfile(me.uid);
   if (id.startsWith("user:")) return showProfile(id.slice(5));
+  if (id === STAFF) return showStaff();
   stopConv(); cancelBar(); closeSearch(true); cancelMotion(); closeMenu(); if (selectMode) exitSelect();
   current = id; seen = null; rowCache = new Map(); settled = false; pinned = true;
   clearTimeout(settleTimer); settleTimer = setTimeout(() => { settled = true; }, 2500);
@@ -1305,6 +1578,7 @@ function headerInfo() {
   else if (current === "ann") sub.textContent = "Видят все сотрудники";
   else if (current === FEED) sub.textContent = "Новости, опросы и благодарности компании";
   else if (current === TASKS) sub.textContent = "Поручения, сроки и контроль";
+  else if (current === STAFF) { const all = Object.values(usersMap).filter(u => u.name), on = all.filter(isOnline).length; sub.textContent = all.length + " в компании" + (on ? " · " + on + " в сети" : ""); }
   else sub.textContent = "";
 }
 
@@ -2364,7 +2638,7 @@ function renderFeed() {
   if (annSnap) annSnap.docs.forEach(d => posts.push({ id: d.id, m: d.data(), legacy: true }));
   posts.forEach(p => { p.t = p.m.time ? ms(p.m.time) : Date.now(); p.kind = p.legacy ? "important" : (p.m.kind || "post"); });
   posts.sort((a, b) => (!!b.m.pinned - !!a.m.pinned) || b.t - a.t);
-  const f = feedFilter, list = posts.filter(p => f === "all" || (f === "mine" ? p.m.uid === me.uid : p.kind === f));
+  const f = feedFilter, list = posts.filter(p => f === "all" || (f === "mine" ? p.m.uid === me.uid && !p.m.sys : p.kind === f));
   const nodes = [feedTop], cache = new Map();
   const ae = document.activeElement, aeArt = ae && ae.closest && ae.closest(".post"), aeKey = aeArt && aeArt.dataset.key, sel = aeKey ? [ae.selectionStart, ae.selectionEnd] : null;
   list.forEach(p => {
@@ -2390,17 +2664,36 @@ async function feedWrite(fn) {
     feedErr(e);
   }
 }
+/* Дни рождения: первый клиент, открывший приложение в этот день, создаёт поздравление в Ленте.
+   Id документа фиксированный (bday_<uid>_<год>), поэтому пост появляется ровно один раз. */
+const bdayDone = new Set();
+function checkBirthdays() {
+  const now = new Date(), y = now.getFullYear();
+  Object.entries(usersMap).forEach(([uid, u]) => {
+    if (!isBdayToday(u.birthday, now)) return;
+    const id = "bday_" + uid + "_" + y; if (bdayDone.has(id)) return; bdayDone.add(id);
+    const ref = doc(msgsRef(FEED), id);
+    getDoc(ref).then(d => { if (d.exists()) return; return feedWrite(() => setDoc(ref, { kind: "bday", sys: true, bdayOf: uid, bdayName: u.name || "", text: "", uid: me.uid, name: uName(me.uid, me.displayName), time: serverTimestamp() })); }).catch(() => {});
+  });
+}
 function buildPost(p) {
   const { id, m, legacy } = p, kind = legacy ? "ann" : p.kind, u = usersMap[m.uid] || {}, dt = new Date(p.t);
   const c = el("article", "post k-" + kind + (m.pinned ? " pinned" : ""));
   const ref = legacy ? null : doc(msgsRef(FEED), id);
   if (m.pinned) { const pl = el("div", "ppin"); pl.innerHTML = ico("pin", 12); pl.append(el("span", null, "Закреплено")); c.append(pl); }
-  const h = el("div", "post-h"), av = avatar(m.uid, u.name || m.name); av.onclick = () => open("user:" + m.uid);
-  const who = el("div", "pwho"), nm = el("div", "pnm", u.name || m.name || "Сотрудник"); nm.onclick = () => open("user:" + m.uid);
-  if (isCEO(m.uid)) nm.append(el("span", "badge-ceo", " 👑"));
-  who.append(nm, el("div", "pdt", [u.position, relTime(dt)].filter(Boolean).join(" · ")));
-  h.append(av, who);
-  const tag = { ann: "Объявление", important: "Важное", thanks: "Благодарность", poll: "Опрос" }[kind];
+  const h = el("div", "post-h");
+  if (m.sys) {
+    const av = el("div", "av sysav"), im = el("img"); im.src = document.querySelector("#side .logo .mark img").src; im.alt = ""; av.append(im);
+    const who = el("div", "pwho"); who.append(el("div", "pnm", "OguzChat"), el("div", "pdt", relTime(dt)));
+    h.append(av, who);
+  } else {
+    const av = avatar(m.uid, u.name || m.name); av.onclick = () => open("user:" + m.uid);
+    const who = el("div", "pwho"), nm = el("div", "pnm", u.name || m.name || "Сотрудник"); nm.onclick = () => open("user:" + m.uid);
+    if (isCEO(m.uid)) nm.append(el("span", "badge-ceo", " 👑"));
+    who.append(nm, el("div", "pdt", [u.position, relTime(dt)].filter(Boolean).join(" · ")));
+    h.append(av, who);
+  }
+  const tag = { ann: "Объявление", important: "Важное", thanks: "Благодарность", poll: "Опрос", bday: "День рождения" }[kind];
   if (tag) h.append(el("span", "ptag", tag));
   const canDel = me.uid === ADMIN || m.uid === me.uid;
   if (legacy ? canDel : (canDel || me.uid === ADMIN)) {
@@ -2408,6 +2701,14 @@ function buildPost(p) {
     mb.onclick = e => { e.stopPropagation(); postMenu(mb, p); }; h.append(mb);
   }
   c.append(h);
+  if (kind === "bday") {
+    const bu = usersMap[m.bdayOf] || {}, bc = el("div", "bday"), ba = avatar(m.bdayOf, bu.name || m.bdayName, "bday-av"); ba.onclick = () => open("user:" + m.bdayOf);
+    const conf = el("div", "bday-conf"); ["🎉", "🎈", "🎂", "✨", "🎁", "🎊"].forEach((e, i) => { const x = el("span", null, e); x.style.setProperty("--i", i); conf.append(x); });
+    const t = el("div", "bday-t", "С днём рождения, " + (bu.name || m.bdayName || "коллега") + "!");
+    const s2 = el("div", "bday-s", [bu.position, (deptOf(m.bdayOf) || {}).name].filter(Boolean).join(" · "));
+    const x = el("div", "bday-x", "Сегодня у нашего коллеги день рождения. Поздравим вместе — оставьте тёплые слова в комментариях 🎂");
+    bc.append(conf, ba, t); if (s2.textContent) bc.append(s2); bc.append(x); c.append(bc);
+  }
   if (kind === "thanks") {
     const tb = el("div", "thx"), bd = BADGES.find(b => b[0] === m.badge) || BADGES[0];
     const tw = el("div", "thx-w"), ppl = el("div", "thx-who");
@@ -3100,10 +3401,10 @@ function watch(id) {
     const m = snap.docs[0].data(); if (!m.time) return;
     const t = ms(m.time);
     const txt = preview(m).replace(/\s+/g, " ").slice(0, 90);
-    if (w.t === null) { w.t = t; w.last = { t, uid: m.uid, text: txt }; checkInitialUnread(); if (isMob()) sideSoon(); return; }
+    if (w.t === null) { w.t = t; w.last = { t, uid: m.uid, text: txt }; checkInitialUnread(); sideSoon(); return; }
     if (t <= w.t) return;
     w.t = t; w.last = { t, uid: m.uid, text: txt };
-    if (isMob()) sideSoon();
+    sideSoon();
     if (!me || m.uid === me.uid) return;
     const visible = id === current && !document.hidden && document.hasFocus() && inChat();
     if (visible) { beep(true); return; }
@@ -3122,6 +3423,11 @@ function renderBadges() {
     if (n !== 0) { if (!bd) { bd = el("span", "badge"); const d = it.querySelector(".del"); d ? it.insertBefore(bd, d) : it.append(bd); } const txt = n < 0 ? "•" : n > 99 ? "99+" : String(n); if (bd.textContent !== txt) { bd.textContent = txt; if (bd._shown) { bd.style.animation = "none"; void bd.offsetWidth; bd.style.animation = ""; } bd._shown = true; } }
     else if (bd) bd.remove();
   });
+  const pt = document.querySelector('.plat[data-p="oguz"] .pt');
+  if (pt) {
+    const n = Object.entries(unread).reduce((a, [k, v]) => a + ((isDM(k) || isChan(k)) && v > 0 ? v : 0), 0); let pb = pt.querySelector(".pb");
+    if (n) { if (!pb) { pb = el("span", "pb"); pt.append(pb); } pb.textContent = n > 99 ? "99+" : String(n); } else if (pb) pb.remove();
+  }
   const vals = Object.values(unread), total = vals.reduce((a, b) => a + (b > 0 ? b : 0), 0), any = vals.some(v => v);
   document.title = total ? "(" + total + ") OguzChat" : any ? "• OguzChat" : "OguzChat";
 }
@@ -3179,28 +3485,326 @@ $("searchIn").onkeydown = e => { if (e.key === "Escape") closeSearch(); };
 $("searchClose").onclick = () => closeSearch();
 function closeSearch(silent) { const had = searchQ; $("searchBar").classList.add("hidden"); $("searchIn").value = ""; searchQ = ""; $("searchInfo").textContent = ""; if (had && !silent) rerender(); }
 
+/* ---------- сотрудники и структура компании ----------
+   Структура хранится в channels/org (как лента и задачи — в коллекции channels, чтобы подходили правила Firebase):
+   { name:"~org", company, head, depts:[{ id, name, parent, head, members:[uid] }] }. Редактирует администратор, смотрят все. */
+const STAFF = "staff", ORG = "org";
+let orgData = {}, staffTab = store.get("oc-stab") === "org" ? "org" : "list", staffQ = "", staffDept = "all", staffTop = null;
+const orgDepts = () => Array.isArray(orgData.depts) ? orgData.depts : [];
+const deptPeople = d => [...new Set([d.head, ...(d.members || [])].filter(uid => uid && usersMap[uid]))];
+const plural = (n, a, b, c) => n % 10 === 1 && n % 100 !== 11 ? a : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c;
+function deptOf(uid) { const ds = orgDepts(); return ds.find(d => (d.members || []).includes(uid)) || ds.find(d => d.head === uid) || null; }
+function deptKids(id) { return orgDepts().filter(d => (d.parent || null) === id); }
+function deptTree(id) { const out = [id]; deptKids(id).forEach(k => out.push(...deptTree(k.id))); return out; }
+function deptTotal(id) { return new Set(deptTree(id).flatMap(x => { const d = orgDepts().find(y => y.id === x); return d ? deptPeople(d) : []; })).size; }
+function managerOf(uid) {
+  let d = deptOf(uid); const seenD = new Set();
+  while (d && !seenD.has(d.id)) { seenD.add(d.id); if (d.head && d.head !== uid && usersMap[d.head]) return d.head; d = orgDepts().find(x => x.id === d.parent) || null; }
+  if (deptOf(uid) && orgData.head && orgData.head !== uid && usersMap[orgData.head]) return orgData.head;
+  return null;
+}
+function saveOrg(patch) {
+  return setDoc(doc(db, "channels", ORG), Object.assign({ name: "~org", system: true }, patch), { merge: true })
+    .then(() => true).catch(e => { toast("Не удалось сохранить: " + (e.code || e.message)); return false; });
+}
+function showStaff() {
+  stopConv(); cancelBar(); closeSearch(true); cancelMotion(); closeMenu(); if (selectMode) exitSelect();
+  rowCache = new Map(); const box = $("msgs"); box.classList.remove("dm", "feed", "tasks", "loading"); box.classList.add("staff");
+  current = STAFF; seen = null; highlightNav(); $("side").classList.remove("open");
+  $("form").classList.add("hidden"); $("pinBar").classList.add("hidden"); $("typingLine").innerHTML = ""; $("searchBtn").classList.add("hidden");
+  $("title").textContent = "Сотрудники"; switchAnim(); headerInfo();
+  staffTop = null; box.innerHTML = ""; box.scrollTop = 0; renderStaff(true);
+}
+function buildStaffTop() {
+  const top = el("div", "st-top"), r1 = el("div", "st-r1");
+  const tabs = el("div", "tk-view st-tabs");
+  [["list", "list", "Список"], ["org", "org", "Структура"]].forEach(([k, ic, l]) => { const b = el("button"); b.type = "button"; b.dataset.v = k; b.innerHTML = ico(ic, 15); b.append(el("span", null, l)); b.onclick = () => { if (staffTab === k) return; staffTab = k; store.set("oc-stab", k); renderStaff(true); }; tabs.append(b); });
+  const s = el("input", "tk-search st-search"); s.placeholder = "Поиск по имени, должности, телефону…"; s.value = staffQ; s.oninput = () => { staffQ = s.value; renderStaff(); };
+  const add = el("button", "tk-add st-add"); add.type = "button"; add.innerHTML = ico("plus", 16); add.append(el("span", null, "Отдел")); add.onclick = () => deptDialog(null, null);
+  r1.append(tabs, s, add);
+  const chips = el("div", "st-chips");
+  top.append(r1, chips);
+  return top;
+}
+function updateStaffTop() {
+  const t = staffTop, admin = me.uid === ADMIN;
+  t.querySelectorAll(".st-tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === staffTab));
+  t.querySelector(".st-search").classList.toggle("hidden", staffTab !== "list");
+  t.querySelector(".st-add").classList.toggle("hidden", staffTab !== "org" || !admin);
+  const chips = t.querySelector(".st-chips"); chips.innerHTML = ""; chips.classList.toggle("hidden", staffTab !== "list" || !orgDepts().length);
+  if (staffTab !== "list" || !orgDepts().length) return;
+  const all = Object.keys(usersMap).filter(u => usersMap[u].name), none = all.filter(u => !deptOf(u));
+  if (staffDept !== "all" && staffDept !== "none" && !orgDepts().some(d => d.id === staffDept)) staffDept = "all";
+  const chip = (k, l, n) => { const b = el("button", "ff" + (staffDept === k ? " on" : "")); b.type = "button"; b.append(el("span", null, l)); if (n != null) b.append(el("b", null, String(n))); b.onclick = () => { staffDept = k; renderStaff(); }; chips.append(b); };
+  chip("all", "Все", all.length);
+  orgDepts().filter(d => !d.parent).forEach(d => chip(d.id, d.name, deptTotal(d.id)));
+  if (none.length) chip("none", "Без отдела", none.length);
+}
+function renderStaff(anim) {
+  if (current !== STAFF || !me) return;
+  const box = $("msgs");
+  if (!staffTop) staffTop = buildStaffTop();
+  updateStaffTop();
+  if (box.firstChild !== staffTop) { box.innerHTML = ""; box.append(staffTop); }
+  while (staffTop.nextSibling) staffTop.nextSibling.remove();
+  const content = staffTab === "org" ? buildOrg() : buildStaffList();
+  if (anim) content.classList.add("enter");
+  box.append(content);
+  headerInfo();
+}
+function staffMatch(uid, u, q) {
+  const d = deptOf(uid);
+  return (u.name + " " + (u.position || "") + " " + (d ? d.name : u.department || "") + " " + (u.phone || "") + " " + (u.mobile || "") + " " + (u.email || "") + " " + (u.city || "")).toLowerCase().includes(q);
+}
+function buildStaffList() {
+  const wrap = el("div", "st-list"), q = staffQ.trim().toLowerCase();
+  let ids = Object.keys(usersMap).filter(uid => usersMap[uid] && usersMap[uid].name);
+  if (staffDept === "none") ids = ids.filter(uid => !deptOf(uid));
+  else if (staffDept !== "all") { const tree = new Set(deptTree(staffDept)); ids = ids.filter(uid => { const d = deptOf(uid); return d && tree.has(d.id); }); }
+  if (q) ids = ids.filter(uid => staffMatch(uid, usersMap[uid], q));
+  if (!q && staffDept === "all") {
+    const soon = Object.entries(usersMap).filter(([, u]) => u.name && u.birthday && daysToBday(u.birthday) <= 30).sort((a, b) => daysToBday(a[1].birthday) - daysToBday(b[1].birthday));
+    if (soon.length) {
+      const bx = el("div", "st-bd"), h = el("div", "st-bdh"); h.innerHTML = ico("cake", 15); h.append(el("span", null, "Ближайшие дни рождения")); bx.append(h);
+      const row = el("div", "st-bdr");
+      soon.forEach(([uid, u]) => {
+        const n = isBdayToday(u.birthday) ? 0 : daysToBday(u.birthday), c = el("button", "st-bdc" + (n === 0 ? " today" : "")); c.type = "button";
+        const w = el("div"); w.append(el("b", null, u.name), el("span", null, n === 0 ? "🎉 Сегодня" : n === 1 ? "Завтра" : dayMonth(u.birthday)));
+        c.append(avatar(uid, u.name), w); c.onclick = () => open(uid === me.uid ? "profile" : "user:" + uid); row.append(c);
+      });
+      bx.append(row); wrap.append(bx);
+    }
+  }
+  wrap.append(el("div", "st-cnt", ids.length ? ids.length + " " + plural(ids.length, "сотрудник", "сотрудника", "сотрудников") : ""));
+  const grid = el("div", "st-grid");
+  ids.sort((a, b) => (isCEO(b) - isCEO(a)) || (usersMap[a].name || "").localeCompare(usersMap[b].name || "")).forEach(uid => grid.append(empCard(uid)));
+  if (!ids.length) grid.append(el("div", "empty", q ? "Никого не нашли" : "Здесь пока никого нет"));
+  wrap.append(grid);
+  return wrap;
+}
+function empCard(uid) {
+  const u = usersMap[uid] || {}, d = deptOf(uid), c = el("div", "emp"); c.dataset.uid = uid;
+  c.onclick = () => open(uid === me.uid ? "profile" : "user:" + uid);
+  const h = el("div", "emp-h"), w = el("div", "emp-w"), nm = el("div", "emp-n", u.name || "—");
+  if (uid === me.uid) nm.append(el("span", "emp-me", "Вы"));
+  w.append(nm, el("div", "emp-p", u.position || "Должность не указана"));
+  h.append(avatar(uid, u.name), w); c.append(h);
+  const dn = d ? d.name : u.department;
+  if (dn) c.append(el("div", "emp-d", dn));
+  const lines = el("div", "emp-ls");
+  const ln = (icn, txt, href, hot) => { if (!txt) return; const r = el(href ? "a" : "div", "emp-l" + (hot ? " hot" : "")); if (href) { r.href = href; r.onclick = e => e.stopPropagation(); } r.innerHTML = ico(icn, 13); r.append(el("span", null, txt)); lines.append(r); };
+  const ph = u.phone || u.mobile;
+  ln("phone", ph, ph ? "tel:" + cleanPhone(ph) : null);
+  ln("mail", u.email, u.email ? "mailto:" + u.email : null);
+  if (u.birthday) ln("cake", isBdayToday(u.birthday) ? "Сегодня день рождения 🎉" : dayMonth(u.birthday), null, isBdayToday(u.birthday));
+  if (lines.children.length) c.append(lines);
+  const acts = el("div", "emp-a");
+  if (uid !== me.uid) { const m = el("button", "emp-b"); m.type = "button"; m.innerHTML = ico("comment", 15); m.append(el("span", null, "Написать")); m.onclick = e => { e.stopPropagation(); open("dm_" + [me.uid, uid].sort().join("_")); showChat(); }; acts.append(m); }
+  acts.append(el("span", "emp-st" + (isOnline(u) ? " on" : ""), isOnline(u) ? "в сети" : lastSeenText(u).replace("был(а) ", "")));
+  c.append(acts);
+  return c;
+}
+function personChip(uid, role) {
+  const u = usersMap[uid] || {}, c = el("button", "org-p" + (role ? " head" : "")); c.type = "button"; c.title = u.name || "";
+  c.onclick = e => { e.stopPropagation(); open(uid === me.uid ? "profile" : "user:" + uid); };
+  const w = el("span", "org-pw"); w.append(el("b", null, u.name || "—"), el("span", null, role || u.position || ""));
+  c.append(avatar(uid, u.name), w); return c;
+}
+function buildOrg() {
+  const wrap = el("div", "org"), admin = me.uid === ADMIN, depts = orgDepts();
+  const root = el("div", "org-card org-root"), rh = el("div", "org-ch");
+  const lg = el("div", "av sysav"), li = el("img"); li.src = document.querySelector("#side .logo .mark img").src; li.alt = ""; lg.append(li);
+  const rt = el("div", "org-tw"), nU = Object.values(usersMap).filter(u => u.name).length;
+  rt.append(el("div", "org-t", orgData.company || "Oguz Forum & Expo"), el("div", "org-sub", nU + " " + plural(nU, "сотрудник", "сотрудника", "сотрудников") + " · " + depts.length + " " + plural(depts.length, "отдел", "отдела", "отделов")));
+  rh.append(lg, rt);
+  if (admin) { const e = el("button", "org-ib"); e.type = "button"; e.title = "Изменить"; e.innerHTML = ico("edit", 15); e.onclick = () => rootDialog(); rh.append(e); }
+  root.append(rh);
+  if (orgData.head && usersMap[orgData.head]) { const pr = el("div", "org-ppl"); pr.append(personChip(orgData.head, "Генеральный директор")); root.append(pr); }
+  wrap.append(root);
+  const drawLevel = parent => {
+    const kids = deptKids(parent); if (!kids.length) return null;
+    const box = el("div", "org-kids");
+    kids.forEach(d => {
+      const node = el("div", "org-node"), card = el("div", "org-card"), ch = el("div", "org-ch");
+      const ppl = deptPeople(d), total = deptTotal(d.id);
+      const ic = el("div", "org-ic"); ic.innerHTML = ico("org", 16); ic.style.background = color(d.id);
+      const tw = el("div", "org-tw"); tw.append(el("div", "org-t", d.name), el("div", "org-sub", total + " " + plural(total, "сотрудник", "сотрудника", "сотрудников")));
+      ch.append(ic, tw);
+      if (admin) {
+        const a1 = el("button", "org-ib"); a1.type = "button"; a1.title = "Добавить подотдел"; a1.innerHTML = ico("plus", 15); a1.onclick = () => deptDialog(null, d.id);
+        const a2 = el("button", "org-ib"); a2.type = "button"; a2.title = "Изменить отдел"; a2.innerHTML = ico("edit", 15); a2.onclick = () => deptDialog(d, d.parent || null);
+        ch.append(a1, a2);
+      }
+      card.append(ch);
+      const pw = el("div", "org-ppl");
+      if (d.head && usersMap[d.head]) pw.append(personChip(d.head, "Руководитель"));
+      ppl.filter(uid => uid !== d.head).sort((a, b) => uName(a).localeCompare(uName(b))).forEach(uid => pw.append(personChip(uid)));
+      if (!ppl.length) pw.append(el("div", "org-none", admin ? "Нет сотрудников — нажмите ✎, чтобы добавить" : "Сотрудники пока не назначены"));
+      card.append(pw); node.append(card);
+      const sub = drawLevel(d.id); if (sub) node.append(sub);
+      box.append(node);
+    });
+    return box;
+  };
+  const lvl = drawLevel(null); if (lvl) wrap.append(lvl);
+  if (!depts.length) {
+    const e = el("div", "org-empty"); e.innerHTML = ico("org", 28);
+    e.append(el("b", null, "Структура компании пока не создана"), el("span", null, admin ? "Создайте отделы, назначьте руководителей и сотрудников — все коллеги увидят структуру здесь." : "Её настраивает администратор. Как только отделы появятся, они будут видны здесь."));
+    if (admin) { const b = el("button", "tk-add"); b.type = "button"; b.innerHTML = ico("plus", 16); b.append(el("span", null, "Создать первый отдел")); b.onclick = () => deptDialog(null, null); e.append(b); }
+    wrap.append(e);
+  }
+  const none = Object.keys(usersMap).filter(uid => usersMap[uid].name && !deptOf(uid) && uid !== orgData.head);
+  if (depts.length && none.length) {
+    const nc = el("div", "org-card org-unas"), nh = el("div", "org-ch"), ic = el("div", "org-ic"); ic.innerHTML = ico("users", 16);
+    const tw = el("div", "org-tw"); tw.append(el("div", "org-t", "Без отдела"), el("div", "org-sub", admin ? "Добавьте их в отделы через ✎" : none.length + " " + plural(none.length, "сотрудник", "сотрудника", "сотрудников")));
+    nh.append(ic, tw); nc.append(nh);
+    const pw = el("div", "org-ppl"); none.sort((a, b) => uName(a).localeCompare(uName(b))).forEach(uid => pw.append(personChip(uid))); nc.append(pw);
+    wrap.append(nc);
+  }
+  return wrap;
+}
+function orgModal(title) {
+  const md = el("div", "modal"), card = el("div", "mcard org-dlg"); card.append(el("div", "mh", title));
+  const close = () => { md.classList.add("out"); setTimeout(() => md.remove(), 180); };
+  md.onclick = e => { if (e.target === md) close(); };
+  md.append(card); return { md, card, close };
+}
+function userSelect(first, val) {
+  const sel = el("select", "inp"), o0 = el("option", null, first); o0.value = ""; sel.append(o0);
+  Object.entries(usersMap).filter(([, u]) => u.name).sort((a, b) => a[1].name.localeCompare(b[1].name))
+    .forEach(([uid, u]) => { const o = el("option", null, u.name + (u.position ? " · " + u.position : "")); o.value = uid; sel.append(o); });
+  sel.value = val || ""; return sel;
+}
+function rootDialog() {
+  const { md, card, close } = orgModal("Компания");
+  const nm = el("input", "inp"); nm.maxLength = 80; nm.value = orgData.company || "Oguz Forum & Expo";
+  const hd = userSelect("— не назначен —", orgData.head);
+  const acts = el("div", "macts"), cancel = el("button", "btn ghost", "Отмена"), ok = el("button", "btn", "Сохранить"); cancel.type = ok.type = "button";
+  cancel.onclick = close;
+  ok.onclick = async () => { ok.disabled = true; if (await saveOrg({ company: nm.value.trim() || "Oguz Forum & Expo", head: hd.value || null })) { toast("Сохранено"); close(); } ok.disabled = false; };
+  acts.append(cancel, ok);
+  card.append(el("div", "mlbl", "Название"), nm, el("div", "mlbl", "Генеральный директор"), hd, acts);
+  document.body.append(md); setTimeout(() => nm.focus(), 60);
+}
+function deptDialog(d, parentId) {
+  const depts = orgDepts(), { md, card, close } = orgModal(d ? "Отдел" : parentId ? "Новый подотдел" : "Новый отдел");
+  const nm = el("input", "inp org-in-name"); nm.maxLength = 80; nm.placeholder = "Например: Отдел MICE"; nm.value = d ? d.name : "";
+  const banned = d ? new Set(deptTree(d.id)) : new Set();
+  const par = el("select", "inp org-in-par"), p0 = el("option", null, "— Верхний уровень —"); p0.value = ""; par.append(p0);
+  depts.filter(x => !banned.has(x.id)).forEach(x => { const o = el("option", null, x.name); o.value = x.id; par.append(o); });
+  par.value = parentId || "";
+  let members = d ? [...(d.members || [])].filter(uid => usersMap[uid] && uid !== d.head) : [];
+  const head = userSelect("— не назначен —", d ? d.head : ""); head.classList.add("org-in-head");
+  const mBox = el("div", "tk-aud");
+  const drawM = () => {
+    mBox.innerHTML = "";
+    members.forEach(uid => { const c = el("span", "cp-tou"); c.append(avatar(uid, uName(uid)), el("span", null, uName(uid))); const x = el("button"); x.type = "button"; x.innerHTML = ico("x", 11); x.onclick = () => { members = members.filter(v => v !== uid); drawM(); }; c.append(x); mBox.append(c); });
+    const sel = el("select", "tk-audsel org-addm"), o0 = el("option", null, members.length ? "+ ещё" : "+ Добавить сотрудника"); o0.value = ""; sel.append(o0);
+    Object.entries(usersMap).filter(([uid, u]) => u.name && !members.includes(uid) && uid !== head.value).sort((a, b) => a[1].name.localeCompare(b[1].name))
+      .forEach(([uid, u]) => { const od = deptOf(uid); const o = el("option", null, u.name + (od && (!d || od.id !== d.id) ? " (" + od.name + ")" : "")); o.value = uid; sel.append(o); });
+    sel.onchange = () => { if (sel.value) { members.push(sel.value); drawM(); } };
+    mBox.append(sel);
+  };
+  head.onchange = () => { members = members.filter(v => v !== head.value); drawM(); };
+  drawM();
+  const acts = el("div", "macts"), cancel = el("button", "btn ghost", "Отмена"), ok = el("button", "btn", d ? "Сохранить" : "Создать"); cancel.type = ok.type = "button";
+  cancel.onclick = close;
+  ok.onclick = async () => {
+    const name = nm.value.trim(); if (!name) { toast("Введите название отдела"); nm.focus(); return; }
+    const id = d ? d.id : "d_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    const nd = { id, name, parent: par.value || null, head: head.value || null, members: members.filter(u => u !== head.value) };
+    const taken = new Set([nd.head, ...nd.members].filter(Boolean));
+    const next = depts.filter(x => x.id !== id).map(x => ({ ...x, members: (x.members || []).filter(u => !taken.has(u)), head: taken.has(x.head) ? null : x.head || null }));
+    const at = d ? depts.findIndex(x => x.id === id) : -1; if (at >= 0) next.splice(at, 0, nd); else next.push(nd);
+    ok.disabled = true;
+    if (await saveOrg({ depts: next })) { toast(d ? "Отдел сохранён" : "Отдел создан"); close(); }
+    ok.disabled = false;
+  };
+  acts.append(cancel, ok);
+  card.append(el("div", "mlbl", "Название"), nm, el("div", "mlbl", "Входит в"), par, el("div", "mlbl", "Руководитель"), head, el("div", "mlbl", "Сотрудники"), mBox,
+    el("div", "org-note", "Сотрудник состоит только в одном отделе: при добавлении он переносится из прежнего."));
+  if (d) {
+    const del = el("button", "btn danger org-del", "Удалить отдел"); del.type = "button";
+    del.onclick = async () => {
+      if (!confirm("Удалить отдел «" + d.name + "»? Подотделы поднимутся на уровень выше, сотрудники останутся без отдела.")) return;
+      const next = depts.filter(x => x.id !== d.id).map(x => x.parent === d.id ? { ...x, parent: d.parent || null } : x);
+      if (await saveOrg({ depts: next })) { toast("Отдел удалён"); close(); }
+    };
+    card.append(del);
+  }
+  card.append(acts);
+  document.body.append(md); setTimeout(() => nm.focus(), 60);
+}
+
 /* ---------- профиль ---------- */
+const MON_G = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+const parseYMD = v => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ""); return m ? [+m[1], +m[2], +m[3]] : null; };
+const dayMonth = v => { const p = parseYMD(v); return p ? p[2] + " " + MON_G[p[1] - 1] : ""; };
+const fullDate = v => { const p = parseYMD(v); return p ? p[2] + " " + MON_G[p[1] - 1] + " " + p[0] : ""; };
+function isBdayToday(v, now = new Date()) {
+  const p = parseYMD(v); if (!p) return false;
+  const leap = y => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+  let [, m, d] = p; if (m === 2 && d === 29 && !leap(now.getFullYear())) d = 28;
+  return now.getMonth() + 1 === m && now.getDate() === d;
+}
+function daysToBday(v) {
+  const p = parseYMD(v); if (!p) return 999;
+  const t = new Date(); t.setHours(0, 0, 0, 0);
+  let n = new Date(t.getFullYear(), p[1] - 1, p[2]); if (n < t) n = new Date(t.getFullYear() + 1, p[1] - 1, p[2]);
+  return Math.round((n - t) / 864e5);
+}
+function tenure(v) {
+  const p = parseYMD(v); if (!p) return "";
+  const now = new Date(); let mo = (now.getFullYear() - p[0]) * 12 + (now.getMonth() + 1 - p[1]); if (now.getDate() < p[2]) mo--;
+  if (mo < 0) return "";
+  const y = Math.floor(mo / 12), r = mo % 12, pl = (n, a, b, c) => n % 10 === 1 && n % 100 !== 11 ? a : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c;
+  if (!y && !r) return "меньше месяца";
+  return [y ? y + " " + pl(y, "год", "года", "лет") : "", r ? r + " мес." : ""].filter(Boolean).join(" ");
+}
+const cleanTg = v => (v || "").trim().replace(/^https?:\/\/t\.me\//i, "").replace(/^@/, "");
+const cleanPhone = v => (v || "").replace(/[^\d+]/g, "");
+function profFill(u) {
+  const keys = ["position", "phone", "birthday", "hired", "city", "about", "photoURL"];
+  const n = keys.filter(k => u[k]).length + (deptOf(me.uid) || u.department ? 1 : 0);
+  return Math.round(n / (keys.length + 1) * 100);
+}
 function showProfile(uid) {
   stopConv(); cancelBar(); closeSearch(true);
-  cancelMotion(); closeMenu(); rowCache = new Map(); $("msgs").classList.remove("dm", "feed", "tasks"); if (taskOpenId) closeTask();
+  cancelMotion(); closeMenu(); rowCache = new Map(); $("msgs").classList.remove("dm", "feed", "tasks", "staff"); if (taskOpenId) closeTask();
   current = uid === me.uid ? "profile" : "user:" + uid; seen = null;
   highlightNav(); $("side").classList.remove("open");
   $("form").classList.add("hidden"); $("pinBar").classList.add("hidden"); $("typingLine").innerHTML = ""; $("searchBtn").classList.add("hidden");
   const own = uid === me.uid, u = usersMap[uid] || {};
   $("title").textContent = own ? "Мой профиль" : (u.name || "Сотрудник"); switchAnim();
   const sub = $("subtitle"); sub.className = ""; sub.textContent = own ? "Ваши данные видят все сотрудники" : lastSeenText(u); $("hinfo").onclick = null; $("hinfo").classList.remove("click");
-  const box = $("msgs"); box.innerHTML = "";
+  const box = $("msgs"); box.innerHTML = ""; box.scrollTop = 0;
   const card = el("div", "prof"), top = el("div", "prof-top"), av = avatar(uid, u.name || me.displayName), tw = el("div");
   const pn = el("div", "pn"), pp = el("div", "pp"), ps = el("div", "ps", own ? "" : lastSeenText(u));
   tw.append(pn, pp, ps); top.append(av, tw); card.append(top);
   const body = el("div", "prof-body"); card.append(body); box.append(card);
+  const dep = deptOf(uid), depName = dep ? dep.name : (u.department || "");
   if (!own) {
     pn.textContent = u.name || "—";
     if (isCEO(uid)) pn.append(el("span", "badge-ceo", " 👑"));
     if (uid === ADMIN) pn.append(el("span", "badge-admin", " Admin"));
-    pp.textContent = [u.position, u.department].filter(Boolean).join(" · ") || "Должность не указана";
-    const line = (k, v, href) => { if (!v) return; const r = el("div", "prof-line"); r.append(el("div", "k", k)); const val = href ? el("a", null, v) : el("div", null, v); if (href) val.href = href; r.append(val); body.append(r); };
-    line("Должность", u.position); line("Отдел", u.department); line("Телефон", u.phone, u.phone ? "tel:" + u.phone.replace(/[^\d+]/g, "") : null); line("Email", u.email, u.email ? "mailto:" + u.email : null);
+    pp.textContent = [u.position, depName].filter(Boolean).join(" · ") || "Должность не указана";
+    if (isBdayToday(u.birthday)) { const b = el("div", "prof-bday"); b.append(el("span", null, "🎂"), el("span", null, "Сегодня день рождения! Не забудьте поздравить")); body.append(b); }
+    const sec = t => body.append(el("div", "prof-sec", t));
+    const line = (k, v, href, node) => { if (!v && !node) return; const r = el("div", "prof-line"); r.append(el("div", "k", k)); let val; if (node) val = node; else { val = href ? el("a", null, v) : el("div", null, v); if (href) { val.href = href; if (/^https?:/.test(href)) { val.target = "_blank"; val.rel = "noopener"; } } } r.append(val); body.append(r); };
+    sec("Работа");
+    line("Должность", u.position); line("Отдел", depName);
+    const boss = managerOf(uid);
+    if (boss) { const pw = el("span", "prof-person"); pw.append(avatar(boss, uName(boss)), el("span", null, uName(boss))); pw.onclick = () => open("user:" + boss); line("Руководитель", null, null, pw); }
+    if (u.hired) line("В компании", fullDate(u.hired) + (tenure(u.hired) ? " · " + tenure(u.hired) : ""));
+    sec("Контакты");
+    line("Рабочий тел.", u.phone, u.phone ? "tel:" + cleanPhone(u.phone) : null);
+    line("Мобильный", u.mobile, u.mobile ? "tel:" + cleanPhone(u.mobile) : null);
+    line("Email", u.email, u.email ? "mailto:" + u.email : null);
+    if (u.telegram) line("Telegram", "@" + cleanTg(u.telegram), "https://t.me/" + cleanTg(u.telegram));
+    if (u.whatsapp) line("WhatsApp", u.whatsapp, "https://wa.me/" + cleanPhone(u.whatsapp).replace("+", ""));
+    if (u.birthday || u.city || u.langs || u.about) sec("Личное");
+    line("День рождения", dayMonth(u.birthday)); line("Город", u.city); line("Языки", u.langs);
+    if (u.about) { const ab = el("div", "prof-about"); ab.textContent = u.about; body.append(ab); }
     const w = el("button", "btn", "Написать сообщение"); w.style.marginTop = "18px"; w.onclick = () => open("dm_" + [me.uid, uid].sort().join("_")); body.append(w);
     if (me.uid === ADMIN) {
       const d = el("button", "btn danger", "Убрать из списка сотрудников");
@@ -3210,12 +3814,36 @@ function showProfile(uid) {
     }
     return;
   }
-  const f = (lbl, id, ph, ro) => { body.append(el("label", null, lbl)); const i = el("input", "inp"); i.id = id; i.maxLength = 60; if (ph) i.placeholder = ph; if (ro) i.readOnly = true; body.append(i); return i; };
-  const fN = f("Имя и фамилия", "fName"), fP = f("Должность", "fPos", "Например: Менеджер проектов"), fD = f("Отдел", "fDep", "Например: MICE"), fT = f("Телефон", "fPhone", "+993 …"), fE = f("Email", "fEmail", "", true);
-  fN.value = u.name || me.displayName || ""; fP.value = u.position || ""; fD.value = u.department || ""; fT.value = u.phone || ""; fE.value = me.email || "";
+  const fill = el("div", "prof-fill"), fillBar = el("div", "pf-bar"), fillI = el("i"), fillT = el("span"); fillBar.append(fillI); fill.append(fillT, fillBar); body.append(fill);
+  const sec = t => body.append(el("div", "prof-sec", t));
+  const f = (lbl, id, ph, o = {}) => {
+    body.append(el("label", null, lbl));
+    const i = el(o.area ? "textarea" : "input", "inp"); i.id = id; i.maxLength = o.max || 60; if (ph) i.placeholder = ph; if (o.ro) i.readOnly = true; if (o.type) i.type = o.type; if (o.area) i.rows = 3;
+    body.append(i); if (o.hint) body.append(el("div", "prof-hint", o.hint)); return i;
+  };
+  sec("Основное");
+  const fN = f("Имя и фамилия", "fName"), fP = f("Должность", "fPos", "Например: Менеджер проектов");
+  const fD = f("Отдел", "fDep", "Например: MICE", dep ? { ro: true, hint: "Отдел назначен в структуре компании (раздел «Сотрудники»)" } : {});
+  const fH = f("Дата начала работы", "fHired", "", { type: "date" });
+  sec("Контакты");
+  const fT = f("Рабочий телефон", "fPhone", "+993 12 …"), fM = f("Мобильный телефон", "fMobile", "+993 6…");
+  const fE = f("Email", "fEmail", "", { ro: true });
+  const fTg = f("Telegram", "fTg", "@username"), fW = f("WhatsApp", "fWa", "+993 6…");
+  sec("Личное");
+  const fB = f("Дата рождения", "fBday", "", { type: "date", hint: "Коллеги увидят только день и месяц. В день рождения в Ленте появится поздравление 🎉" });
+  const fC = f("Город", "fCity", "Например: Ашхабад"), fL = f("Языки", "fLangs", "Например: туркменский, русский, английский", { max: 100 });
+  const fA = f("О себе", "fAbout", "Пара слов о себе, опыт, интересы…", { area: true, max: 500 });
+  fN.value = u.name || me.displayName || ""; fP.value = u.position || ""; fD.value = depName; fT.value = u.phone || ""; fE.value = me.email || "";
+  fM.value = u.mobile || ""; fTg.value = u.telegram || ""; fW.value = u.whatsapp || ""; fB.value = u.birthday || ""; fH.value = u.hired || ""; fC.value = u.city || ""; fL.value = u.langs || ""; fA.value = u.about || "";
   let pendingPhoto = null;
-  const preview = () => { const n = fN.value.trim() || "—"; pn.textContent = n; if (isCEO(me.uid)) pn.append(el("span", "badge-ceo", " 👑")); if (me.uid === ADMIN) pn.append(el("span", "badge-admin", " Admin")); if (!av.querySelector("img")) { av.textContent = initials(n); av.style.background = color(me.uid); } pp.textContent = [fP.value.trim(), fD.value.trim()].filter(Boolean).join(" · ") || "Должность не указана"; };
-  preview(); [fN, fP, fD].forEach(i => i.addEventListener("input", preview));
+  const draft = () => ({ position: fP.value.trim(), department: fD.value.trim(), phone: fT.value.trim(), birthday: fB.value, hired: fH.value, city: fC.value.trim(), about: fA.value.trim(), photoURL: pendingPhoto || u.photoURL });
+  const preview = () => {
+    const n = fN.value.trim() || "—"; pn.textContent = n; if (isCEO(me.uid)) pn.append(el("span", "badge-ceo", " 👑")); if (me.uid === ADMIN) pn.append(el("span", "badge-admin", " Admin"));
+    if (!av.querySelector("img")) { av.textContent = initials(n); av.style.background = color(me.uid); }
+    pp.textContent = [fP.value.trim(), fD.value.trim()].filter(Boolean).join(" · ") || "Должность не указана";
+    const pc = profFill(draft()); fillT.textContent = pc >= 100 ? "Профиль заполнен полностью ✓" : "Профиль заполнен на " + pc + "%"; fillI.style.width = pc + "%"; fill.classList.toggle("full", pc >= 100);
+  };
+  preview(); body.querySelectorAll("input,textarea").forEach(i => i.addEventListener("input", preview));
   body.append(el("label", null, "Фото профиля"));
   const photoRow = el("div"); photoRow.style.cssText = "display:flex;align-items:center;gap:12px;margin:4px 0 4px";
   const photoAvPrev = el("div", "av"); photoAvPrev.style.cssText = "width:52px;height:52px;flex-shrink:0;font-size:18px";
@@ -3232,6 +3860,7 @@ function showProfile(uid) {
         pendingPhoto = c.toDataURL("image/jpeg", 0.75);
         photoAvPrev.innerHTML = ""; const pvi = document.createElement("img"); pvi.src = pendingPhoto; pvi.style.cssText = "width:100%;height:100%;object-fit:cover;display:block"; photoAvPrev.append(pvi);
         av.innerHTML = ""; const avi = document.createElement("img"); avi.src = pendingPhoto; avi.style.cssText = "width:100%;height:100%;object-fit:cover;display:block"; av.append(avi);
+        preview();
       }; img.src = e.target.result;
     }; reader.readAsDataURL(file);
   };
@@ -3242,7 +3871,8 @@ function showProfile(uid) {
     const n = fN.value.trim(); if (!n) { ok.style.color = "#c62828"; ok.textContent = "Введите имя"; return; }
     save.disabled = true; ok.textContent = "";
     try {
-      const upd = { name: n, position: fP.value.trim(), department: fD.value.trim(), phone: fT.value.trim(), email: me.email || "" };
+      const upd = { name: n, position: fP.value.trim(), phone: fT.value.trim(), email: me.email || "", mobile: fM.value.trim(), telegram: fTg.value.trim(), whatsapp: fW.value.trim(), birthday: fB.value, hired: fH.value, city: fC.value.trim(), langs: fL.value.trim(), about: fA.value.trim() };
+      if (!dep) upd.department = fD.value.trim();
       if (pendingPhoto) upd.photoURL = pendingPhoto;
       await setDoc(doc(db, "users", me.uid), upd, { merge: true });
       if (n !== me.displayName) await updateProfile(me, { displayName: n });
@@ -3276,9 +3906,9 @@ function showTour() {
   let STEPS = [
     { sel: "#annBox", title: "📰 Лента", text: "Новости компании: посты, опросы, благодарности коллегам и важные сообщения с отметкой «Ознакомлен». Ставьте лайки и комментируйте.", pos: "right" },
     { sel: '.item[data-id="tasks"]', title: "✅ Задачи", text: "Ставьте задачи коллегам со сроком, чек-листом и проверкой результата. Счётчик показывает новые и просроченные задачи.", pos: "right" },
-    { sel: "#channels", title: "💬 Каналы", text: "Тематические чаты отделов и проектов. Напишите в нужный канал, чтобы вся команда увидела.", pos: "right" },
-    { sel: "#users", title: "👥 Сотрудники", text: "Список всех коллег. Нажмите на имя — откроется личный диалог (DM). Зелёная точка = в сети прямо сейчас.", pos: "right" },
-    { sel: "#findUser", title: "🔍 Поиск коллег", text: "Начните вводить имя — список мгновенно фильтруется.", pos: "right" },
+    { sel: '.item[data-id="staff"]', title: "👥 Сотрудники", text: "Все коллеги с контактами, днями рождения и структурой компании. Нажмите на сотрудника — откроется его профиль.", pos: "right" },
+    { sel: "#plats", title: "💬 Мессенджеры и почта", text: "Переключайтесь между OguzChat, почтой, WhatsApp и Telegram. Пока работает OguzChat — остальные появятся в следующих обновлениях.", pos: "right" },
+    { sel: "#findUser", title: "🔍 Поиск", text: "Ищите чаты и коллег по имени — так же можно начать новый личный диалог.", pos: "right" },
     { sel: "#searchBtn", title: "🔎 Поиск в чате", text: "Ищите конкретное сообщение в открытом канале или диалоге.", pos: "bottom" },
     { sel: "#themeBtn", title: "🌙 Тема", text: "Переключайтесь между светлой и тёмной темой в любой момент.", pos: "bottom" },
     { sel: "#form", title: "✉️ Отправка", text: "Пишите сообщения, записывайте голосовые (удерживайте 🎤), прикрепляйте фото, видео, файлы и создавайте опросы через скрепку. Длинный тап по сообщению — реакции, ответ, удаление.", pos: "top" },
