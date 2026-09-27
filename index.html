@@ -252,9 +252,10 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 .load-more-btn:hover{background:var(--hover);color:var(--title)}
 .prof{max-width:560px;margin:0 auto 20px;background:var(--card);border-radius:18px;box-shadow:0 4px 20px #06306a14;overflow:hidden;animation:fadeUp .4s var(--ease) both}
 .prof-top{background:linear-gradient(135deg,#06306A,#164194);padding:28px 24px 22px;color:#fff;display:flex;gap:16px;align-items:center}
-.prof-top .av{width:72px;height:72px;font-size:26px;border:3px solid #ffffff40}
+.prof-top .av{width:72px;height:72px;font-size:26px;border:3px solid #ffffff40;overflow:visible}
+.prof-top .av img{border-radius:50%}
 @keyframes dotBlink{0%,100%{opacity:1}50%{opacity:.4}}
-.prof-top .av.on::after{width:14px;height:14px;right:-2px;bottom:-2px;border:2.5px solid #fff;background:#2ECC71;box-shadow:0 1px 3px #0004;animation:dotBlink 2.6s ease-in-out infinite}
+.prof-top .av.on::after{width:14px;height:14px;right:-2px;bottom:-2px;border:2.5px solid #fff;background:#2ECC71;box-shadow:0 1px 3px #0004;z-index:3;animation:dotBlink 2.6s ease-in-out infinite}
 .prof-top .av.ceo::before{font-size:26px;top:-24px}
 .prof-top .pn{font-family:Montserrat,sans-serif;font-size:20px;font-weight:700}
 .prof-top .pp{opacity:.85;font-size:14px;margin-top:2px}
