@@ -415,6 +415,11 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 .popt{display:flex;gap:6px;align-items:center}
 .popt .px{width:32px;height:32px;border:none;background:none;color:var(--muted);border-radius:8px;display:grid;place-items:center;flex-shrink:0}
 .popt .px:hover{background:var(--band);color:#E53935}
+.ckg-editor{display:flex;flex-direction:column;gap:10px}
+.ckg-card{border:1px solid var(--line);border-radius:12px;padding:10px}
+.ckg-chead{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.ckg-tin{flex:1;min-width:0}
+.ckg-chead .px{width:30px;height:30px;flex-shrink:0}
 .ptog{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:14px;cursor:pointer;color:var(--text)}
 .ptog input{display:none}
 .ptog .sw{width:36px;height:20px;border-radius:10px;background:var(--line);position:relative;flex-shrink:0;transition:background .2s}
@@ -665,6 +670,10 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 .tp-act:hover{background:var(--band)}
 .tp-act:active{transform:scale(.95)}
 .tp-act.prim{background:var(--blue);border-color:var(--blue);color:#fff}
+.tp-chat-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.tp-chat-avs{display:flex}
+.tp-chat-avs .av{width:26px;height:26px;font-size:10px;margin-left:-6px;border:2px solid var(--card)}
+.tp-chat-avs .av:first-child{margin-left:0}
 .tp-note{font-size:13px;color:#9A6C00;background:#E8A30018;padding:7px 12px;border-radius:10px}
 .tp-info{background:var(--band);border-radius:12px;padding:6px 14px;margin-bottom:14px}
 .tp-ir{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
@@ -1078,7 +1087,7 @@ function start(user) {
   if (started) return; started = true;
   renderMe(); subTasks();
   onSnapshot(query(collection(db, "channels"), orderBy("name")), snap => {
-    channelsList = snap.docs.filter(d => d.id !== "feed" && d.id !== "tasks").map(d => ({ id: d.id, ...d.data() }));
+    channelsList = snap.docs.filter(d => d.id !== "feed" && d.id !== "tasks").map(d => ({ id: d.id, ...d.data() })).filter(c => !c.members || c.members.includes(me.uid));
     renderSidebar();
     if (isChan(current) && !channelsList.some(c => c.id === current)) current = null;
     if (!current) {
@@ -2742,7 +2751,7 @@ function buildTaskList(list) {
     tt.append(el("span", null, t.title));
     const sub = el("div", "tk-sub"); sub.append(stPill(t.status), metaBits(t));
     main.append(tt, sub);
-    const who = el("div", "tk-who"); who.title = "Ответственный: " + uName(t.resp); who.append(avatar(t.resp, uName(t.resp)), el("span", null, uName(t.resp)));
+    const who = el("div", "tk-who"); who.title = "Исполнитель: " + uName(t.resp); who.append(avatar(t.resp, uName(t.resp)), el("span", null, uName(t.resp)));
     r.append(dot, main, dlChip(t), who);
     wrap.append(r);
   });
@@ -2836,7 +2845,7 @@ function renderTaskPanel() {
   const person = uid => { const s = el("span", "tp-person"); s.append(avatar(uid, uName(uid)), el("span", null, uName(uid))); s.onclick = () => { closeTask(); open("user:" + uid); }; return s; };
   row("Крайний срок", t.dl ? dlChip(t) : "Не указан");
   row("Постановщик", person(t.uid));
-  row("Ответственный", person(t.resp));
+  row("Исполнитель", person(t.resp));
   if (t.aud.length) { const w = el("span", "tp-people"); t.aud.forEach(u => w.append(person(u))); row("Наблюдатели", w); }
   row("Создана", fmtDL(t.time).replace("Сегодня", "сегодня").replace("Завтра", "завтра"));
   body.append(info);
@@ -2907,6 +2916,25 @@ function renderTaskPanel() {
     }
     if (total || can) body.append(sec);
   }
+  {
+    const tcId = "tc_" + t.id, tc = channelsList.find(c => c.id === tcId);
+    const wantMembers = [t.uid, t.resp, ...t.aud];
+    if (!tc) setDoc(doc(db, "channels", tcId), { name: "🗂 " + t.title, taskChat: true, taskId: t.id, owner: t.uid, members: [...new Set(wantMembers)] }, { merge: true }).catch(() => {});
+    else { const missing = wantMembers.filter(u => !(tc.members || []).includes(u)); if (missing.length) updateDoc(doc(db, "channels", tcId), { members: arrayUnion(...missing) }).catch(() => {}); }
+    const members = tc ? (tc.members || wantMembers) : wantMembers;
+    const sec = el("div", "tp-sec"), h = el("div", "tp-h"); h.append(el("span", null, "Чат задачи")); sec.append(h);
+    const row = el("div", "tp-chat-row"), avs = el("div", "tp-chat-avs");
+    [...new Set(members)].slice(0, 6).forEach(uid => avs.append(avatar(uid, uName(uid))));
+    const openBtn = el("button", "tp-act"); openBtn.type = "button"; openBtn.innerHTML = ico("comment", 15); openBtn.append(el("span", null, "Открыть чат"));
+    openBtn.onclick = () => { closeTask(); open(tcId); showChat(); };
+    row.append(avs, openBtn); sec.append(row);
+    if (canMove(t) || isBoss(t)) {
+      const addSel = el("select", "tk-audsel"), o0 = el("option", null, "+ Добавить в чат"); o0.value = ""; addSel.append(o0);
+      Object.entries(usersMap).filter(([uid]) => !members.includes(uid)).sort((a, b) => (a[1].name || "").localeCompare(b[1].name || "")).forEach(([uid, u]) => { const o = el("option", null, u.name || "—"); o.value = uid; addSel.append(o); });
+      if (addSel.children.length > 1) { addSel.onchange = () => { if (!addSel.value) return; updateDoc(doc(db, "channels", tcId), { members: arrayUnion(addSel.value) }).catch(() => {}); addSel.value = ""; }; sec.append(addSel); }
+    }
+    body.append(sec);
+  }
   const cs = el("div", "tp-sec"), ch = el("div", "tp-h"); ch.append(el("span", null, "Комментарии"), el("span", "tp-hn", t.comments.length ? String(t.comments.length) : "")); cs.append(ch);
   if (!t.comments.length) cs.append(el("div", "tp-none", "Пока нет комментариев. Обсуждайте задачу здесь."));
   t.comments.forEach(x => {
@@ -2956,15 +2984,27 @@ function taskDialog(t) {
   });
   const tg = (label, on) => { const l = el("label", "ptog"), c = el("input"); c.type = "checkbox"; c.checked = !!on; l.append(c, el("span", "sw"), el("span", null, label)); return [l, c]; };
   const [l1, pri] = tg("Важная задача 🔥", t && t.pri), [l2, ctrl] = tg("Проверить результат после завершения", t ? t.ctrl : true);
-  const ckBox = el("div", "popts");
-  const addCk = (x) => {
-    const row = el("div", "popt"), i = el("input", "inp"); i.placeholder = "Пункт чек-листа"; i.maxLength = 200; i.value = x ? x.t : ""; row._id = x ? x.id : tid();
-    const xb = el("button", "px"); xb.type = "button"; xb.innerHTML = ico("x", 14); xb.onclick = () => { row.remove(); if (!ckBox.children.length) addCk(); };
-    i.oninput = () => { if (ckBox.lastElementChild === row && i.value.trim() && ckBox.children.length < 30) addCk(); };
-    i.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); const n = row.nextElementSibling; if (n) n.querySelector("input").focus(); } };
-    row.append(i, xb); ckBox.append(row);
+  const ckGroups = el("div", "ckg-editor");
+  const addCkGroup = () => {
+    const card = el("div", "ckg-card"), head = el("div", "ckg-chead");
+    const ti = el("input", "inp ckg-tin"); ti.placeholder = "Название чек-листа (необязательно)"; ti.maxLength = 100;
+    const rm = el("button", "px"); rm.type = "button"; rm.title = "Удалить чек-лист"; rm.innerHTML = ico("x", 14);
+    rm.onclick = () => { card.remove(); if (!ckGroups.children.length) addCkGroup(); };
+    head.append(ti, rm);
+    const itemsBox = el("div", "popts");
+    const addItem = () => {
+      const row = el("div", "popt"), i = el("input", "inp"); i.placeholder = "Пункт чек-листа"; i.maxLength = 200; row._id = tid();
+      const xb = el("button", "px"); xb.type = "button"; xb.innerHTML = ico("x", 14); xb.onclick = () => { row.remove(); if (!itemsBox.children.length) addItem(); };
+      i.oninput = () => { if (itemsBox.lastElementChild === row && i.value.trim() && itemsBox.children.length < 30) addItem(); };
+      i.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); const n = row.nextElementSibling; if (n) n.querySelector("input").focus(); } };
+      row.append(i, xb); itemsBox.append(row);
+    };
+    addItem();
+    card.append(head, itemsBox); ckGroups.append(card);
   };
-  if (!t) addCk();
+  if (!t) addCkGroup();
+  const addCkGroupBtn = el("button", "ckgrp-addbtn"); addCkGroupBtn.type = "button"; addCkGroupBtn.innerHTML = ico("plus", 14); addCkGroupBtn.append(el("span", null, "Добавить ещё чек-лист"));
+  addCkGroupBtn.onclick = () => addCkGroup();
   const acts = el("div", "macts"), cancel = el("button", "btn ghost", "Отмена"), ok = el("button", "btn", t ? "Сохранить" : "Поставить задачу");
   cancel.type = ok.type = "button";
   const close = () => { md.classList.add("out"); setTimeout(() => md.remove(), 180); };
@@ -2973,7 +3013,13 @@ function taskDialog(t) {
     const v = title.value.trim(); if (!v) { toast("Введите название задачи"); title.focus(); return; }
     let ck;
     if (t) ck = t.ck;
-    else { const items = [...ckBox.children].map(r => ({ id: r._id, t: r.querySelector("input").value.trim() })).filter(x => x.t); ck = items.length ? [{ id: "g_" + tid(), title: "", items }] : []; }
+    else {
+      ck = [...ckGroups.children].map(card => {
+        const gTitle = card.querySelector(".ckg-tin").value.trim();
+        const items = [...card.querySelectorAll(".popt")].map(r => ({ id: r._id, t: r.querySelector("input").value.trim() })).filter(x => x.t);
+        return items.length ? { id: "g_" + tid(), title: gTitle, items } : null;
+      }).filter(Boolean);
+    }
     const dv = dl.value ? new Date(dl.value).getTime() : 0;
     const f = { title: v, desc: desc.value.trim(), resp: resp.value, aud: aud.filter(u => u !== resp.value), dl: dv, pri: pri.checked, ctrl: ctrl.checked && resp.value !== me.uid, ck };
     ok.disabled = true;
@@ -2982,14 +3028,18 @@ function taskDialog(t) {
     else {
       const ref = doc(msgsRef(TASKS));
       good = await taskWrite(() => setDoc(ref, { kind: "task", uid: me.uid, name: uName(me.uid, me.displayName), time: serverTimestamp(), text: f.title, desc: f.desc, resp: f.resp, aud: f.aud, dl: f.dl, pri: f.pri, ctrl: f.ctrl, ck: f.ck, reactions: { "~log": [{ u: me.uid, s: "created", t: Date.now() }] } }));
-      if (good) toast(f.resp === me.uid ? "Задача создана" : "Задача поставлена: " + uName(f.resp));
+      if (good) {
+        toast(f.resp === me.uid ? "Задача создана" : "Задача поставлена: " + uName(f.resp));
+        const members = [...new Set([me.uid, f.resp, ...f.aud])];
+        setDoc(doc(db, "channels", "tc_" + ref.id), { name: "🗂 " + f.title, taskChat: true, taskId: ref.id, owner: me.uid, members }).catch(() => {});
+      }
     }
     ok.disabled = false;
     if (good) close();
   };
   acts.append(cancel, ok);
-  card.append(title, desc, lbl("Ответственный"), resp, lbl("Наблюдатели"), audBox, lbl("Крайний срок"), dl, pres, l1, l2);
-  if (!t) card.append(lbl("Чек-лист"), ckBox);
+  card.append(title, desc, lbl("Исполнитель"), resp, lbl("Наблюдатели"), audBox, lbl("Крайний срок"), dl, pres, l1, l2);
+  if (!t) card.append(lbl("Чек-лист"), ckGroups, addCkGroupBtn);
   card.append(acts);
   md.append(card); document.body.append(md);
   setTimeout(() => title.focus(), 60);
