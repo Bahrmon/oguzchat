@@ -1052,6 +1052,47 @@ a.emp-l:hover span{color:var(--blue-l);text-decoration:underline}
 .tour-dot.on{background:var(--blue)}
 .tour-btn{white-space:nowrap;padding:7px 16px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:13px;cursor:pointer}
 .tour-btn.skip{background:var(--band);color:var(--muted);margin-right:auto}
+/* --- Общий диск --- */
+#diskView{display:flex;flex-direction:column;height:100%;overflow:hidden;position:relative}
+.dv-auth{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px}
+.dv-auth p{opacity:.6;font-size:14px;text-align:center;max-width:300px;line-height:1.6}
+.dv-toolbar{display:flex;align-items:center;gap:6px;padding:10px 16px;border-bottom:1px solid var(--line);flex-shrink:0}
+.dv-path{display:flex;align-items:center;gap:0;flex:1;flex-wrap:wrap;overflow:hidden}
+.dv-path span{font-size:13px;opacity:.65;cursor:pointer;padding:2px 4px;border-radius:5px;transition:opacity .15s,background .12s;white-space:nowrap}
+.dv-path span:hover{opacity:1;background:var(--hover)}
+.dv-path span:last-child{font-weight:600;opacity:1;cursor:default}
+.dv-path span:last-child:hover{background:none}
+.dv-path .sep{opacity:.35;cursor:default;padding:2px 1px}
+.dv-path .sep:hover{background:none}
+.dv-acts{display:flex;gap:4px;margin-left:4px;flex-shrink:0}
+.dv-body{flex:1;overflow-y:auto;padding:8px 8px 12px}
+.dv-grid{display:flex;flex-direction:column;gap:1px}
+.dv-row{display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:9px;cursor:pointer;transition:background .12s;user-select:none}
+.dv-row:hover{background:var(--hover)}
+.dv-ico{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.dv-ico.t-folder{background:#FFF3CD;color:#856404}
+.dv-ico.t-doc{background:#D4E6FF;color:#0C63E4}
+.dv-ico.t-sheet{background:#D4EDDA;color:#155724}
+.dv-ico.t-slide{background:#FCE8D5;color:#6D1A36}
+.dv-ico.t-pdf{background:#FADADD;color:#842029}
+.dv-ico.t-img{background:#E8D5FC;color:#5A1E75}
+.dv-ico.t-file{background:var(--band);color:var(--text)}
+.dv-info{flex:1;min-width:0}
+.dv-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.dv-meta{font-size:11.5px;opacity:.55;margin-top:1px;color:var(--text)}
+.dv-more{padding:5px 7px;border-radius:6px;background:none;border:none;cursor:pointer;opacity:0;transition:opacity .12s;color:var(--text);font-size:16px;line-height:1}
+.dv-row:hover .dv-more{opacity:.6}.dv-more:hover{opacity:1!important;background:var(--line)}
+.dv-ctx{position:fixed;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:300;min-width:175px;padding:4px 0;font-size:13px;list-style:none;margin:0}
+.dv-ctx li{padding:7px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--text)}
+.dv-ctx li:hover{background:var(--band)}.dv-ctx li.dv-danger{color:#dc3545}
+.dv-sep{height:1px;background:var(--line);margin:3px 0}
+#diskView.drag-over::after{content:"Отпустите для загрузки";position:absolute;inset:0;background:rgba(22,65,148,.1);border:2px dashed var(--blue);border-radius:inherit;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:var(--blue);z-index:10;pointer-events:none}
+[data-theme=dark] .dv-ico.t-folder{background:#3D3000;color:#FFC107}
+[data-theme=dark] .dv-ico.t-doc{background:#002966;color:#8FB8FF}
+[data-theme=dark] .dv-ico.t-sheet{background:#003315;color:#7FD89F}
+[data-theme=dark] .dv-ico.t-slide{background:#3D0D00;color:#FFA080}
+[data-theme=dark] .dv-ico.t-pdf{background:#3D0008;color:#FF9999}
+[data-theme=dark] .dv-ico.t-img{background:#2A003D;color:#CC99FF}
 </style>
 </head>
 <body>
@@ -1212,6 +1253,11 @@ window.ICONS = {
   phone:   SVG('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>',14),
   pinMap:  SVG('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',14),
   chevR:   SVG('<polyline points="9 18 15 12 9 6"/>',14),
+  disk:    SVG('<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/>',17),
+  folder:  SVG('<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',17),
+  folderPlus: SVG('<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>',17),
+  upload:  SVG('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',17),
+  refresh: SVG('<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',16),
 };
 const ico = (n, sz) => ICONS[n].replace(/width="\d+" height="\d+"/, `width="${sz}" height="${sz}"`);
 // Setup password toggle
@@ -1243,7 +1289,7 @@ const isOnline = u => !!u && Date.now() - ms(u.lastSeen) < 150000;
 const uName = (uid, fb) => (usersMap[uid] && usersMap[uid].name) || fb || "Сотрудник";
 const isCEO = uid => { const u = usersMap[uid]; return u && u.name && u.name.startsWith("Gerchek"); };
 const isDM = id => !!id && id.startsWith("dm_");
-const isChan = id => !!id && id !== "ann" && id !== "feed" && id !== "tasks" && id !== "profile" && id !== "staff" && id !== "org" && !id.startsWith("user:") && !isDM(id);
+const isChan = id => !!id && id !== "ann" && id !== "feed" && id !== "tasks" && id !== "profile" && id !== "staff" && id !== "org" && id !== "disk" && !id.startsWith("user:") && !isDM(id);
 /* Форматтеры создаются один раз: toLocale*String на каждый вызов строит новый Intl-форматтер и очень медленный */
 const DF_TIME = new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit" });
 const DF_DAY = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long" });
@@ -1532,6 +1578,9 @@ function renderSidebar() {
   si.append(sic, (() => { const lb = el("span", "lbl", "Сотрудники"); return lb; })());
   si.onclick = () => { if (currentPanel === "staff") { closePanel(); } else { openPanel("staff"); } $("side").classList.remove("open"); };
   ab.append(si);
+  /* Диск — раздел Google Drive */
+  const dic = el("span", "ic"); dic.innerHTML = ico("disk", 17);
+  ab.append(item(DISK, "Общий диск", dic, { title: "Общий диск", sub: isMob() ? "Файлы компании" : "" }));
   renderBadges();
 }
 
@@ -1688,7 +1737,7 @@ function msgsRef(id) {
 }
 function convRef(id) { return isDM(id) ? doc(db, "dms", id) : isChan(id) ? doc(db, "channels", id) : null; }
 function dmPeer(id) { return id.slice(3).split("_").find(x => x !== me.uid) || me.uid; }
-function stopConv() { if (rec) recFinish(false); stopVoice(); document.querySelectorAll(".amenu,.pmenu").forEach(x => x.remove()); $("msgs").classList.remove("loading", "feed", "tasks", "staff"); if (taskOpenId) closeTask(); if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } if (unsubConv) { unsubConv(); unsubConv = null; } lastSnap = null; convData = {}; msgLimit = 80; const tb = $("toBottom"); if (tb) tb.remove(); }
+function stopConv() { if (rec) recFinish(false); stopVoice(); document.querySelectorAll(".amenu,.pmenu").forEach(x => x.remove()); $("msgs").classList.remove("loading", "feed", "tasks", "staff", "disk"); if (taskOpenId) closeTask(); if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } if (unsubConv) { unsubConv(); unsubConv = null; } lastSnap = null; convData = {}; msgLimit = 80; const tb = $("toBottom"); if (tb) tb.remove(); }
 function titleAnim() { const e = $("title"); e.classList.remove("switch"); void e.offsetWidth; e.classList.add("switch"); }
 function msgsAnim() { const e = $("msgs"); e.classList.remove("loading", "switch"); void e.offsetWidth; e.classList.add("switch"); }
 function switchAnim() { for (const e of [$("title"), $("msgs")]) { e.classList.remove("switch"); void e.offsetWidth; e.classList.add("switch"); } }
@@ -1714,6 +1763,7 @@ function open(id) {
   $("msgs").classList.add("loading");
   if (id === FEED) { openFeed(); return; }
   if (id === TASKS) { openTasks(); return; }
+  if (id === DISK) { openDisk(); return; }
   const subMsgs = () => {
     if (unsubMsgs) unsubMsgs();
     const isAnn = id === "ann";
@@ -1738,7 +1788,7 @@ function headerChip() {
   const chip = (cls, html) => { hc.className = cls; if (html) hc.innerHTML = html; };
   if (dm) { chip("usr"); hc.append(avatar(dm, uName(dm))); hc.onclick = () => open("user:" + dm); }
   else if (isChan(current)) { const c = channelsList.find(x => x.id === current) || {}; chip("ch", c.taskChat ? ico("tasks", 18) : "#"); hc.style.background = color(current); }
-  else { const k = { [FEED]: "feed", [TASKS]: "tasks", [STAFF]: "users" }[current]; if (k) chip("sec", ico(k, 19)); }
+  else { const k = { [FEED]: "feed", [TASKS]: "tasks", [STAFF]: "users", [DISK]: "disk" }[current]; if (k) chip("sec", ico(k, 19)); }
 }
 function headerInfo() {
   const sub = $("subtitle"), hi = $("hinfo"); sub.className = ""; hi.classList.remove("click"); hi.onclick = null;
@@ -4150,7 +4200,209 @@ document.addEventListener("pointerdown", e => {
   s.style.left = (e.clientX - r.left) + "px"; s.style.top = (e.clientY - r.top) + "px";
   b.append(s); setTimeout(() => s.remove(), 520);
 });
-document.addEventListener("keydown", e => { if (e.key === "Escape") { if (selectMode) { exitSelect(); return; } const lb = $("lightbox"); if (lb) lb.remove(); document.querySelectorAll(".pop").forEach(p => p.remove()); closeMenu(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { if (selectMode) { exitSelect(); return; } const lb = $("lightbox"); if (lb) lb.remove(); document.querySelectorAll(".pop").forEach(p => p.remove()); closeMenu(); driveHideCtx(); } });
+
+/* ============ ОБЩИЙ ДИСК — Google Drive ============ */
+const DISK = "disk";
+const DRIVE_CLIENT_ID = '930104551760-r2ua7h5jj1uovrs2r17hfhvbvt3ihlnb.apps.googleusercontent.com';
+const DRIVE_ROOT = '143sDp2uLo3zZxUXzxOoFipQ7qbkQ6V-W';
+const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive';
+
+let driveToken = null, driveTokenExpiry = 0, gisLoaded = false, driveTknClient = null;
+let drivePath = [{ id: DRIVE_ROOT, name: 'Общий диск' }];
+let driveFiles = [], driveCtxMenu = null;
+
+function loadGIS() {
+  return new Promise(res => {
+    if (gisLoaded) { res(); return; }
+    const s = document.createElement('script'); s.src = 'https://accounts.google.com/gsi/client';
+    s.onload = () => { gisLoaded = true; res(); }; document.head.append(s);
+  });
+}
+
+async function driveAuth() {
+  await loadGIS();
+  return new Promise((res, rej) => {
+    if (!driveTknClient) {
+      driveTknClient = google.accounts.oauth2.initTokenClient({
+        client_id: DRIVE_CLIENT_ID, scope: DRIVE_SCOPE,
+        callback: r => { if (r.error) { rej(r); return; } driveToken = r.access_token; driveTokenExpiry = Date.now() + (r.expires_in - 60) * 1000; res(driveToken); }
+      });
+    }
+    if (driveToken && Date.now() < driveTokenExpiry) { res(driveToken); return; }
+    driveTknClient.requestAccessToken({ prompt: driveToken ? '' : 'select_account' });
+  });
+}
+
+async function driveApi(method, path, body, params) {
+  const tok = await driveAuth();
+  const url = new URL('https://www.googleapis.com/drive/v3/' + path);
+  if (params) Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+  const r = await fetch(url, { method, headers: { Authorization: 'Bearer ' + tok, ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error?.message || r.statusText);
+  return r.status === 204 ? null : r.json();
+}
+
+async function driveList(folderId) {
+  const d = await driveApi('GET', 'files', null, { q: `'${folderId}' in parents and trashed = false`, fields: 'files(id,name,mimeType,size,modifiedTime)', orderBy: 'folder,name', pageSize: 200 });
+  return d.files || [];
+}
+
+const driveType = mime => {
+  if (!mime) return 'file';
+  if (mime.includes('folder')) return 'folder';
+  if (mime.includes('document') || mime.includes('word')) return 'doc';
+  if (mime.includes('spreadsheet') || mime.includes('excel') || mime.includes('csv')) return 'sheet';
+  if (mime.includes('presentation') || mime.includes('powerpoint')) return 'slide';
+  if (mime === 'application/pdf') return 'pdf';
+  if (mime.startsWith('image/')) return 'img';
+  return 'file';
+};
+const driveEmoji = { folder:'📁', doc:'📄', sheet:'📊', slide:'📑', pdf:'📕', img:'🖼️', file:'📎' };
+const driveSize = b => { if (!b) return ''; const n = +b; return n < 1024 ? n + ' Б' : n < 1048576 ? (n/1024).toFixed(1) + ' КБ' : n < 1073741824 ? (n/1048576).toFixed(1) + ' МБ' : (n/1073741824).toFixed(1) + ' ГБ'; };
+const driveDate = iso => { if (!iso) return ''; return new Date(iso).toLocaleDateString('ru', { day:'2-digit', month:'short', year:'numeric' }); };
+const driveLink = f => {
+  const m = f.mimeType || '';
+  if (m.includes('google-apps.document')) return `https://docs.google.com/document/d/${f.id}/edit`;
+  if (m.includes('google-apps.spreadsheet')) return `https://docs.google.com/spreadsheets/d/${f.id}/edit`;
+  if (m.includes('google-apps.presentation')) return `https://docs.google.com/presentation/d/${f.id}/edit`;
+  if (m.includes('folder')) return null;
+  return `https://drive.google.com/file/d/${f.id}/view`;
+};
+
+function openDisk() {
+  stopConv(); cancelBar(); closeSearch(true); cancelMotion(); closeMenu(); if (selectMode) exitSelect();
+  const box = $("msgs"); box.classList.remove("dm","feed","tasks","staff","loading"); box.classList.add("disk");
+  current = DISK; seen = null; highlightNav(); $("side").classList.remove("open");
+  $("form").classList.add("hidden"); $("pinBar").classList.add("hidden"); $("typingLine").innerHTML = "";
+  $("searchBtn").classList.add("hidden"); $("title").textContent = "Общий диск"; switchAnim(); headerInfo();
+  box.innerHTML = ''; box.scrollTop = 0;
+  drivePath = [{ id: DRIVE_ROOT, name: 'Общий диск' }];
+  renderDisk();
+}
+
+function renderDisk() {
+  const box = $("msgs"); if (!box || current !== DISK) return;
+  box.innerHTML = '<div id="diskView"><div class="dv-auth"><div style="font-size:56px">☁️</div><p>Подключитесь к Общему диску через ваш аккаунт Google</p><button class="btn" id="driveSignIn" style="margin-top:4px">Войти через Google</button></div></div>';
+  if (driveToken && Date.now() < driveTokenExpiry) { driveLoadFolder(); return; }
+  $("driveSignIn").onclick = async () => {
+    try { await driveAuth(); await driveLoadFolder(); }
+    catch(e) { showToast("Ошибка авторизации: " + (e.error_description || e.message || e)); }
+  };
+}
+
+async function driveLoadFolder() {
+  const box = $("msgs"); if (!box || current !== DISK) return;
+  const curFolder = drivePath[drivePath.length - 1];
+  box.innerHTML = '';
+  const dv = document.createElement('div'); dv.id = 'diskView';
+  dv.innerHTML = `<div class="dv-toolbar"><div class="dv-path" id="dvPath"></div><div class="dv-acts"><button class="iconbtn" id="dvUploadBtn" title="Загрузить файлы">${ico("upload",16)}</button><input type="file" id="dvFileInput" multiple style="display:none"><button class="iconbtn" id="dvNewFolder" title="Новая папка">${ico("folderPlus",16)}</button><button class="iconbtn" id="dvRefresh" title="Обновить">${ico("refresh",16)}</button></div></div><div class="dv-body"><div id="dvGrid" class="dv-grid"><div style="padding:40px;text-align:center;opacity:.45;font-size:14px">Загрузка…</div></div></div>`;
+  box.append(dv);
+
+  const pathEl = $("dvPath");
+  drivePath.forEach((seg, i) => {
+    if (i > 0) { const s = document.createElement('span'); s.className = 'sep'; s.textContent = '/'; pathEl.append(s); }
+    const sp = document.createElement('span'); sp.textContent = seg.name;
+    if (i < drivePath.length - 1) sp.onclick = () => { drivePath = drivePath.slice(0, i + 1); driveLoadFolder(); };
+    pathEl.append(sp);
+  });
+
+  $("dvUploadBtn").onclick = () => $("dvFileInput").click();
+  $("dvFileInput").onchange = async e => {
+    const files = [...e.target.files]; if (!files.length) return;
+    e.target.value = '';
+    for (const f of files) { try { showToast(`Загружаю ${f.name}…`); await driveUpload(curFolder.id, f); } catch(err) { showToast("Ошибка: " + err.message); } }
+    driveLoadFolder(); showToast("Загружено!");
+  };
+  $("dvNewFolder").onclick = async () => {
+    const name = prompt("Название новой папки:"); if (!name) return;
+    try { await driveApi('POST','files',{name,mimeType:'application/vnd.google-apps.folder',parents:[curFolder.id]},{fields:'id'}); driveLoadFolder(); }
+    catch(e) { showToast("Ошибка: " + e.message); }
+  };
+  $("dvRefresh").onclick = () => driveLoadFolder();
+
+  dv.addEventListener('dragover', e => { e.preventDefault(); dv.classList.add('drag-over'); });
+  dv.addEventListener('dragleave', e => { if (!dv.contains(e.relatedTarget)) dv.classList.remove('drag-over'); });
+  dv.addEventListener('drop', async e => {
+    e.preventDefault(); dv.classList.remove('drag-over');
+    const files = [...e.dataTransfer.files]; if (!files.length) return;
+    for (const f of files) { try { showToast(`Загружаю ${f.name}…`); await driveUpload(curFolder.id, f); } catch(err) { showToast("Ошибка: " + err.message); } }
+    driveLoadFolder(); showToast("Загружено!");
+  });
+
+  try { driveFiles = await driveList(curFolder.id); }
+  catch(e) {
+    const grid2 = $("dvGrid"); if (grid2) grid2.innerHTML = `<div style="padding:32px;text-align:center;color:#dc3545;font-size:14px">Ошибка: ${e.message}</div>`;
+    if (e.message && e.message.includes('401')) { driveToken = null; driveTokenExpiry = 0; renderDisk(); }
+    return;
+  }
+
+  const grid = $("dvGrid"); if (!grid) return;
+  grid.innerHTML = '';
+  if (!driveFiles.length) { grid.innerHTML = '<div style="padding:40px;text-align:center;opacity:.45;font-size:14px">Папка пуста</div>'; return; }
+
+  driveFiles.forEach(file => {
+    const type = driveType(file.mimeType);
+    const row = el('div','dv-row'); row.dataset.id = file.id;
+    const icoDiv = el('div','dv-ico t-' + type); icoDiv.textContent = driveEmoji[type] || '📎';
+    const info = el('div','dv-info');
+    info.append(el('div','dv-name', file.name));
+    const meta = [driveDate(file.modifiedTime), driveSize(file.size)].filter(Boolean).join(' · ');
+    if (meta) info.append(el('div','dv-meta', meta));
+    const more = document.createElement('button'); more.className = 'dv-more'; more.textContent = '⋯'; more.title = 'Действия';
+    row.append(icoDiv, info, more);
+    grid.append(row);
+    row.onclick = e => {
+      if (e.target === more) return;
+      if (type === 'folder') { drivePath.push({id: file.id, name: file.name}); driveLoadFolder(); }
+      else { const l = driveLink(file); window.open(l || `https://drive.google.com/file/d/${file.id}/view`, '_blank'); }
+    };
+    more.onclick = e => { e.stopPropagation(); driveShowCtx(e, file, curFolder.id); };
+    row.addEventListener('contextmenu', e => { e.preventDefault(); driveShowCtx(e, file, curFolder.id); });
+  });
+}
+
+async function driveUpload(parentId, file) {
+  const tok = await driveAuth();
+  const meta = JSON.stringify({name: file.name, parents: [parentId]});
+  const form = new FormData(); form.append('metadata', new Blob([meta], {type:'application/json'})); form.append('file', file);
+  const r = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name', { method:'POST', headers:{Authorization:'Bearer '+tok}, body: form });
+  if (!r.ok) { const err = await r.json().catch(()=>{}); throw new Error(err?.error?.message || r.statusText); }
+  return r.json();
+}
+
+function driveShowCtx(e, file, parentId) {
+  driveHideCtx();
+  const type = driveType(file.mimeType), isFolder = type === 'folder';
+  const menu = document.createElement('ul'); menu.className = 'dv-ctx';
+  const addItem = (label, action, danger) => {
+    const li = document.createElement('li'); if (danger) li.className = 'dv-danger';
+    li.textContent = label; li.onclick = () => { driveHideCtx(); action(); }; menu.append(li);
+  };
+  const addSep = () => { const d = document.createElement('li'); d.className = 'dv-sep'; d.style.padding='0'; menu.append(d); };
+  if (isFolder) addItem('📂 Открыть', () => { drivePath.push({id:file.id,name:file.name}); driveLoadFolder(); });
+  else addItem('🔗 Открыть', () => { const l=driveLink(file); window.open(l||`https://drive.google.com/file/d/${file.id}/view`,'_blank'); });
+  addItem('✏️ Переименовать', async () => {
+    const name = prompt('Новое имя:', file.name); if (!name || name === file.name) return;
+    try { await driveApi('PATCH',`files/${file.id}`,{name},{fields:'id'}); driveLoadFolder(); } catch(er) { showToast('Ошибка: '+er.message); }
+  });
+  addItem('📋 Копировать сюда', async () => {
+    try { await driveApi('POST',`files/${file.id}/copy`,{name:file.name+' (копия)',parents:[parentId]},{fields:'id'}); driveLoadFolder(); showToast('Скопировано!'); }
+    catch(er) { showToast('Ошибка: '+er.message); }
+  });
+  if (!isFolder) addItem('⬇️ Скачать', () => window.open(`https://drive.google.com/uc?export=download&id=${file.id}`,'_blank'));
+  addSep();
+  addItem('🗑️ Переместить в корзину', async () => {
+    if (!confirm(`Удалить «${file.name}»?`)) return;
+    try { await driveApi('PATCH',`files/${file.id}`,{trashed:true},{fields:'id'}); driveLoadFolder(); showToast('Удалено!'); }
+    catch(er) { showToast('Ошибка: '+er.message); }
+  }, true);
+  menu.style.cssText = `left:${Math.min(e.clientX, innerWidth-190)}px;top:${Math.min(e.clientY, innerHeight-280)}px`;
+  document.body.append(menu); driveCtxMenu = menu;
+  setTimeout(() => document.addEventListener('click', driveHideCtx, {once:true}), 0);
+}
+
+function driveHideCtx() { if (driveCtxMenu) { driveCtxMenu.remove(); driveCtxMenu = null; } }
 </script>
 </body>
 </html>
