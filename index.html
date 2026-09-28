@@ -123,8 +123,40 @@ html.boot #splash{display:flex!important}html.boot #auth{display:none!important}
 #main{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--card);position:relative}
 #sideResizer,#panelResizer{width:4px;cursor:col-resize;flex-shrink:0;transition:background .15s;z-index:2}
 #sideResizer:hover,#panelResizer:hover{background:rgba(255,255,255,.15)}
-#listPanel{width:var(--panel-w);flex-shrink:0;background:rgba(255,255,255,.05);color:#fff;display:flex;flex-direction:column;overflow:hidden;position:relative;transition:width .35s var(--ease),opacity .3s var(--ease);border-right:1px solid rgba(255,255,255,.06)}
-#listPanel.hidden{width:0!important;opacity:0;pointer-events:none;border:none}
+#panelResizer{position:absolute;top:18px;bottom:18px;right:0;border-radius:4px}
+#listPanel{width:var(--panel-w);flex-shrink:0;background:rgba(255,255,255,.05);color:#fff;display:flex;flex-direction:column;overflow:hidden;position:relative;transition:width .45s var(--ease),margin .45s var(--ease),opacity .3s var(--ease),transform .45s var(--ease)}
+#listPanel.shut{width:0!important;opacity:0;pointer-events:none;border-width:0;visibility:hidden;transition:width .42s var(--ease),margin .42s var(--ease),opacity .22s ease,transform .42s var(--ease),visibility 0s .42s}
+/* Содержимое панели держит свою ширину, пока панель раскрывается — текст не «сжимается», а выезжает */
+#listPanel>.lp-head,#listPanel>.lp-body{min-width:var(--panel-w)}
+.lp-mob{display:none}
+.lp-body.swap>*{animation:slideUpIn .36s var(--ease) both}
+.lp-body.swap>*:nth-child(2){animation-delay:.04s}.lp-body.swap>*:nth-child(3){animation-delay:.08s}
+.lp-body.swap .item,.lp-body.swap .lp-person{animation:slideUpIn .38s var(--ease) both}
+.lp-body.swap .item:nth-child(2),.lp-body.swap .lp-person:nth-child(2){animation-delay:.05s}
+.lp-body.swap .item:nth-child(3),.lp-body.swap .lp-person:nth-child(3){animation-delay:.08s}
+.lp-body.swap .item:nth-child(4),.lp-body.swap .lp-person:nth-child(4){animation-delay:.11s}
+.lp-body.swap .item:nth-child(5),.lp-body.swap .lp-person:nth-child(5){animation-delay:.14s}
+.lp-body.swap .item:nth-child(6),.lp-body.swap .lp-person:nth-child(6){animation-delay:.17s}
+.lp-body.swap .item:nth-child(n+7),.lp-body.swap .lp-person:nth-child(n+7){animation-delay:.2s}
+/* Замок у раздела в рейке и плашка «Скоро» */
+.item .ic{position:relative}
+.rlk{position:absolute;right:0;bottom:-5px;width:14px;height:14px;border-radius:50%;background:#1B4DA8;color:#fff;display:grid;place-items:center;box-shadow:0 0 0 2px #06306A}
+.item.locked .ic>svg{opacity:.6}
+.soon{margin-left:auto;font-size:9.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:2px 7px;border-radius:10px;background:#E8A30026;color:#FFC857;flex-shrink:0}
+.item.locked .lbl{opacity:.75}
+/* Замок в основной области */
+.dlock{max-width:420px;margin:12vh auto 0;padding:34px 28px 28px;border-radius:22px;background:var(--card);box-shadow:0 0 0 1px var(--line),0 18px 44px -22px #06306a59;text-align:center;animation:slideUpIn .45s var(--ease) both}
+.dlock-i{width:76px;height:76px;border-radius:24px;margin:0 auto 16px;display:grid;place-items:center;position:relative;color:var(--blue);background:linear-gradient(145deg,var(--band),color-mix(in srgb,var(--band) 55%,var(--line)))}
+.dlock-i .plk{width:26px;height:26px;right:-6px;bottom:-6px;background:var(--title);color:var(--card);box-shadow:0 0 0 3px var(--card)}
+.dlock-t{font-family:Montserrat,sans-serif;font-weight:700;font-size:19px;color:var(--title)}
+.dlock-s{display:inline-block;margin:10px 0 12px;font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:4px 11px;border-radius:20px;background:#E8A3001f;color:#9A6C00}
+[data-theme=dark] .dlock-s{color:#FFC857}
+.dlock-x{font-size:14px;line-height:1.55;color:var(--muted)}
+.dlock-f{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:18px}
+.dlock-f span{font-size:12px;font-weight:600;color:var(--title);background:var(--band);padding:6px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:6px}
+/* Нижняя панель разделов — только мобильная версия */
+#tabbar,#hMe,.prof-out{display:none}
+@media(max-width:760px){.prof-out{display:block;margin-top:22px;color:#E53935!important}}
 .lp-head{display:flex;align-items:center;padding:10px 12px 8px 18px;gap:8px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.08)}
 .lp-title{font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;flex:1;color:#fff;letter-spacing:.2px}
 .lp-body{flex:1;overflow-y:auto;padding-bottom:10px}
@@ -169,9 +201,12 @@ html.boot #splash{display:flex!important}html.boot #auth{display:none!important}
   #app.side-off{padding-left:10px}
   #app.side-off #side{margin-left:calc(-1 * var(--side-w));opacity:0;pointer-events:none}
   #app.side-off #menuBtn{display:grid;margin-left:-6px}
-  #app.panel-open #main{border-radius:0 20px 20px 0}
-  #app.panel-open #listPanel{border-radius:0}
-  #listPanel{margin:10px 0;border-radius:0}
+  /* Панель списков — отдельная плавающая карточка со скруглёнными краями, лист справа всегда скруглён целиком */
+  #listPanel{margin:0 10px 0 0;border-radius:20px;background:linear-gradient(180deg,#ffffff14,#ffffff0a);box-shadow:inset 0 0 0 1px #ffffff1c,0 24px 50px -24px #000a;transform-origin:left center}
+  #listPanel.shut{margin-right:0;transform:translateX(-18px) scale(.97)}
+  [data-theme=dark] #listPanel{background:linear-gradient(180deg,#ffffff0f,#ffffff08)}
+  .lp-head{padding:14px 12px 10px 18px}
+  #main{transition:box-shadow .3s}
   #menuBtn{position:relative}#menuBtn.dot::after{content:"";position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:#E53935;box-shadow:0 0 0 2px var(--band)}
   #taskPanel{padding:10px}
   #taskPanel .tp{border-radius:20px;overflow:hidden}
@@ -393,14 +428,59 @@ mark{background:#FFE082;color:#000;border-radius:3px;padding:0 1px}
 @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
 @media(hover:none){.del{opacity:.6}.bubble{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}}
 @media(max-width:760px){
-  /* Мобильная версия как в WhatsApp/Telegram: список чатов → чат на весь экран */
-  #side{position:fixed;inset:0;width:100%;z-index:20;background:var(--card);color:var(--text);transition:transform .32s var(--ease)}
-  #app.chat #side{transform:translateX(-22%)}
+  /* Мобильная версия — как у рабочих приложений: разделы переключаются нижней панелью,
+     списки (чаты, сотрудники) — корневой экран, чат/профиль выезжает поверх на весь экран. */
+  :root{--tabh:calc(60px + env(safe-area-inset-bottom))}
+  #side,#sideResizer,#panelResizer,#shade{display:none!important}
+  #listPanel{position:fixed;inset:0 0 var(--tabh) 0;width:100%!important;z-index:20;background:var(--card);color:var(--text);border:none;margin:0;border-radius:0;opacity:1;transform:none;transition:transform .32s var(--ease)}
+  #listPanel>.lp-head,#listPanel>.lp-body{min-width:0}
+  #listPanel.shut{display:none}
+  #app.chat #listPanel{transform:translateX(-22%)}
+  .lp-head{border-bottom:none;padding:max(12px,env(safe-area-inset-top)) 12px 4px 18px;min-height:60px;gap:8px}
+  .lp-title{color:var(--title);font-size:25px;letter-spacing:-.2px}
+  #lpClose{display:none}
+  .lp-mob{display:grid}
+  #lpTheme{background:var(--band);color:var(--title)}
+  #lpMe,#hMe{width:36px;height:36px;font-size:13px;cursor:pointer;flex-shrink:0}
+  #lpMe img,#hMe img{width:100%;height:100%;object-fit:cover;display:block}
+  .lp-body{padding-bottom:14px}
+  .lp-search{background:var(--band);color:var(--text);margin:8px 12px 6px;padding:10px 14px;border-radius:12px;font-size:15px}
+  .lp-search::placeholder{color:var(--muted)}
+  .lp-person{margin:0;border-radius:0;padding:10px 16px;gap:12px;min-height:66px;position:relative}
+  .lp-person::after{content:"";position:absolute;left:78px;right:0;bottom:0;height:1px;background:var(--line);opacity:.55}
+  .lp-person:hover,.lp-person:active{background:var(--hover)}
+  .lp-person .av{width:48px;height:48px;font-size:17px}
+  .lp-person .av.on::after{border-color:var(--card)}
+  .lp-person-name{color:var(--title);font-size:16px;font-weight:600}
+  .lp-person-pos{color:var(--muted);opacity:1;font-size:13.5px}
+  .lp-body.swap .item,.lp-body.swap .lp-person{animation-duration:.3s}
   #main{position:fixed;inset:0;z-index:25;transform:translateX(100%);transition:transform .32s var(--ease);box-shadow:-10px 0 30px #06306a26}
   #app.chat #main{transform:none}
+  /* Лента, Задачи, Диск — корневые экраны в основной области над нижней панелью */
+  #app.mroot #main{transform:none;bottom:var(--tabh);z-index:15;box-shadow:none;transition:none}
+  #app.mroot.chat #main{bottom:0;z-index:25}
   #app.enter #main{animation:none}
-  #shade{display:none!important}
   #menuBtn{display:grid;margin-left:-4px}
+  #app.mroot:not(.chat) #menuBtn{display:none}
+  #app.mroot:not(.chat) #hMe{display:grid;order:9}
+  #app.mroot:not(.chat) #head{padding-top:max(8px,env(safe-area-inset-top));padding-left:14px}
+  #tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;height:var(--tabh);padding:5px 4px env(safe-area-inset-bottom);background:color-mix(in srgb,var(--card) 90%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);box-shadow:0 -1px 0 var(--line),0 -10px 24px -18px #06306a4d;transition:transform .32s var(--ease)}
+  #app.chat #tabbar{transform:translateY(105%)}
+  .tb{flex:1;min-width:0;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--muted);font-size:10.5px;font-weight:600;letter-spacing:.1px;padding:2px 0;-webkit-tap-highlight-color:transparent}
+  .tb-i{position:relative;width:54px;height:30px;border-radius:15px;display:grid;place-items:center;transition:background .28s var(--ease),transform .22s var(--spring)}
+  .tb-i>svg{transition:transform .28s var(--spring)}
+  .tb.on{color:var(--blue)}
+  [data-theme=dark] .tb.on{color:#8FB0FF}
+  .tb.on .tb-i{background:color-mix(in srgb,var(--blue) 13%,transparent)}
+  [data-theme=dark] .tb.on .tb-i{background:#8FB0FF24}
+  .tb.on .tb-i>svg{transform:translateY(-1px) scale(1.06)}
+  .tb:active .tb-i{transform:scale(.88)}
+  .tb-l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .tb-b{position:absolute;top:-4px;left:32px;min-width:17px;height:17px;padding:0 5px;border-radius:9px;background:#E53935;color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 2px var(--card);animation:badgePop .38s var(--spring)}
+  .tb.locked .tb-i>svg{opacity:.5}
+  .tb-lk{position:absolute;left:31px;bottom:0;width:15px;height:15px;border-radius:50%;background:var(--title);color:var(--card);display:grid;place-items:center;box-shadow:0 0 0 2px var(--card)}
+  .dlock{margin-top:8vh}
+  .soon{background:#E8A3001f;color:#9A6C00}
   #side .logo{background:var(--side);color:#fff;padding:12px 12px 12px 16px;padding-top:max(12px,env(safe-area-inset-top))}
   #side .scroll{background:var(--card);display:flex;flex-direction:column}
   #side .scroll>*{flex-shrink:0}
@@ -1127,9 +1207,11 @@ a.emp-l:hover span{color:var(--blue-l);text-decoration:underline}
     <div class="powered">Powered by <b>Bahramon</b></div>
   </div>
   <div id="sideResizer"></div>
-  <div id="listPanel" class="hidden">
+  <div id="listPanel" class="shut">
     <div class="lp-head">
       <span class="lp-title" id="lpTitle">Мессенджеры и почта</span>
+      <button class="iconbtn lp-mob" id="lpTheme" title="Тема"></button>
+      <div class="av lp-mob" id="lpMe" title="Мой профиль"></div>
       <button class="iconbtn lp-close" id="lpClose" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="lp-body" id="lpBody">
@@ -1152,6 +1234,7 @@ a.emp-l:hover span{color:var(--blue-l);text-decoration:underline}
       <div id="hico" class="hidden"></div><div class="hinfo" id="hinfo"><div id="title">—</div><div id="subtitle"></div></div>
       <button class="hbtn" id="searchBtn" title="Поиск по сообщениям"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.2" y2="16.2"/></svg></button>
       <button class="hbtn hidden" id="bell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="t">Включить уведомления</span></button>
+      <div class="av" id="hMe" title="Мой профиль"></div>
     </div>
     <div id="selBar" class="hidden">
       <button class="hbtn" id="selClose" title="Отмена"></button>
@@ -1177,6 +1260,7 @@ a.emp-l:hover span{color:var(--blue-l);text-decoration:underline}
       <div id="recLock" class="hidden"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><svg class="cu" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></div>
     </form>
   </div>
+  <nav id="tabbar" aria-label="Разделы"></nav>
 </div>
 <script>document.getElementById("spImg").src = document.querySelector("#side .logo .mark img").src;</script>
 
@@ -1345,9 +1429,10 @@ let keysOn = store.get("oc-keys") !== "off";
 function applyTheme(t) {
   const dark = t === "dark" || (t === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
   document.documentElement.dataset.theme = dark ? "dark" : "light";
-  $("themeBtn").innerHTML = dark ? ICONS.sun : ICONS.moon;
+  $("themeBtn").innerHTML = $("lpTheme").innerHTML = dark ? ICONS.sun : ICONS.moon;
 }
 applyTheme(theme);
+$("lpTheme").onclick = () => $("themeBtn").click();
 $("themeBtn").onclick = () => { theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; store.set("oc-theme", theme); if (document.startViewTransition && !RM.matches) document.startViewTransition(() => applyTheme(theme)); else applyTheme(theme); };
 
 /* ---------- вход ---------- */
@@ -1441,7 +1526,7 @@ function start(user) {
     if (isChan(current) && !channelsList.some(c => c.id === current)) current = null;
     if (!current) {
       if (!channelsList.length) setDoc(doc(db, "channels", "general"), { name: "общий" });
-      else { const f = channelsList.find(c => c.id === store.get("oc-last")) || channelsList[0]; open(f.id); }
+      else { const f = channelsList.find(c => c.id === store.get("oc-last")) || channelsList[0]; if (!isMob()) openPanel("msg", true); open(f.id); }
     }
   });
   onSnapshot(query(collection(db, "users"), orderBy("name")), snap => {
@@ -1461,16 +1546,18 @@ function heartbeat() { if (me && !document.hidden) setDoc(doc(db, "users", me.ui
 function renderMe() {
   const u = usersMap[me.uid] || {}, n = u.name || me.displayName;
   $("meName").textContent = n; $("mePos").textContent = u.position || "Заполните профиль";
-  const a = $("meAv"); a.innerHTML = "";
-  if (u.photoURL) {
-    const img = document.createElement("img");
-    img.src = photoSrc(u.photoURL);
-    img.style.cssText = "width:100%;height:100%;object-fit:cover;display:block";
-    img.onerror = () => { img.remove(); a.textContent = initials(n); a.style.background = color(me.uid); };
-    a.append(img);
-  } else {
-    a.textContent = initials(n);
-    a.style.background = color(me.uid);
+  for (const a of [$("meAv"), $("lpMe"), $("hMe")]) {
+    a.innerHTML = ""; a.style.background = "";
+    if (u.photoURL) {
+      const img = document.createElement("img");
+      img.src = photoSrc(u.photoURL);
+      img.style.cssText = "width:100%;height:100%;object-fit:cover;display:block";
+      img.onerror = () => { img.remove(); a.textContent = initials(n); a.style.background = color(me.uid); };
+      a.append(img);
+    } else {
+      a.textContent = initials(n);
+      a.style.background = color(me.uid);
+    }
   }
 }
 
@@ -1489,7 +1576,7 @@ function item(id, label, icon, opts = {}) {
 }
 const MOB = matchMedia("(max-width:760px)");
 const isMob = () => MOB.matches;
-const inChat = () => !isMob() || $("app").classList.contains("chat");
+const inChat = () => !isMob() || $("app").classList.contains("chat") || $("app").classList.contains("mroot");
 function fmtListTime(t) {
   const d = new Date(t), y = new Date(); y.setDate(y.getDate() - 1);
   if (fmtDay(d) === fmtDay(new Date())) return fmtTime(d);
@@ -1517,7 +1604,46 @@ function goList() {
   if (selectMode) exitSelect();
   app.classList.remove("chat"); ta.blur(); closeMenu();
   document.querySelectorAll(".amenu,.pmenu,.pop").forEach(x => x.remove());
+  /* Вернулись из профиля/чата, открытого поверх Ленты/Задач/Диска, — показываем сам раздел */
+  if (MROOT.includes(mtab) && current !== mtab) open(mtab);
   refreshUI();
+}
+/* ---------- мобильная навигация: нижняя панель разделов ---------- */
+const TABS = [
+  { t: "feed", l: "Лента", i: "feed" },
+  { t: "tasks", l: "Задачи", i: "tasks" },
+  { t: "msgs", l: "Чаты", i: "comment" },
+  { t: "staff", l: "Сотрудники", i: "users" },
+  { t: "disk", l: "Диск", i: "disk", lock: true },
+];
+const MROOT = ["feed", "tasks", "disk"]; // разделы, которые живут в основной области
+let mtab = store.get("oc-tab") || "msgs", tabInit = false;
+if (!TABS.some(x => x.t === mtab)) mtab = "msgs";
+function renderTabbar() {
+  const bar = $("tabbar"); bar.innerHTML = "";
+  TABS.forEach(x => {
+    const b = el("button", "tb" + (x.t === mtab ? " on" : "") + (x.lock ? " locked" : "")); b.type = "button"; b.dataset.t = x.t;
+    const i = el("span", "tb-i"); i.innerHTML = ico(x.i, 22);
+    if (x.lock) { const l = el("span", "tb-lk"); l.innerHTML = ico("lock", 9); i.append(l); }
+    b.append(i, el("span", "tb-l", x.l));
+    b.onclick = () => setTab(x.t, true);
+    bar.append(b);
+  });
+}
+function setTab(t, user) {
+  const app = $("app"), same = t === mtab && tabInit;
+  mtab = t; tabInit = true; if (!(t === "disk" && DISK_LOCKED)) store.set("oc-tab", t);
+  document.querySelectorAll("#tabbar .tb").forEach(b => b.classList.toggle("on", b.dataset.t === t));
+  if (same && user) { // повторный тап — наверх списка
+    const sc = MROOT.includes(t) ? $("msgs") : $("lpBody"); if (sc) sc.scrollTo({ top: 0, behavior: "smooth" }); return;
+  }
+  if (MROOT.includes(t)) {
+    app.classList.add("mroot"); closePanel(true);
+    open(t === "feed" ? FEED : t === "tasks" ? TASKS : DISK);
+  } else {
+    app.classList.remove("mroot");
+    openPanel(t === "msgs" ? "msg" : "staff", true);
+  }
 }
 addEventListener("popstate", () => { if (isMob() && $("app").classList.contains("chat")) goList(); });
 function setBackIcon() {
@@ -1527,7 +1653,12 @@ function setBackIcon() {
   $("menuBtn").title = isMob() ? "Назад" : "Показать панель (Ctrl+B)";
   $("findUser").placeholder = isMob() ? "Поиск" : "Поиск чатов и коллег…";
 }
-MOB.addEventListener("change", () => { if (!isMob()) $("app").classList.remove("chat"); setBackIcon(); refreshUI(); });
+MOB.addEventListener("change", () => {
+  const app = $("app");
+  if (!isMob()) { app.classList.remove("chat", "mroot"); if (currentPanel && !isChan(current) && !isDM(current) && current !== STAFF && !(current || "").startsWith("user:")) closePanel(); }
+  else if (me) { tabInit = false; setTab(mtab); }
+  setBackIcon(); refreshUI();
+});
 /* Перерисовываем боковую панель только если изменилось видимое: имена, должности, фото, «в сети» */
 let sideSig = "";
 function sidebarIfChanged() {
@@ -1562,46 +1693,71 @@ function renderSidebar() {
   if (!me) return;
   const ab = $("annBox"); ab.innerHTML = "";
   const aic = el("span", "ic"); aic.innerHTML = ico("feed", 17);
-  const ai = item("feed", "Лента", aic, { title: "Лента", sub: isMob() ? "Новости компании" : "" });
+  /* Разделы без панели списков: при переходе в них панель закрывается */
+  const rail = (id, it) => { it.onclick = () => { closePanel(); open(id); }; return it; };
+  const ai = rail(FEED, item(FEED, "Лента", aic, { title: "Лента" }));
   ai.style.marginTop = "4px"; ab.append(ai);
   const tic = el("span", "ic"); tic.innerHTML = ico("tasks", 17);
-  ab.append(item(TASKS, "Задачи", tic, { title: "Задачи", sub: isMob() ? "Поручения и сроки" : "" }));
-  /* Мессенджеры — открывает панель */
+  ab.append(rail(TASKS, item(TASKS, "Задачи", tic, { title: "Задачи" })));
+  /* Мессенджеры — открывает панель; в основной области — последний чат */
   const mic = el("span", "ic"); mic.innerHTML = ico("mail", 17);
   const mi = el("div", "item" + (currentPanel === "msg" ? " active" : "")); mi.dataset.id = "msgs";
-  mi.append(mic, (() => { const lb = el("span", "lbl", "Мессенджеры и почта"); return lb; })());
-  mi.onclick = () => { if (currentPanel === "msg") { closePanel(); } else { openPanel("msg"); } $("side").classList.remove("open"); };
+  mi.append(mic, el("span", "lbl", "Мессенджеры и почта"));
+  mi.onclick = () => { if (currentPanel === "msg") closePanel(); else openPanel("msg"); };
   ab.append(mi);
-  /* Сотрудники — открывает панель */
+  /* Сотрудники — открывает панель; в основной области — справочник */
   const sic = el("span", "ic"); sic.innerHTML = ico("users", 17);
   const si = el("div", "item" + (currentPanel === "staff" ? " active" : "")); si.dataset.id = STAFF;
-  si.append(sic, (() => { const lb = el("span", "lbl", "Сотрудники"); return lb; })());
-  si.onclick = () => { if (currentPanel === "staff") { closePanel(); } else { openPanel("staff"); } $("side").classList.remove("open"); };
+  si.append(sic, el("span", "lbl", "Сотрудники"));
+  si.onclick = () => { if (currentPanel === "staff") closePanel(); else openPanel("staff"); };
   ab.append(si);
-  /* Диск — раздел Google Drive */
+  /* Общий диск — пока «в замке» */
   const dic = el("span", "ic"); dic.innerHTML = ico("disk", 17);
-  ab.append(item(DISK, "Общий диск", dic, { title: "Общий диск", sub: isMob() ? "Файлы компании" : "" }));
+  if (DISK_LOCKED) { const l = el("span", "rlk"); l.innerHTML = ico("lock", 9); dic.append(l); }
+  const di = rail(DISK, item(DISK, "Общий диск", dic, { title: "Общий диск" }));
+  if (DISK_LOCKED) { di.classList.add("locked"); di.title = "Общий диск — скоро"; di.append(el("span", "soon", "Скоро")); }
+  ab.append(di);
+  if (!tabInit) renderTabbar();
+  if (isMob() && !tabInit) setTab(mtab);
   renderBadges();
 }
 
 /* ---------- панель списков ---------- */
 let currentPanel = null; // "msg" | "staff" | null
 
-function openPanel(type) {
+let lastConv = store.get("oc-lastc") || "";
+/* noSync — только показать панель, не трогая основную область (мобильные вкладки и синхронизация из open()) */
+function openPanel(type, noSync) {
+  const changed = currentPanel !== type;
   currentPanel = type;
-  $("listPanel").classList.remove("hidden");
+  $("listPanel").classList.remove("shut");
   $("app").classList.add("panel-open");
-  $("lpTitle").textContent = type === "msg" ? "Мессенджеры и почта" : "Сотрудники";
+  $("lpTitle").textContent = isMob() ? (type === "msg" ? "Чаты" : "Сотрудники") : (type === "msg" ? "Мессенджеры и почта" : "Сотрудники");
   renderSidebar(); // refresh nav highlight
   renderPanel();
-  if (isMob()) showChat();
+  if (changed) { const b = $("lpBody"); b.classList.remove("swap"); void b.offsetWidth; b.classList.add("swap"); b.scrollTop = 0; clearTimeout(openPanel._t); openPanel._t = setTimeout(() => b.classList.remove("swap"), 700); }
+  if (noSync || isMob()) return;
+  /* В основной области — то, что соответствует панели */
+  if (type === "msg" && !isChan(current) && !isDM(current)) {
+    const ok = id => id && (channelsList.some(c => c.id === id) || (isDM(id) && id.includes(me.uid)));
+    const id = [lastConv, store.get("oc-last")].find(ok) || (channelsList[0] && channelsList[0].id);
+    if (id) open(id);
+  } else if (type === "staff" && current !== STAFF && !(current || "").startsWith("user:") && current !== "profile") open(STAFF);
 }
 
-function closePanel() {
+function closePanel(quiet) {
+  if (!currentPanel && quiet) return;
   currentPanel = null;
-  $("listPanel").classList.add("hidden");
+  $("listPanel").classList.add("shut");
   $("app").classList.remove("panel-open");
   renderSidebar();
+}
+/* Десктоп: панель списков всегда соответствует открытому разделу */
+function syncPanel(id) {
+  if (isMob()) return;
+  if (isChan(id) || isDM(id)) { if (currentPanel === "staff") openPanel("msg", true); }
+  else if (id === STAFF) { if (currentPanel !== "staff") openPanel("staff", true); }
+  else if (!id.startsWith("user:") && id !== "profile") closePanel(true); // Лента, Задачи, Диск
 }
 
 function renderPanel() {
@@ -1668,6 +1824,11 @@ function renderStaffPanel() {
   const prevQ = sp.querySelector(".lp-search") ? sp.querySelector(".lp-search").value : "";
   sp.innerHTML = "";
   const srch = el("input", "lp-search"); srch.placeholder = "Поиск по сотрудникам…"; srch.value = prevQ; sp.append(srch);
+  if (isMob()) { // на телефоне справочник и структура открываются отсюда
+    const org = el("div", "lp-person lp-org"), oi = el("div", "av"); oi.innerHTML = ico("org", 22); oi.style.background = "var(--blue)";
+    const inf = el("div", "lp-person-info"); inf.append(el("div", "lp-person-name", "Справочник и структура"), el("div", "lp-person-pos", "Карточки, отделы, дни рождения"));
+    org.append(oi, inf); org.onclick = () => { open(STAFF); showChat(); }; sp.append(org);
+  }
   const list = el("div"); sp.append(list);
   function buildList(q) {
     list.innerHTML = "";
@@ -1726,7 +1887,8 @@ $("newChan").onclick = async () => {
   const name = prompt("Название канала:");
   if (name && name.trim()) { try { const r = await addDoc(collection(db, "channels"), { name: name.trim().slice(0, 40), owner: me.uid }); titles[r.id] = "# " + name.trim(); open(r.id); } catch (e) { toast("Ошибка: " + e.code); } }
 };
-$("me").onclick = () => { open("profile"); showChat(); };
+$("me").onclick = () => { closePanel(true); open("profile"); showChat(); };
+$("lpMe").onclick = $("hMe").onclick = () => { open("profile"); showChat(); };
 
 /* ---------- открытие чата ---------- */
 function msgsRef(id) {
@@ -1746,6 +1908,8 @@ function highlightNav() {
   $("me").classList.toggle("active", current === "profile");
 }
 function open(id) {
+  syncPanel(id);
+  if (isChan(id) || isDM(id)) { lastConv = id; store.set("oc-lastc", id); }
   if (id === "profile") return showProfile(me.uid);
   if (id.startsWith("user:")) return showProfile(id.slice(5));
   if (id === STAFF) return showStaff();
@@ -1804,6 +1968,7 @@ function headerInfo() {
   else if (current === "ann") sub.textContent = "Видят все сотрудники";
   else if (current === FEED) sub.textContent = "Новости, опросы и благодарности компании";
   else if (current === TASKS) sub.textContent = "Поручения, сроки и контроль";
+  else if (current === DISK) sub.textContent = DISK_LOCKED ? "Файлы компании · скоро" : "Файлы компании на Google Диске";
   else if (current === STAFF) { const all = Object.values(usersMap).filter(u => u.name), on = all.filter(isOnline).length; sub.textContent = all.length + " в компании" + (on ? " · " + on + " в сети" : ""); }
   else sub.textContent = "";
 }
@@ -3620,7 +3785,7 @@ function checkInitialUnread() {
   renderBadges();
 }
 function watch(id) {
-  if (watched[id] || id === "tasks") return; watched[id] = { t: null };
+  if (watched[id] || id === "tasks" || id === "disk") return; watched[id] = { t: null };
   onSnapshot(query(msgsRef(id), orderBy("time", "desc"), limit(1)), snap => {
     const w = watched[id];
     if (snap.empty) { if (w.t === null) w.t = 0; return; }
@@ -3643,17 +3808,27 @@ function watch(id) {
   }, () => {});
 }
 function renderBadges() {
-  document.querySelectorAll(".item[data-id]").forEach(it => {
+  document.querySelectorAll('.item[data-id]:not([data-id="msgs"])').forEach(it => {
     const n = unread[it.dataset.id] || 0; let bd = it.querySelector(".badge");
     it.classList.toggle("unread", n !== 0);
     if (n !== 0) { if (!bd) { bd = el("span", "badge"); const d = it.querySelector(".del"); d ? it.insertBefore(bd, d) : it.append(bd); } const txt = n < 0 ? "•" : n > 99 ? "99+" : String(n); if (bd.textContent !== txt) { bd.textContent = txt; if (bd._shown) { bd.style.animation = "none"; void bd.offsetWidth; bd.style.animation = ""; } bd._shown = true; } }
     else if (bd) bd.remove();
   });
+  const chatN = Object.entries(unread).reduce((a, [k, v]) => a + ((isDM(k) || isChan(k)) && v > 0 ? v : 0), 0);
   const pt = document.querySelector('.plat[data-p="oguz"] .pt');
   if (pt) {
-    const n = Object.entries(unread).reduce((a, [k, v]) => a + ((isDM(k) || isChan(k)) && v > 0 ? v : 0), 0); let pb = pt.querySelector(".pb");
-    if (n) { if (!pb) { pb = el("span", "pb"); pt.append(pb); } pb.textContent = n > 99 ? "99+" : String(n); } else if (pb) pb.remove();
+    let pb = pt.querySelector(".pb");
+    if (chatN) { if (!pb) { pb = el("span", "pb"); pt.append(pb); } pb.textContent = chatN > 99 ? "99+" : String(chatN); } else if (pb) pb.remove();
   }
+  /* Общий счётчик чатов на пункте «Мессенджеры и почта» и на вкладках нижней панели */
+  const setB = (host, cls, n) => {
+    if (!host) return; let b = host.querySelector(":scope > ." + cls);
+    if (n) { const txt = n < 0 ? "•" : n > 99 ? "99+" : String(n); if (!b) { b = el("span", cls); host.append(b); } if (b.textContent !== txt) b.textContent = txt; } else if (b) b.remove();
+  };
+  const mItem = document.querySelector('#annBox .item[data-id="msgs"]');
+  setB(mItem, "badge", chatN); if (mItem) mItem.classList.toggle("unread", !!chatN);
+  const tabN = { msgs: chatN, feed: unread[FEED] || 0, tasks: unread[TASKS] || 0 };
+  document.querySelectorAll("#tabbar .tb").forEach(b => setB(b.querySelector(".tb-i"), "tb-b", tabN[b.dataset.t] || 0));
   const vals = Object.values(unread), total = vals.reduce((a, b) => a + (b > 0 ? b : 0), 0), any = vals.some(v => v);
   $("menuBtn").classList.toggle("dot", total > 0);
   document.title = total ? "(" + total + ") OguzChat" : any ? "• OguzChat" : "OguzChat";
@@ -4126,12 +4301,15 @@ function showProfile(uid) {
   const perm = "Notification" in window ? Notification.permission : "none";
   const nb = el("button", "btn ghost", perm === "none" ? "Не поддерживаются этим браузером" : perm === "granted" ? "Включены" : perm === "denied" ? "Запрещены в настройках браузера" : "Включить уведомления");
   nb.style.marginTop = "0"; nb.onclick = () => enableNotif().then(() => { if (current === "profile") showProfile(me.uid); }); body.append(nb);
+  /* На телефоне нет рейки с кнопкой выхода — выход здесь */
+  const out = el("button", "btn ghost prof-out", "Выйти из аккаунта"); out.onclick = e => $("logout").onclick(e); body.append(out);
 }
 
 /* ---------- тур знакомства ---------- */
 function showTour() {
   setSide(false);
   let STEPS = [
+    { sel: "#tabbar", title: "🧭 Разделы", text: "Лента, задачи, чаты, сотрудники и общий диск — переключайтесь между разделами внизу экрана.", pos: "top" },
     { sel: "#annBox", title: "📰 Лента", text: "Новости компании: посты, опросы, благодарности коллегам и важные сообщения с отметкой «Ознакомлен». Ставьте лайки и комментируйте.", pos: "right" },
     { sel: '.item[data-id="tasks"]', title: "✅ Задачи", text: "Ставьте задачи коллегам со сроком, чек-листом и проверкой результата. Счётчик показывает новые и просроченные задачи.", pos: "right" },
     { sel: '.item[data-id="staff"]', title: "👥 Сотрудники", text: "Все коллеги с контактами, днями рождения и структурой компании. Нажмите на сотрудника — откроется его профиль.", pos: "right" },
@@ -4204,6 +4382,8 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") { if (select
 
 /* ============ ОБЩИЙ ДИСК — Google Drive ============ */
 const DISK = "disk";
+/* Раздел пока закрыт: пункт виден всем, но внутрь не попасть. Чтобы открыть — поставить false. */
+const DISK_LOCKED = true;
 const DRIVE_CLIENT_ID = '930104551760-r2ua7h5jj1uovrs2r17hfhvbvt3ihlnb.apps.googleusercontent.com';
 const DRIVE_ROOT = '143sDp2uLo3zZxUXzxOoFipQ7qbkQ6V-W';
 const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive';
@@ -4277,8 +4457,18 @@ function openDisk() {
   $("form").classList.add("hidden"); $("pinBar").classList.add("hidden"); $("typingLine").innerHTML = "";
   $("searchBtn").classList.add("hidden"); $("title").textContent = "Общий диск"; switchAnim(); headerInfo();
   box.innerHTML = ''; box.scrollTop = 0;
+  if (DISK_LOCKED) { renderDiskLock(); return; }
   drivePath = [{ id: DRIVE_ROOT, name: 'Общий диск' }];
   renderDisk();
+}
+function renderDiskLock() {
+  const box = $("msgs"), w = el("div", "dlock"), ic = el("div", "dlock-i");
+  ic.innerHTML = ico("disk", 34); const l = el("span", "plk"); l.innerHTML = ico("lock", 13); ic.append(l);
+  const f = el("div", "dlock-f");
+  [["folder", "Папки отделов"], ["upload", "Загрузка файлов"], ["users", "Доступ для всех"]].forEach(([i, t]) => { const s = el("span"); s.innerHTML = ico(i, 14); s.append(t); f.append(s); });
+  w.append(ic, el("div", "dlock-t", "Общий диск"), el("div", "dlock-s", "Скоро"),
+    el("div", "dlock-x", "Здесь будут общие файлы компании: документы, презентации и таблицы в папках, с загрузкой, переименованием и перемещением прямо из OguzChat. Раздел сейчас настраивается."), f);
+  box.append(w);
 }
 
 function renderDisk() {
